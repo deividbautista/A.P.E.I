@@ -22,13 +22,13 @@ from models.entities.User import User
 
 from models.entities.User import *
 
-#Para subir archivo tipo foto al servidor
+# Para subir archivo tipo foto al servidor
 from werkzeug.utils import secure_filename 
 
-#El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
+# El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
 import os 
 
-#Modulo para obtener la ruta o directorio
+# Modulo para obtener la ruta o directorio
 from os import path 
 
 # -----------------------------------------------------
@@ -67,9 +67,6 @@ def login():
     # Este if principal reune el desarrollo principal en el que determinaremos las funcionalidades principales
     # como primero definir si tenemos los datos enviados por metodo POST
     if request.method == "POST":
-        # print(request.form['NDI'])
-        # print(request.form['password'])
-
         # Definir la instancia usuarios, la cual le pasamos los parametros del "NDI" y el "password".
         user = User(
             0, request.form["NDI"], request.form["password"], 0, 0, 0, 0, 0, 0, 0, 0, 0
@@ -112,97 +109,52 @@ def login():
 # -----------------------------------------------------
 
 @app.route("/edit", methods=["POST"])
+
+# Definimos la función "update", para poder ejecutar las distintas actividades que se realizara en este modulo.
 def update():
-    # Presentamos el bloque try, el cual pasara a ejecutar la sentencia "SQL".
-    # try:
-    #     # Definimos cursor para la sentencia SQL, la cual obtendremos todos los datos del usuario.
-    #     cursor = db.connection.cursor()
-    #     sql = "UPDATE user SET fullname = 'andragora' WHERE id = 1 "
-    #     cursor.execute(sql)
-    #     db.connection.commit()
-    #     return render_template("profile/profile.html")
-    # except Exception as ex:
-    #     raise Exception(ex)
 
-
-    # if name and numerodocumento:
-    #     cursor = db.connection.cursor()
-    #      #sql = "UPDATE user SET fullname = 'diomedes' WHERE NDI = 1 "
-    #     sentencia = "UPDATE user SET fullname = (name) WHERE NDI = 1".format(name)
-    #     cursor.execute(sentencia)
-    #     db.connection.commit()
-    # return render_template("profile/profile.html")
-
-
-    # numerodocumento = request.form['NDI']    
-    # name = request.form['fullname']
-    # print(name, numerodocumento)
-    # try:
-    #     # Definimos cursor para la sentencia SQL, la cual obtendremos todos los datos del usuario.
-    #     cursor = db.connection.cursor()
-    #     sql = "UPDATE user SET fullname = '{}' WHERE NDI = 1".format(name)
-    #     data = (name)
-    #     cursor.execute(sql, data)
-    #     db.connection.commit()
-    #     print(request.form['NDI'])
-    #     print(request.form['fullname'])
-    #     return render_template("profile/profile.html")
-    # except Exception as ex:
-    #     raise Exception(ex)
-
-
-    # numerodocumento = request.form['NDI']    
-    # nombre = request.form['fullname']
-    # try:
-    #     # Definimos cursor para la sentencia SQL, la cual obtendremos todos los datos del usuario.
-    #     cursor = db.connection.cursor()
-    #     # sql = "UPDATE user SET fullname = 'narsiso' WHERE id = 1 "
-    #     sql = (""" UPDATE login_python SET fullname = %s
-    #             WHERE id = 1 """, (nombre, numerodocumento))
-    #     cursor.execute(sql)
-    #     db.connection.commit()
-    #     print(request.form['NDI'])
-    #     print(request.form['fullname'])
-    #     return render_template("profile/profile.html")
-    # except Exception as ex:
-    #     raise Exception(ex)
-
-    #--------------------------------------------------------------------------------------------------
-
-    # Presentamos el bloque try, el cual pasara a ejecutar la sentencia "SQL".
+    # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
+    # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
+    # regulares del usuario.
     try:
+        # Definimos la condicional "if", con la cual se iniciara si optiene información de un formulario. 
+        # por metodo 'POST'
         if request.method == 'POST':
+            # La siguiente condicional se inicializara si encuentra un archivo en el boton del nombre "archivo" de tipo "file".
             if(request.files['archivo']):
-
-                NumDoc = request.form['NDI']
-
-                #Script para archivo
-                nombreArchivo = NumDoc
-                file     = request.files['archivo']
-                basepath = path.dirname (__file__) #La ruta donde se encuentra el archivo actual
-                
-                #capturando extensión del archivo ejemplo: (.png, .jpg, .pdf ...etc)
+    
+                # Definimos el parametro que utilizaremos en la consulta para guardar el nombre del archivo subido.
+                NumDoc          = request.form['NDI']
+                # Definimos el nombre del archivo.
+                nombreArchivo   = NumDoc
+                # Definimos la variable que almacenara lo enviado por el formulario.
+                file            = request.files['archivo']
+                # Definimos la variable que almacenara el nombre del archivo obtenido desde el path.
+                basepath        = path.dirname (__file__)
+                # Definimos el tipo de extensión que utilizaremos, en este caso "jpg".
                 extension           = ('.jpg')
+                # Definimos la vaariable que almacenara el núevo nombre asignado para la imagen.
                 nuevoNombreFile     = nombreArchivo + extension
         
+                # En la siguiente linea de cofigo se da el proceso para almacenar el archivo, definiendo el 
+                # archivo, la ruta y el nuevo nombre del archivo.
                 upload_path = path.join (basepath, 'static/img/avatars', nuevoNombreFile) 
+                # Con la variable file y el metodo save para poder alamcenar el archivo, con los parametros que definimos anteriormente.
                 file.save(upload_path)
 
-                # Definimos cursor con la conexión de la based de datos para poder realizar la consulta.
+                # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
                 cursor = db.connection.cursor()
-                # Veremos la siguiente consultaa de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+                # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
                 sql="""UPDATE users SET Nombre_img = '{1}'  WHERE NDI = {0}"""
-
+                # Definimos la variable atr con los parametros para realizar la consulta de manera dinamica.
                 Atr = (NumDoc, nuevoNombreFile)
-
                 # Usamos el execute para poder realizar la consulta anteriormente mostrada.
                 cursor.execute(sql.format(Atr[0],Atr[1]))
-
-                # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
-
                 # cursor.execute(sql)
                 db.connection.commit()
-                
+
+        #-----------------------------------------------------------------------------------------------------------------------------------
+           
         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
         # los datos en la consulta posterior de MySql.
         nombre= request.form['fullname']
@@ -215,16 +167,16 @@ def update():
         NumDoc = request.form['NDI']
         Email = request.form['Email']
 
-        # Definimos un array llamado curso para poder utilizar las vriables anteriormente definidas.
-        curso = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
+        # Definimos un array llamado datos para poder utilizar las vriables anteriormente definidas.
+        datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
 
-        # Definimos cursor con la conexión de la based de datos para poder realizar la consulta.
+        # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
         cursor = db.connection.cursor()
-        # Veremos la siguiente consultaa de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+        # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
         sql="""UPDATE users SET fullname = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
                 Area_locativa= '{5}', Fecha_nacimiento = '{6}', NDI= '{7}', Email= '{8}' WHERE NDI = {7}"""
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
-        cursor.execute(sql.format(curso[0],curso[1],curso[2],curso[3],curso[4],curso[5],curso[6],curso[7],curso[8]))
+        cursor.execute(sql.format(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8]))
         # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
         # cursor.execute(sql)
         db.connection.commit()

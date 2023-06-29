@@ -25,10 +25,12 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                 <div class="perfil-usuario-bio">
                     <!-- Division que contiene la foto de perfil del usario-->
                     <div class="perfil-usuario-avatar">
-                        <img src="static/img/avatars/{{ current_user.Nombre_img}}"
+                        <img data-bs-toggle="modal" data-bs-target="#exampleModal-2" src="static/img/avatars/{{ current_user.Nombre_img}}"
                             alt="img-avatar">
-                        <button type="button" class="boton-avatar">
+
+                        <button type="button" class="boton-avatar" data-bs-toggle="modal" data-bs-target="#exampleModal">
                             <i class="fas fa-image"></i>
+                        </button>
                         </button>
                     </div>
                     <!-- Fin division que contiene la foto de perfil del usario-->
@@ -74,30 +76,6 @@ poder personalizar y ahorrar lineas de codigo en los modulos
         <!-- Fin sección de perfil, donde observaremos los datos del usuario, junto con su nombre y foto de perfil -->
 
         <!-- Inicio de modal o sección que contiene formulario para actualizar datos del usario -->
-        <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h1 class="modal-title fs-5" id="exampleModalLabel">{{current_user.fullname}}</h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="/edit" method="post">
-                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                        <label>NDI</label>
-                        <input type="text" class="form-control mb-3" name="NDI" value="{{current_user.NDI}}">
-                        <label>Name</label>
-                        <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
-                        <label>Password</label>
-                        <input type="text" class="form-control mb-3" name="password" value="{{current_user.password}}">  
-
-                        <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </form>
-              </div>
-            </div>
-        </div> -->
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -124,7 +102,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             <label for="">Area locativa</label>
                             <input type="text" class="form-control mb-3" name="Area" value="{{ current_user.Area}}">
                             <label for="">Fecha de nacimiento</label>
-                            <input type="text" class="form-control mb-3" name="FDN" value="{{ current_user.Fecha_nacimiento}}">
+                            <input type="date" class="form-control mb-3" name="FDN" value="{{ current_user.Fecha_nacimiento}}">
                             <label for="">Número de documento</label>
                             <input type="text" class="form-control mb-3" name="NDI" value="{{ current_user.NDI}}">
                             <label for="">Correo electronico</label>
@@ -150,6 +128,18 @@ poder personalizar y ahorrar lineas de codigo en los modulos
         </div>
         <!-- Fin de modal o sección que contiene formulario para actualizar datos del usario -->
 
+        <!-- Inicio modal de la imagen-->
+        <div class="modal fade" id="exampleModal-2" tabindex="-1" aria-labelledby="exampleModalLabel-2" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                    <div class="modal-body">
+                        <img alt="img-avatar" class="img-modal" src="static/img/avatars/{{ current_user.Nombre_img}}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin de modal o sección que contiene formulario para actualizar datos del usario -->
     </div>
     <!-- Fin contenedor principal del modulo -->
 </body>

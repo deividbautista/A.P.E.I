@@ -52,6 +52,7 @@ estilos generales
     position: relative;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
 }
 
 .seccion-perfil-usuario .perfil-usuario-avatar .boton-avatar {
@@ -166,6 +167,15 @@ estilos generales
 
 .seccion-perfil-usuario .redes-sociales .boton-redes+.boton-redes {
     margin-top: .5rem;
+}
+
+.img-modal{
+    width: 100%;
+    object-fit: cover;
+}
+
+.modal-body{
+    padding: 1% !important;
 }
 
 /* adactacion a dispositivos */
