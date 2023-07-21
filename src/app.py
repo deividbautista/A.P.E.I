@@ -57,8 +57,6 @@ def load_user(id):
 # -----------------------------------------------------
 # Sección principal de autentificación de usuario.
 # -----------------------------------------------------
-
-
 # Para definir la ruta y metodos por los que obtendremos los datos del login.
 @app.route("/login", methods=["GET", "POST"])
 
@@ -105,24 +103,40 @@ def login():
 
 
 # -----------------------------------------------------
+# Sección para validar extensión del archivo.
+# -----------------------------------------------------
+def extensiones_validas(filename):
+    # Lista de extensiones permitidas para los archivos de imagen
+    extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'svga', 'webp'}
+
+    # Obtener la extensión del archivo
+    extension = filename.rsplit('.', 1)[1].lower()
+
+    # Verificar si la extensión está permitida
+    if '.' in filename and extension in extensiones_permitidas:
+        print("yes")
+        return True
+    else:
+        return False
+
+    
+
+# -----------------------------------------------------
 # Sección principal de actualización de usuario.
 # -----------------------------------------------------
-
 @app.route("/edit", methods=["POST"])
-
 # Definimos la función "update", para poder ejecutar las distintas actividades que se realizara en este modulo.
 def update():
-
     # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
     # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
     # regulares del usuario.
     try:
         # Definimos la condicional "if", con la cual se iniciara si optiene información de un formulario. 
         # por metodo 'POST'
+        archivo = request.files['archivo']
         if request.method == 'POST':
             # La siguiente condicional se inicializara si encuentra un archivo en el boton del nombre "archivo" de tipo "file".
-            if(request.files['archivo']):
-    
+            if(request.files['archivo'] and extensiones_validas(archivo.filename)):
                 # Definimos el parametro que utilizaremos en la consulta para guardar el nombre del archivo subido.
                 NumDoc          = request.form['NDI']
                 # Definimos el nombre del archivo.
@@ -152,7 +166,9 @@ def update():
                 cursor.execute(sql.format(Atr[0],Atr[1]))
                 # cursor.execute(sql)
                 db.connection.commit()
-
+                print(archivo.filename)
+            else:
+                return 'archivo no valido'
         #-----------------------------------------------------------------------------------------------------------------------------------
            
         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 

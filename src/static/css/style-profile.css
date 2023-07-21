@@ -178,6 +178,61 @@ estilos generales
     padding: 1% !important;
 }
 
+/*-----------------------------------------------------------------*/
+.menu > li{
+    float: left;
+}
+
+.menu > li > a{
+    display: block;
+    padding: 15px 20px;
+    color: rgb(255, 255, 255);
+    font-family: "open sans";
+    text-decoration: none;
+    font-size: 13px;
+    text-transform: uppercase;
+}
+
+li a.active, li a:hover{
+    border-radius:5px;
+    background-color: rgb(60, 14, 87) ;
+    transition: all .3s;
+}
+/*Fin menú principal*/
+
+/*submenu*/
+.submenu ul{
+    margin-top: -1em;
+}
+
+.submenu{
+    position: absolute;
+    border-radius:5px;
+    background: #333333 ;
+    width: 150px;
+    visibility: hidden;
+    opacity: 80%;
+    transition: opacity 1.5s;
+    list-style: none;
+    transition: .1s;
+}
+
+.submenu li a{
+    display: block;
+    border-radius:5px;
+    padding: 12px;
+    color: rgb(255, 228, 228);
+    font-family: "open sans";
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+.menu li:hover .submenu{
+    visibility: visible;
+    opacity: 1;
+}
+/*-----------------------------------------------------------------*/
+
 /* adactacion a dispositivos */
 @media (max-width: 750px) {
     .seccion-perfil-usuario .lista-datos {
