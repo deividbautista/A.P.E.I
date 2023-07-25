@@ -168,7 +168,7 @@ def update():
                 db.connection.commit()
                 print(archivo.filename)
             else:
-                return 'archivo no valido'
+                print("invalido")
         #-----------------------------------------------------------------------------------------------------------------------------------
            
         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
