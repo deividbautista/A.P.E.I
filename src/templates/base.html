@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../static/css/style-general.css">
     <link rel="stylesheet" href="../static/css/style-profile.css">
     <link rel="stylesheet" href="../static/css/style-login.css">
+    <link rel="stylesheet" href="../static/css/alerts.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <!-- Fin apartado de links para otorgar los estilos -->
@@ -93,11 +94,40 @@
 
     </div>
 
+    {% if (typeAlert==0) %}
+    <div class="toast_alert erno active">
+        <div class="toast_alert-content">
+            <i class="fa-solid fa-circle-exclamation errno"></i>
+            <div class="message">
+                <span class="text text-1">{{massage}}</span>
+                <span class="text text-2">{{ msjAlert }}</span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress active"></div>
+    </div>
+    {% endif %}
+    
+    {% if (typeAlert==1) %}
+    <div class="toast_alert active">
+        <div class="toast_alert-content">
+            <i class="fa-solid fa-check check"></i>
+            <div class="message">
+                <span class="text text-1">{{massage}}</span>
+                <span class="text text-2">{{ msjAlert }}</span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress active"></div>
+    </div>
+    {% endif %}
+
     <!-- Utilizando la propiedad block podemos indicar un apartado para personalización del modulo en especifico, por ello definimos el bloque body
     para poder tener como plantilla general la pagina con un background establecido, el navbar y footer generales, con la finalidad de ahorrar y optimizar
     lineas de código-->
     {%block body%}
     {%endblock%}
+    
 </body>
 <!-- Fin sección body principal -->
 
@@ -117,6 +147,8 @@
 <!-- Sección de enlaces de los scripst para darle fluides he interactividad a la plataforma
 incluyendo los scripts que brinda Bootstrap, para sus animaciones-->
 <script src="../static/js/main.js"></script>
+<script src="../static/js/drag_and_drop.js"></script>
+<script src="../static/js/alerts.js"></script>
 <script src="https://kit.fontawesome.com/9c61ead5a6.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"

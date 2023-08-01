@@ -168,7 +168,9 @@ def update():
                 db.connection.commit()
                 print(archivo.filename)
             else:
-                print("invalido")
+                typeAlert = 0
+                massage = "Archivo invalido 😢"
+                return render_template('profile/profile.html', typeAlert=typeAlert, massage=massage)
         #-----------------------------------------------------------------------------------------------------------------------------------
            
         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
@@ -197,7 +199,9 @@ def update():
         # cursor.execute(sql)
         db.connection.commit()
 
-        return render_template("profile/profile.html")
+        typeAlert = 1
+        massage = "Se actualizo correctamente 🥳"
+        return render_template('profile/profile.html', typeAlert=typeAlert, massage=massage)
     except Exception as ex:
          raise Exception(ex)
     

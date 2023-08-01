@@ -104,6 +104,7 @@ estilos generales
     width: 100%;
     margin-bottom: -130px;
 }
+
 .perfil-usuario-bio {
     display: table !important;
 }
@@ -184,7 +185,10 @@ estilos generales
 .modal-body{
     padding: 1% !important;
 }
-
+.modal-content.activate{
+    background-color: #b8d4fe !important;
+    border: dashed 0.4rem #618ac9!important;
+}
 /*-----------------------------------------------------------------*/
 .menu > li{
     float: left;
@@ -240,8 +244,16 @@ li a.active, li a:hover{
 }
 /*-----------------------------------------------------------------*/
 
+
+
 /* adactacion a dispositivos */
 @media (max-width: 750px) {
+
+    .seccion-perfil-usuario .perfil-usuario-footer,
+    .seccion-perfil-usuario .perfil-usuario-bio {
+    padding: 1rem 0rem !important;
+    margin-bottom: 4rem;
+    }
 
     .seccion-perfil-usuario .perfil-usuario-body .titulo2 {
         width: 100%;
@@ -260,11 +272,12 @@ li a.active, li a:hover{
     }
 
     .seccion-perfil-usuario .lista-datos {
-        width: 100%;
+        width: 120%;
     }
 
     .seccion-perfil-usuario .perfil-usuario-portada,
     .seccion-perfil-usuario .perfil-usuario-body {
+        padding-top: 2rem;
         width: 95%;
     }
 
@@ -289,4 +302,9 @@ li a.active, li a:hover{
     .seccion-perfil-usuario .lista-datos li i {
         width: 13%;
     }
+
+    .seccion-perfil-usuario .lista-datos li {
+        width: 100%;
+    }
+   
 }
