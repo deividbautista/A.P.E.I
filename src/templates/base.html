@@ -2,6 +2,7 @@
 <html lang="en">
 
 <!-- Sección header-->
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,10 +19,12 @@
     <!-- Apartado para la personalización del titulo del modulo por medio del uso de las propiedades block
     que nos brinda el procesador de renderizado "FLASK"-->
     <title>{%block title%}{%endblock%}</title>
+    <link rel="icon" type="image/x-icon" href="../static/img/logo/favicon.ico">
 </head>
 <!-- Fin sección header-->
 
 <!-- Sección body principal -->
+
 <body>
 
     <!-- Contenedor general del navbar general del proyecto, implementando botstrap para su elaboración-->
@@ -73,12 +76,11 @@
                         </li> -->
                     </ul>
                     <!-- Sección donde se reflejara la foto de perfil del usuario -->
-                    
-                    
+
+
                     <div class="perfil-usuario-avatar-nav">
                         <a href="/profile">
-                            <img class="img-avatar-nav"
-                                src="static/img/avatars/{{ current_user.Nombre_img}}"
+                            <img class="img-avatar-nav" src="static/img/avatars/{{ current_user.Nombre_img}}"
                                 alt="img-avatar-nav">
                         </a>
                         <!-- <ul class="">
@@ -91,47 +93,89 @@
             </div>
         </nav>
         <!-- Fin contenedor general del navbar general del proyecto-->
-
     </div>
 
-    {% if (typeAlert==0) %}
-    <div class="toast_alert erno active">
-        <div class="toast_alert-content">
-            <i class="fa-solid fa-circle-exclamation errno"></i>
-            <div class="message">
-                <span class="text text-1">{{massage}}</span>
-                <span class="text text-2">{{ msjAlert }}</span>
+    <!------------------------------------------------------------------------------------------>
+    <!--
+        Mensaje negativo sobre la respuesta del servidor.
+    -->
+    <!------------------------------------------------------------------------------------------>
+    <!-- Iniciamos el with menssage, que utilizamos para recibir los mensajes por medio de esta propiedad brindada por Flask-->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <!-- Declaramos la condicional en que si encontramos un mensaje, realizaremos lo siguiente-->
+    {% if messages %}
+    <!-- Utilizando el ciclo repetitivo for, recorremos los mensajes envidados por el metodo flash en el archivo del app.py, dependiendo
+        de la situación se determinara cierto mensaje-->
+    {% for category, message in messages %}
+    <!-- Declaramos la sentencia if que evalua el tipo de categoria del mensaje enviado con flash, para evitar errores con los distintos alerts-->
+    {% if category == "error" %}
+    <!-- Tenemos el estilo de los alerts personalizados-->
+        <div class="toast_alert erno active">
+            <div class="toast_alert-content">
+                <i class="fa-solid fa-circle-exclamation errno"></i>
+                <div class="message">
+                    <span class="text text-1">{{message}}</span>
+                </div>
             </div>
+            <i class="fa-solid fa-xmark close"></i>
+            <div class="progress active"></div>
         </div>
-        <i class="fa-solid fa-xmark close"></i>
-        <div class="progress active"></div>
-    </div>
     {% endif %}
-    
-    {% if (typeAlert==1) %}
+    <!-- Fin de la condicional-->
+    {% endfor %}
+    <!-- Fin ciclo repetitivo for-->
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endwith %}
+    <!-- Fin de with menssage-->
+    <!------------------------------------------------------------------------------------------>
+
+
+    <!------------------------------------------------------------------------------------------>
+    <!--
+        Mensaje positivo sobre la respuesta del servidor.
+    -->
+    <!------------------------------------------------------------------------------------------>
+    <!-- Iniciamos el with menssage, que utilizamos para recibir los mensajes por medio de esta propiedad brindada por Flask-->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <!-- Declaramos la condicional en que si encontramos un mensaje, realizaremos lo siguiente-->
+    {% if messages %}
+    <!-- Utilizando el ciclo repetitivo for, recorremos los mensajes envidados por el metodo flash en el archivo del app.py, dependiendo
+        de la situación se determinara cierto mensaje-->
+    {% for category, message in messages %}
+    <!-- Declaramos la sentencia if que evalua el tipo de categoria del mensaje enviado con flash, para evitar errores con los distintos alerts-->
+    {% if category == "success" %}
+    <!-- Tenemos el estilo de los alerts personalizados-->
     <div class="toast_alert active">
         <div class="toast_alert-content">
             <i class="fa-solid fa-check check"></i>
             <div class="message">
-                <span class="text text-1">{{massage}}</span>
-                <span class="text text-2">{{ msjAlert }}</span>
+                <span class="text text-1">{{message}}</span>
             </div>
         </div>
         <i class="fa-solid fa-xmark close"></i>
         <div class="progress active"></div>
     </div>
     {% endif %}
+    <!-- Fin de la condicional-->
+    {% endfor %}
+    <!-- Fin ciclo repetitivo for-->
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endwith %}
+    <!-- Fin de with menssage-->
+    <!------------------------------------------------------------------------------------------>
 
     <!-- Utilizando la propiedad block podemos indicar un apartado para personalización del modulo en especifico, por ello definimos el bloque body
     para poder tener como plantilla general la pagina con un background establecido, el navbar y footer generales, con la finalidad de ahorrar y optimizar
     lineas de código-->
     {%block body%}
     {%endblock%}
-    
+
 </body>
 <!-- Fin sección body principal -->
 
-<!-- Sección footer general--> 
+<!-- Sección footer general-->
 <!--Se vera utilizado en todo el aplicativo y por ello debe estar en el archivo base-->
 <footer class="footer mt-auto py-3 bg-light" id="container-footer">
     <div class="content-footer">
