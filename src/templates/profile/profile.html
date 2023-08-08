@@ -87,23 +87,23 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                     <div class="modal-body">
                         <form action="/edit" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <label for="">Nombre completo</label>
-                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
-                            <label for="">Direccion</label>
+                            <label for="">Nombre completo:</label>
+                            <input type="text" pattern="[A-Za-z]+" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
+                            <label for="">Direccion:</label>
                             <input type="text" class="form-control mb-3" name="Direccion" value="{{ current_user.Direccion}}">
-                            <label for="">Telefono</label>
+                            <label for="">Telefono:</label>
                             <input type="number" class="form-control mb-3" name="Telefono" value="{{ current_user.Telefono}}">
-                            <label for="">Cargo</label>
+                            <label for="">Cargo:</label>
                             <input type="text" class="form-control mb-3" name="Empresa" value="{{ current_user.Empresa}}">
-                            <label for="">Empresa</label>
+                            <label for="">Empresa:</label>
                             <input type="text" class="form-control mb-3" name="Cargo" value="{{ current_user.Cargo}}">
-                            <label for="">Area locativa</label>
+                            <label for="">Area locativa:</label>
                             <input type="text" class="form-control mb-3" name="Area" value="{{ current_user.Area}}">
-                            <label for="">Fecha de nacimiento</label>
+                            <label for="">Fecha de nacimiento:</label>
                             <input type="date" class="form-control mb-3" name="FDN" value="{{ current_user.Fecha_nacimiento}}">
-                            <label for="">Número de documento</label>
+                            <label for="">Número de documento:</label>
                             <input type="number" class="form-control mb-3" name="NDI" value="{{ current_user.NDI}}">
-                            <label for="">Correo electronico</label>
+                            <label for="">Correo electronico:</label>
                             <input type="text" class="form-control mb-3" name="Email" value="{{ current_user.Email}}">
 
                             <!-- Botón donde podremos subir el archivo con la foto del perfil -->
