@@ -28,7 +28,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <img data-bs-toggle="modal" data-bs-target="#exampleModal-2" src="static/img/avatars/{{ current_user.Nombre_img}}"
                             alt="img-avatar">
 
-                        <button type="button" class="boton-avatar" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        <button type="button" class="boton-avatar" data-bs-toggle="modal" data-bs-target="#exampleModal-2">
                             <i class="fas fa-image"></i>
                         </button>
                         </button>
@@ -93,9 +93,9 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             <input type="text" class="form-control mb-3" name="Direccion" value="{{ current_user.Direccion}}">
                             <label for="">Telefono:</label>
                             <input type="number" class="form-control mb-3" name="Telefono" value="{{ current_user.Telefono}}">
-                            <label for="">Cargo:</label>
-                            <input type="text" class="form-control mb-3" name="Empresa" value="{{ current_user.Empresa}}">
                             <label for="">Empresa:</label>
+                            <input type="text" class="form-control mb-3" name="Empresa" value="{{ current_user.Empresa}}">
+                            <label for="">Cargo:</label>
                             <input type="text" class="form-control mb-3" name="Cargo" value="{{ current_user.Cargo}}">
                             <label for="">Area locativa:</label>
                             <input type="text" class="form-control mb-3" name="Area" value="{{ current_user.Area}}">
