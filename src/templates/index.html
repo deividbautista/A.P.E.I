@@ -87,7 +87,7 @@
                             <th scope="col" class="col-4"><i class="fa-solid fa-book"></i> Descripcion</th>
                             <th scope="col"><i class="fa-regular fa-calendar-days"></i> Duración</th>
                             <th scope="col" class="col-1"><i class="fa-regular fa-eye"></i> Vista</th>
-                            <th scope="col"><i class="fa-regular fa-user"></i> Asignado</th>
+                            <th scope="col" ><i class="fa-regular fa-user"></i> Asignado</th>
                         </tr>
                     </thead>
 
@@ -151,13 +151,13 @@
 
                                             <ul class="dropdown-menu">
                                                 {% for Usuario in datosU %}
-                                                <!-- <li><a class="dropdown-item" href="#">{{Usuario.fullname}}</a></li> -->
                                                 <li>
-                                                    <input type="checkbox" name="usuarios_seleccionados"
-                                                        value="{{ Usuario.id }}">
-                                                    <span
-                                                        class="{% if Usuario.id in usuarios_seleccionados %}seleccionado{% endif %}">{{Usuario.nombre
-                                                        }}</span>
+                                                    <input type="checkbox" class="usuariosSelect"
+                                                        name="usuarios_seleccionados" value="{{ Usuario.id }}"
+                                                        id="{{Usuario.id}}">
+                                                    <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
+                                                        {{Usuario.fullname}}
+                                                    </label>
                                                 </li>
                                                 {% endfor %}
                                             </ul>
