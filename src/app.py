@@ -1,125 +1,283 @@
-from flask import Flask, render_template, request, redirect, url_for
-from random import sample
-import os
-import database as db
-
-template_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-template_dir = os.path.join(template_dir, 'src', 'templates')
-
-app = Flask(__name__, template_folder = template_dir)
+# Codigo sustraido del canal url=('https://youtu.be/FX0lMm_Qj10')
+# creditos respectivos al autor y o su equipo de trabajo, "Repositorio=('https://github.com/UskoKruM/flask-login-mysql')"
 
 
-def idAleatorio():
-    # Caracteres que puede poseer el string aleatorio.
-    id_aleatorio = "0123456789"
-    # Logintud determinada para el estring aleatorio.
-    longitud         = 10
-    # Utilizamos la función upper para combertir los caracteres en mayuscula.
-    secuencia        = id_aleatorio.upper()
-    # Definimos la variable "resultado_aleatorio", que con la función sample 
-    # y los parametros de secuencia y longitud, generamos el string aleatorio.
-    resultado_aleatorio  = sample(secuencia, longitud)
-    # Volvemos a definir a la varibale "id_aleatorio", pero esta vez le 
-    # concatenamos el valor optenido de "resultado_aleatorio". 
-    id_aleatorio     = "".join(resultado_aleatorio)
-    # Finalmente retornamos de nuestra función el resultado con el string aleatorio.
-    return id_aleatorio
+# -----------------------------------------------------
+# Sección donde importaremos Modulos, Instancias y variables, que utilizaresmos.
+# -----------------------------------------------------
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_mysqldb import MySQL
+from flask_wtf.csrf import CSRFProtect
+from flask_login import LoginManager, login_user, logout_user, login_required
 
-def datosUsuarios():
-    cursor = db.database.cursor()
-    cursor.execute("SELECT * FROM users")
-    myresult = cursor.fetchall()
-    #Convertir los datos a diccionario
-    insertObject = []
-    columnNames = [column[0] for column in cursor.description]
-    for record in myresult:
-        insertObject.append(dict(zip(columnNames, record)))
-    cursor.close()  
+import re
 
-    dataUser=insertObject  
-    return dataUser
+from config import config
+
+# Models:
+from models.ModelUser import ModelUser
+
+# Entities:
+from models.entities.User import User
+
+from models.entities.User import *
+
+# Para subir archivo tipo foto al servidor
+from werkzeug.utils import secure_filename 
+
+# El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
+import os 
+
+# Modulo para obtener la ruta o directorio
+from os import path 
+
+# -----------------------------------------------------
+# Sección donde inicializaremos o definiremos las instancias principales.
+# -----------------------------------------------------
+
+# Constructor principal para ejecutar el sistema de información.
+app = Flask(__name__)
+
+# Para poder brindar seguridad extra, al usar tokens.
+csrf = CSRFProtect()
+
+# Para utilizar sentencias sql
+db = MySQL(app)
+
+# Para el control de vistas a usuarios no registrados.
+login_manager_app = LoginManager(app)
 
 
-#Rutas de la aplicación
-@app.route('/')
+# Función para poder hacer uso de las instancias de LoginManager.
+@login_manager_app.user_loader
+def load_user(id):
+    return ModelUser.get_by_id(db, id)
+
+
+# -----------------------------------------------------
+# Apartado de las rutas principales con sus respectivas caracteristicas.
+# -----------------------------------------------------
+
+
+# Para incializar el sistema de información con la ruta indicada.
+@app.route("/")
+def index():
+    return redirect(url_for("login"))
+
+
+# -----------------------------------------------------
+# Ruta de login principal
+@app.route("/logout")
+# Utilizamos esta función para cerrar sesión del usuario y volver a login principal
+# osea que para dirigirnos a la ruta del login, reflejaremos el cerrar sesión del usuario.
+def logout():
+    logout_user()
+    return redirect(url_for("login"))
+
+
+# -----------------------------------------------------
+# Ruta de home donde nos llevara a la hora de realizar la verificación de usuario.
+@app.route("/home")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
 def home():
-    cursor = db.database.cursor()
-    # cursor.execute("SELECT * FROM procesos")
-    query = """
-    SELECT p.*, GROUP_CONCAT(u.fullname) AS users
-    FROM procesos p
-    LEFT JOIN asignaciones a ON p.id_proceso = a.id_proceso
-    LEFT JOIN users u ON a.id = u.id
-    GROUP BY p.id_proceso
-    """
-    cursor.execute(query)
-    myresult = cursor.fetchall()
-    #Convertir los datos a diccionario
-    insertObject = []
-    columnNames = [column[0] for column in cursor.description]
-    for record in myresult:
-        insertObject.append(dict(zip(columnNames, record)))
-    cursor.close()   
-    dataUser = datosUsuarios()
+    return render_template("home.html")
+
+
+# -----------------------------------------------------
+# Ruta de home donde nos llevara a la hora de realizar la verificación de usuario.
+@app.route("/profile")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
+def profile():
+    return render_template("profile/profile.html")
+
+
+# -----------------------------------------------------
+# Ruta de home donde nos llevara a la hora de realizar la verificación de usuario.
+@app.route("/help")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
+def help():
+    return render_template("help/help.html")
+
+
+# -----------------------------------------------------
+# Sección principal de autentificación de usuario.
+# -----------------------------------------------------
+# Para definir la ruta y metodos por los que obtendremos los datos del login.
+@app.route("/login", methods=["GET", "POST"])
+
+# Función principal de login, que sera el pilar principal de todo nuestro sistema de información.
+def login():
+    # Este if principal reune el desarrollo principal en el que determinaremos las funcionalidades principales
+    # como primero definir si tenemos los datos enviados por metodo POST
+    if request.method == "POST":
+        # Definir la instancia usuarios, la cual le pasamos los parametros del "NDI" y el "password".
+        user = User(
+            0, request.form["NDI"], request.form["password"], 0, 0, 0, 0, 0, 0, 0, 0, 0
+        )
+
+        # Funcion para comprovar el logged del usuario, osea verificar que es una cuenta existente.
+        logged_user = ModelUser.login(db, user)
+
+        # Siguiendo con la misma funcionalidad, tenemos la comprovación de que el usuario esta registrado
+        # es certera, se procedera a realizar los siguientes if.
+        if logged_user != None:
+            # Este if nos comprueba si la contraseña sustraida, esta registrada o no, en la base de datos.
+            if logged_user.password:
+                login_user(logged_user)
+                # En cuyo caso que el metodo de verificación nos comprueve que efectivamente es un usario y contraseña valida
+                # se retornara a la vista que desea el usuario.
+                return redirect(url_for("home"))
+            else:
+                # Caso contrario en que el usuario nos brinder una contraseña invalida pasaremos a indicarselo y redirigirnos
+                # nuevamente al login principal.
+
+                # Flash es un metodo que utilizamos para dar envio del mesaje a travez de un boton notificando lo indicado.
+                flash("Contraseña invalida...")
+                # Para dar retorno a nuestra ruta principal.
+                return redirect(request.url)
+        # Caso en el que no encontremos que es un usuario registrado simplemente le indicaremos lo siguiente.
+        else:
+            # Usamos nuevamente el metodo para enviar mensaje donde indicamos al usuario que no se ha encontrado su usuario.
+            flash("usuario no encontrado...")
+            # Para dar retorno a nuestra ruta principal.
+            return redirect(request.url)
+    # En caso de que el metodo no sea autentificado se realizara lo siguiente.
+    else:
+        # Para dar retorno a nuestra ruta principal.
+        return render_template("auth/login.html")
+
+
+# -----------------------------------------------------
+# Sección para validar extensión del archivo.
+# -----------------------------------------------------
+def extensiones_validas(filename):
+    # Lista de extensiones permitidas para los archivos de imagen
+    extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'svga', 'webp'}
+
+    # Obtener la extensión del archivo
+    extension = filename.rsplit('.', 1)[1].lower()
+
+    # Verificar si la extensión está permitida
+    if '.' in filename and extension in extensiones_permitidas:
+        print("yes")
+        return True
+    else:
+        return False
+
     
-    return render_template('index.html', data=insertObject, datosU=dataUser )
 
+# -----------------------------------------------------
+# Sección principal de actualización de usuario.
+# -----------------------------------------------------
+@app.route("/edit", methods=["POST"])
+# Definimos la función "update", para poder ejecutar las distintas actividades que se realizara en este modulo.
+def update():
+    # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
+    # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
+    # regulares del usuario.
+    try:
+        # Definimos la condicional "if", con la cual se iniciara si optiene información de un formulario. 
+        # por metodo 'POST'
+        archivo = request.files['archivo']
+        if request.method == 'POST':
+            if archivo.filename != '':
+            # La siguiente condicional se inicializara si encuentra un archivo en el boton del nombre "archivo" de tipo "file".
+                if(request.files['archivo'] and extensiones_validas(archivo.filename)):
+                    # Definimos el parametro que utilizaremos en la consulta para guardar el nombre del archivo subido.
+                    NumDoc          = request.form['NDI']
+                    # Definimos el nombre del archivo.
+                    nombreArchivo   = NumDoc
+                    # Definimos la variable que almacenara lo enviado por el formulario.
+                    file            = request.files['archivo']
+                    # Definimos la variable que almacenara el nombre del archivo obtenido desde el path.
+                    basepath        = path.dirname (__file__)
+                    # Definimos el tipo de extensión que utilizaremos, en este caso "jpg".
+                    extension           = ('.jpg')
+                    # Definimos la vaariable que almacenara el núevo nombre asignado para la imagen.
+                    nuevoNombreFile     = nombreArchivo + extension
+            
+                    # En la siguiente linea de cofigo se da el proceso para almacenar el archivo, definiendo el 
+                    # archivo, la ruta y el nuevo nombre del archivo.
+                    upload_path = path.join (basepath, 'static/img/avatars', nuevoNombreFile) 
+                    # Con la variable file y el metodo save para poder alamcenar el archivo, con los parametros que definimos anteriormente.
+                    file.save(upload_path)
 
+                    # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
+                    cursor = db.connection.cursor()
+                    # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+                    sql="""UPDATE users SET Nombre_img = '{1}'  WHERE NDI = {0}"""
+                    # Definimos la variable atr con los parametros para realizar la consulta de manera dinamica.
+                    Atr = (NumDoc, nuevoNombreFile)
+                    # Usamos el execute para poder realizar la consulta anteriormente mostrada.
+                    cursor.execute(sql.format(Atr[0],Atr[1]))
+                    # cursor.execute(sql)
+                    db.connection.commit()
+                    print(archivo.filename)
+                else:
+                    flash ("Archivo invalido😢", "error")
+                    return redirect("profile")
+        #-----------------------------------------------------------------------------------------------------------------------------------
+           
+        # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
+        # los datos en la consulta posterior de MySql.
+        nombre= request.form['fullname']
+        direccion= request.form['Direccion']
+        Telefono = request.form['Telefono']
+        Empresa = request.form['Empresa']
+        Cargo = request.form['Cargo']
+        Area = request.form['Area']
+        Fecha_nacimiento = request.form['FDN']
+        NumDoc = request.form['NDI']
+        Email = request.form['Email']
 
-#Ruta para guardar usuarios en la Base de datos
-@app.route('/proceso', methods=['POST'])
-def addUser():
-    Titulo = request.form['Titulo']
-    Descripcion = request.form['Descripcion']
-    Fecha = request.form['fecha']
-    id_proceso = idAleatorio()
-    asignados = request.form.getlist('usuarios_seleccionados')
+        # Definimos un array llamado datos para poder utilizar las vriables anteriormente definidas.
+        datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
 
-    if Titulo and Descripcion:
-        cursor = db.database.cursor()
-        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_terminación) VALUES (%s, %s, %s, %s)"
-        data = (id_proceso, Titulo, Descripcion, Fecha)
-        cursor.execute(sql, data)
-        db.database.commit()
-
-    if len (asignados) > 0:
-        for Numid in asignados:
-            cursor = db.database.cursor()
-            sql = "INSERT INTO asignaciones (id, id_proceso) VALUES (%s, %s)"
-            data = (Numid, id_proceso)
-            cursor.execute(sql, data)
-            db.database.commit()
-            print(Numid)
-    return redirect(url_for('home'))
-
-
-
-@app.route('/delete/<string:idP>')
-def delete(idP):
-    dato = (idP)
-    cursor = db.database.cursor()
-    sql ="DELETE FROM procesos WHERE id_proceso= {}"
-    cursor.execute(sql.format(dato))
-    db.database.commit()
-    return redirect(url_for('home'))
-
-
-@app.route('/edit/<string:id_proceso>', methods=['POST'])
-def edit(id_proceso):
-    Titulo = request.form['Titulo']
-    Descripcion = request.form['Descripcion']
-
-    if Titulo and Descripcion:
-        cursor = db.database.cursor()
-        sql="""UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}' WHERE id_proceso = {2}"""
+        # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
+        cursor = db.connection.cursor()
+        # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+        sql="""UPDATE users SET fullname = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
+                Area_locativa= '{5}', Fecha_nacimiento = '{6}', NDI= '{7}', Email= '{8}' WHERE NDI = {7}"""
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
-        data = (Titulo, Descripcion, id_proceso)
-        cursor.execute(sql.format(data[0],data[1],data[2]))
-        db.database.commit()
-        
-    return redirect(url_for('home'))
+        cursor.execute(sql.format(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8]))
+        # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
+        # cursor.execute(sql)
+        db.connection.commit()
+
+        flash("Se actualizó correctamente🥳","success")
+        return redirect("profile")
+    except Exception as ex:
+         raise Exception(ex)
+    
+
+# -----------------------------------------------------
+# Apartado de las funciones de los errores
+# -----------------------------------------------------
 
 
-if __name__ == '__main__':   
-    app.run(debug=True, port=4000)
+# Error en el que el usuario quiere acceder a una ruta que posee el "Login_requeried"
+# el cual lo redigira a la ruta login principal.
+def status_401(error):
+    return redirect(url_for("login"))
 
+
+# Error en el que el usuario intenta accesar a una ruta invalida o incorrecta.
+def status_404(error):
+    return "<h1>Pagina no encontrada :(...<h1/>", 404
+
+
+# -----------------------------------------------------
+# Apartado de inicialización del proyecto.
+# -----------------------------------------------------
+if __name__ == "__main__":
+    app.config.from_object(config["development"])
+    csrf.init_app(app)
+    app.register_error_handler(401, status_401)
+    app.register_error_handler(404, status_404)
+    app.run()

@@ -88,7 +88,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <form action="/edit" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <label for="">Nombre completo:</label>
-                            <input type="text" pattern="[A-Za-z]+" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
+                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
                             <label for="">Direccion:</label>
                             <input type="text" class="form-control mb-3" name="Direccion" value="{{ current_user.Direccion}}">
                             <label for="">Telefono:</label>
