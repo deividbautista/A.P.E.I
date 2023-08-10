@@ -209,3 +209,7 @@ td {
 .usuariosSelect{
     opacity: 0;
 }
+
+.boton{
+    height: 2.2rem !important;
+}
