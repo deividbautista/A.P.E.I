@@ -1,12 +1,10 @@
-import mysql.connector
+#-----------------------------------------------------
+#El presente archivo se utiliza para la conexión de base de datos.
+#-----------------------------------------------------
 
-database = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='',
-    database='crud-flask_2'
-)
-
+#-----------------------------------------------------
+#Apartado donde daremos configuración a la secret key.
+#-----------------------------------------------------
 class Config:
     SECRET_KEY = 'B!1w8NAt1T^%kvhUI*S^'
 

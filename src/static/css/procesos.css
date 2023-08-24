@@ -47,7 +47,7 @@ h1 {
 .boton-tareas:hover {
     cursor: pointer;
     color: antiquewhite;
-    background-color: rgb(70, 89, 170);
+    background-color: #16425B;
     font-size: 1.1rem;
 }
 
@@ -103,12 +103,13 @@ li p {
 table {
     border-radius: 50px !important;
     border-collapse: collapse !important;
-    border: solid 1px #0c011bab !important;
+    border-color: #c0c0c0 !important;
     table-layout: fixed !important;
 }
 
 tr {
-    background: #a49afc !important;
+    background: #6096ba !important;
+    font-size: 1rem;
 }
 
 td {
@@ -116,6 +117,89 @@ td {
     overflow: hidden !important;
     white-space: nowrap !important;
 }
+
+.text-break {
+    text-align: justify;
+    width: 80%;
+}
+
+.icono {
+    border-radius: 50% !important;
+    background-color: #82b1e7 !important;
+    color: #ffffff !important;
+    font-size: 1.5rem !important;
+    margin-left: 18rem !important;
+}
+
+.icono:hover {
+    color: #414141 !important;
+}
+
+.dropdown-menu {
+    width: 99% !important;
+    overflow-y: auto;
+}
+
+#submenu {
+    width: 30% !important;
+    overflow-y: auto;
+}
+
+.dropdown-menu li {
+    background-color: rgba(142, 180, 252, 0) !important;
+}
+
+.dropdowns-menu {
+    width: 99% !important;
+    overflow-y: auto;
+}
+
+.dropdowns-menu li {
+    background-color: rgba(142, 180, 252, 0) !important;
+}
+
+.NombreUsuario {
+    cursor: pointer;
+    width: 95%;
+    text-align: center;
+    border: solid 0.3px;
+    border-color: #aca6a6 !important;
+    border-radius: 6px;
+}
+
+.usuariosSelect[type="checkbox"]:checked+.NombreUsuario {
+    cursor: pointer;
+    background-color: #82b1e7;
+    width: 95%;
+    text-align: center;
+    color: #f7f7f7;
+}
+
+.usuariosSelect {
+    opacity: 0;
+}
+
+.UsuariosAsignados {
+    width: 100%;
+    text-align: center;
+}
+
+.boton {
+    height: 2.2rem !important;
+}
+
+.NombreAsignado {
+    border-radius: 10px;
+    background-color: #f1faee;
+}
+
+.NombreAsignado label {
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 8px;
+}
+
+/**/
 
 .btnAsignar {
     outline: none;
@@ -138,11 +222,36 @@ td {
     background-color: rgb(119, 165, 252);
 }
 
+.btnEliminarAsignacion {
+    margin-top: 3px;
+    margin-right: 10px;
+    border: none;
+    background: none;
+    float: right;
+    color: #000814;
+    cursor: pointer;
+}
+
+.btnEliminarAsignacion:hover {
+    color: rgb(70, 7, 31);
+}
+
+.eliminar {
+    border-color: #900C3F !important;
+    background-color: #900C3F !important;
+}
+
+.principal {
+    color: black !important;
+    border-color: #8CABFF !important;
+    background-color: #8CABFF !important;
+}
+
 .btnReport {
     padding: 4.2px !important;
     color: rgb(0, 0, 0) !important;
     border-color: #ffffff00 !important;
-    background-color: rgb(152, 203, 216) !important;
+    background-color: #A0E4CB !important;
 }
 
 .btnReport:hover {
@@ -152,64 +261,37 @@ td {
     background-color: rgb(119, 165, 252) !important;
 }
 
-.text-break {
-    text-align: justify;
-    width: 80%;
+.secundario {
+    border-color: #33415c !important;
+    background-color: #33415c !important;
 }
 
-.icono {
-    border-radius: 50% !important;
-    background-color: #82b1e7 !important;
+.custom-button-confirmation-1 {
+    background-color: #900C3F !important;
+}
+
+.custom-button-cancel-1 {
+    background-color: #33415c !important;
+}
+
+.custom-icon-class-1 {
+    color: #900c3fe1 !important;
+    /* Color de icono de exclamación*/
+    border-color: #900c3fe1 !important;
+}
+
+.custom-button-confirmation-2 {
+    background-color: #7A316F !important;
+    /* Cambia "your-color" al color deseado */
     color: #ffffff !important;
-    font-size: 1.5rem !important;
-    margin-left: 18rem !important;
+    /* Cambia "your-text-color" al color de texto deseado */
+    /* Otros estilos de botón personalizados aquí */
 }
 
-.icono:hover {
-    color: #414141 !important;
+.custom-icon-class-2 {
+    color: #7a316f6c !important;
+    /* Color de icono de exclamación*/
+    border-color: #7a316f6c !important;
 }
 
-.dropdown-menu {
-    width: 99% !important; 
-    overflow-y: auto; 
-}
-#submenu{
-    width: 30% !important; 
-    overflow-y: auto;
-}
-.dropdown-menu li {
-    background-color: rgba(142, 180, 252, 0) !important;
-}
-
-.dropdowns-menu {
-    width: 99% !important; 
-    overflow-y: auto; 
-}
-.dropdowns-menu li {
-    background-color: rgba(142, 180, 252, 0) !important;
-}
-
-.NombreUsuario{
-    cursor: pointer;
-    width: 95%;
-    text-align: center;
-    border: solid 0.3px;
-    border-color: #aca6a6 !important;
-    border-radius: 10px;
-}
-
-.usuariosSelect[type="checkbox"]:checked + .NombreUsuario{
-    cursor: pointer;
-    background-color: #82b1e7;
-    width: 95%;
-    text-align: center;
-    color: #f7f7f7;
-}
-
-.usuariosSelect{
-    opacity: 0;
-}
-
-.boton{
-    height: 2.2rem !important;
-}
+/**/
