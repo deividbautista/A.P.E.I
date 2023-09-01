@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/css/procesos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+</head>
+
+<body>
+    <div>
+        <div class="container-tareas">
+            <h1>Lista de Procesos</h1>
+            <h2></h2>
+            <div class="search-tareas">
+                <form class="Formulario-tareas">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-2"
+                        class="boton-tareas"> Agregar proceso...</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Modal 2 Para crear proceso -->
+        <div class="modal fade" id="exampleModal-2" tabindex="-1" aria-labelledby="exampleModalLabel-2"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo proceso</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                    <div class="modal-body">
+                        <form action="/proceso" method="POST">
+                            <div class="row mb-3">
+                                <label>Titulo</label>
+                                <input type="text" class="form-control mb-3" name="Titulo">
+
+                                <label>Descripción</label>
+                                <input type="text" class="form-control mb-3" name="Descripcion">
+
+                                <label for="fecha">Fecha Limite:</label>
+                                <input type="date" class="form-control mb-3" id="fecha" name="fecha">
+                                <hr>
+                                <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
+                                    personal...</button>
+                                <br><br>
+                                <hr>
+                                <ul class="dropdown-menu">
+                                    {% for Usuario in datosU %}
+                                    <li>
+                                        <input type="checkbox" class="usuariosSelect"
+                                            name="usuarios_seleccionados" value="{{ Usuario.id }}"
+                                            id="{{Usuario.id}}">
+                                        <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
+                                            {{Usuario.fullname}}
+                                        </label>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                <br><br>
+                                <hr>
+                                <button class="principal btn btn-primary mb-3 mt-4"
+                                    type="submit">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal-2 -->
+
+        <!-- Tabla -->
+        <!---->
+        {% for datos in data %}
+
+        <div class="contenedorprin">
+            <main>
+                <section class="section-main-container">
+                    <div class="titleC">
+                        <i class="icono fa-solid fa-file" id="btn-edit{{datos.id_proceso}}"
+                            data-bs-toggle="modal" data-bs-target="#modal{{datos.id_proceso}}"></i>
+                        <h1 class="titleP">{{datos.Titulo}}</h1>
+                    </div>
+                    <div class="info-container">
+                        <div class="description">
+                            <p class="descriptiontext">
+                                {{datos.Descripcion}}
+                            </p>
+                        </div>
+                        <div class="nameUser">
+                            {% if datos.nombre_usuario %}
+                            <button class="btnAsignar2" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">Asignado
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                            <ul class="dropdown-menu" id="submenu">
+                                {% for usuario in datos.nombre_usuario %}
+                                <label id="AsignarUsu" class="UsuariosAsignados">
+                                    {{ usuario }}
+                                </label>
+                                <br>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p class="Texto-importancia">Ningún usuario asignado.</p>
+                            {% endif %}
+                        </div>
+                        <div class="moreInfo">
+                            <button class="btnAsignar2" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modal-3{{datos.id_proceso}}" aria-expanded="false">Ver más...
+                        </div>
+                        <div class="important-user">
+                            <p class="Texto-importancia">
+                                Nivel de importancia
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="div-bottom-container">
+                        <div class="hr-container">
+                            <hr />
+                        </div>
+                        <div class="button-right">
+                            <button>No Sé Que dice</button>
+                        </div>
+                    </div>
+                    <div class="">
+                        <p class="numeroid">
+                            {{datos.id_proceso}}
+                        </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+
+        <!-- Modal 2 De vista de los datos del proceso -->
+        <div class="modal fade" id="modal-3{{datos.id_proceso}}" tabindex="-1"
+            aria-labelledby="exampleModalLabel-3" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{datos.Titulo}}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                    <div class="modal-body">
+                        <p class="text-break">
+                            {{datos.Descripcion}}
+                        </p>
+                        <hr>
+                        <p class="text-break">
+                            {{datos.Fecha_creacion}} // {{datos.Fecha_terminación}}
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modal{{datos.id_proceso}}">Reporte...</button>
+                        <button class="principal btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
+                            data-bs-toggle="modal" data-bs-target="#modal{{datos.id_proceso}}">Editar
+                            proceso</button>
+                        <a href="{{url_for('delete', idP=datos.id_proceso)}}"
+                            class="eliminar btn btn-danger btn-sm">Borrar proceso</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal-2 -->
+
+        <!-- Modal 3 para editar proceso-->
+        <div class="modal fade" id="modal{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Editar proceso.</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/edit/{{datos.id_proceso}}" method="post">
+                            <label>Titulo:</label>
+                            <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control mb-3" name="Descripcion"
+                                value="{{datos.Descripcion}}">
+                            <hr>
+                            <label>Personal asignado:</label>
+                            <br>
+                            {% if datos.nombre_usuario %}
+                            <div class="NombreAsignado">
+                                {% for usuario in datos.nombre_usuario %}
+                                {% if usuario %}
+                                <label>
+                                    {{ usuario }}
+                                </label>
+                                <!-- Si usuario es una cadena, entonces aplica split -->
+                                {% if usuario is string %}
+                                <button type="submit" class="btnEliminarAsignacion"
+                                    data-id="{{ datos.id_proceso }}"
+                                    data-id-asignado="{{ datos.id_usuario[loop.index0] }}">
+                                    <i class="iconoX fa-solid fa-xmark"></i>
+
+                                </button>
+                                <br>
+                                {% endif %}
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                            {% else %}
+                            <p>Ningún usuario asignado.</p>
+                            {% endif %}
+                            <hr>
+                            <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
+                                personal...</button>
+                            <br><br>
+                            <ul class="dropdown-menu">
+                                {% for Usuario in datosU %}
+                                <li>
+                                    <input type="checkbox" class="usuariosSelect" name="usuarios_seleccionados"
+                                        value="{{ Usuario.id }}" id="{{Usuario.id}}">
+                                    <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
+                                        {{Usuario.fullname}}
+                                    </label>
+                                </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="modal-footer">
+                                <button type="button" class="secundario btn btn-secondary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="principal btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal-3 -->
+
+        <!-- Modal 4 -->
+        <div class="modal fade" id="modal-4{{datos.id_proceso}}" tabindex="-1"
+            aria-labelledby="exampleModalLabel-3" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{datos.Titulo}}</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                    </div>
+                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                    <div class="modal-body">
+                        <h1>hola</h1>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- Fin modal-4 -->
+        {% endfor %}
+    </div>
+</body>
+
+<script src="../static/js/procesos.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://kit.fontawesome.com/9c61ead5a6.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+    crossorigin="anonymous"></script>
+
+</html>
