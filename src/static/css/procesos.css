@@ -244,7 +244,7 @@ li p {
 .contenedorprin{
     display: grid;
     place-items: center;
-    margin-top: 5rem;
+    margin-bottom: 5rem;
 }
 
 main {
