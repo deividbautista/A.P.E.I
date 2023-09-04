@@ -1,3 +1,14 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f5f5f5;
+}
+
 h1 {
     text-align: center;
     color: #322653;
@@ -13,25 +24,9 @@ h1 {
     padding: 30px;
 }
 
-.search-tareas {
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-}
-
 .Formulario-tareas {
     display: flex;
     width: 100%;
-}
-
-.Titulo-tarea {
-    padding: 15px 10px;
-    outline: none;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-    color: rgb(0, 0, 0);
-    background-color: rgb(240, 240, 240);
 }
 
 .boton-tareas {
@@ -59,9 +54,6 @@ h1 {
     margin-top: 20px;
 }
 
-.tareas-creadas {
-    padding: 0;
-}
 
 li {
     list-style: none;
@@ -77,60 +69,9 @@ li p {
     width: 100%;
 }
 
-.btn-delete {
-    margin-left: auto;
-    border: none;
-    background-color: #e31746;
-    color: white;
-    font-weight: bold;
-    padding: 5px 10px;
-    outline: none;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    width: 10%;
-    font-size: 1.2em;
-}
-
-.btn-delete:hover {
-    cursor: pointer;
-    background-color: lightseagreen;
-}
-
-.empty {
-    color: darkslategrey;
-}
-
-table {
-    border-radius: 50px !important;
-    border-collapse: collapse !important;
-    border-color: #c0c0c0 !important;
-    table-layout: fixed !important;
-}
-
-tr {
-    background: #6096ba !important;
-    font-size: 1rem;
-}
-
-td {
-    background: #f7f7f7 !important;
-    overflow: hidden !important;
-    white-space: nowrap !important;
-}
-
 .text-break {
     text-align: justify;
     width: 80%;
-}
-
-.dropdown-menu {
-    width: 99% !important;
-    overflow-y: auto;
-}
-
-#submenu {
-    width: 30% !important;
-    overflow-y: auto;
 }
 
 .dropdown-menu li {
@@ -144,6 +85,11 @@ td {
 
 .dropdowns-menu li {
     background-color: rgba(142, 180, 252, 0) !important;
+}
+
+#submenu {
+    width: 30% !important;
+    overflow-y: auto;
 }
 
 .NombreUsuario {
@@ -172,10 +118,6 @@ td {
     text-align: center;
 }
 
-.boton {
-    height: 2.2rem !important;
-}
-
 .NombreAsignado {
     border-radius: 10px;
     background-color: #f1faee;
@@ -187,8 +129,9 @@ td {
     padding-left: 8px;
 }
 
-/**/
-
+/*------------------------------------------------------------------*/
+/* Sección botones*/
+/*------------------------------------------------------------------*/
 .btnAsignar {
     outline: none;
     height: 2.2rem;
@@ -278,41 +221,32 @@ td {
 
 .custom-icon-class-1 {
     color: #900c3fe1 !important;
-    /* Color de icono de exclamación*/
     border-color: #900c3fe1 !important;
 }
 
 .custom-button-confirmation-2 {
     background-color: #7A316F !important;
-    /* Cambia "your-color" al color deseado */
     color: #ffffff !important;
-    /* Cambia "your-text-color" al color de texto deseado */
-    /* Otros estilos de botón personalizados aquí */
 }
 
 .custom-icon-class-2 {
     color: #7a316f6c !important;
-    /* Color de icono de exclamación*/
     border-color: #7a316f6c !important;
 }
-/**/
+/*------------------------------------------------------------------*/
+/* Fin sección botones*/
+/*------------------------------------------------------------------*/
 
 
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f5f5f5;
-}
+/*------------------------------------------------------------------*/
+/* Sección task posts*/
+/*------------------------------------------------------------------*/
 .contenedorprin{
     display: grid;
     place-items: center;
     margin-top: 5rem;
 }
+
 main {
     display: grid;
     border-radius: 1.5rem;
@@ -477,3 +411,6 @@ main {
 .icono:hover{
     color: #EEF1FF;
 }
+/*------------------------------------------------------------------*/
+/* Fin sección task posts*/
+/*------------------------------------------------------------------*/
