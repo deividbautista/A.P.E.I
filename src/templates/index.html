@@ -44,14 +44,15 @@
                                 <label>Descripción</label>
                                 <input type="text" class="form-control mb-3" name="Descripcion">
 
+                                <label for="fecha_inicio">Fecha de Inicio:</label>
+                                <input type="date" class="form-control mb-3" id="fecha" name="fecha_I"readonly>
+
                                 <label for="fecha">Fecha Limite:</label>
-                                <input type="date" class="form-control mb-3" id="fecha" name="fecha">
+                                <input type="date" class="form-control mb-3" id="fecha" name="fecha_L">
                                 <hr>
                                 <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
                                     personal...</button>
-                                <br><br>
-                                <hr>
                                 <ul class="dropdown-menu">
                                     {% for Usuario in datosU %}
                                     <li>
@@ -125,6 +126,10 @@
 
                     <div class="div-bottom-container">
                         <div class="hr-container">
+                            <progress
+                            value="{{datos.progreso}}"
+                            min="10" max="100"
+                            class="{% if datos.progreso <= 40 %}progress-low{% elif datos.progreso <= 70 %}progress-medium{% else %}progress-high{% endif %}"></progress>
                         </div>
                         <div class="button-right">
                             <button>Generar reporte...</button>
@@ -158,7 +163,7 @@
                         </p>
                         <hr>
                         <p class="text-break">
-                            {{datos.Fecha_creacion}} // {{datos.Fecha_terminación}}
+                            {{datos.fecha_inicio}} // {{datos.fecha_limite}}
                         </p>
                     </div>
                     <div class="modal-footer">

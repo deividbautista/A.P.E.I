@@ -1,4 +1,4 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -129,6 +129,8 @@ li p {
     padding-left: 8px;
 }
 
+
+
 /*------------------------------------------------------------------*/
 /* Sección botones*/
 /*------------------------------------------------------------------*/
@@ -233,6 +235,7 @@ li p {
     color: #7a316f6c !important;
     border-color: #7a316f6c !important;
 }
+
 /*------------------------------------------------------------------*/
 /* Fin sección botones*/
 /*------------------------------------------------------------------*/
@@ -241,7 +244,7 @@ li p {
 /*------------------------------------------------------------------*/
 /* Sección task posts*/
 /*------------------------------------------------------------------*/
-.contenedorprin{
+.contenedorprin {
     display: grid;
     place-items: center;
     margin-bottom: 5rem;
@@ -268,13 +271,13 @@ main {
     border: none;
 }
 
-.Texto-importancia{
+.Texto-importancia {
     margin-top: 1rem !important;
     text-align: center !important;
 }
 
 .section-main-container .titleC .titleP {
-    text-align: left ;
+    text-align: left;
     font-size: 1.5rem;
     font-weight: 700;
     margin-top: 1rem;
@@ -303,17 +306,17 @@ main {
     overflow: auto;
 }
 
-.info-container .description::-webkit-scrollbar{
+.info-container .description::-webkit-scrollbar {
     width: 6px;
 }
 
-.info-container .description::-webkit-scrollbar-thumb{
+.info-container .description::-webkit-scrollbar-thumb {
     background-color: #252b48a2;
     height: 3px;
     border-radius: 5px;
 }
 
-.info-container .description .descriptiontext{
+.info-container .description .descriptiontext {
     text-align: justify;
     width: 90%;
     font-size: 0.8rem;
@@ -332,7 +335,7 @@ main {
     width: 90%;
 }
 
-.numeroid{
+.numeroid {
     font-size: .7rem;
     margin: 0rem 0rem .5rem 2rem;
 }
@@ -358,20 +361,9 @@ main {
 }
 
 .div-bottom-container .hr-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-}
-
-.div-bottom-container hr {
-    width: 100%;
-    margin-left: 2rem;
+    position: relative;
     margin-right: 3rem;
-    height: 1.5px !important;
-    background-color: #252b48a2 !important;
-    border: none !important;
-    opacity: 1;
+    margin-left: 2rem;
 }
 
 .div-bottom-container .button-right {
@@ -399,7 +391,7 @@ main {
     font-size: 1.1rem;
 }
 
-.icono{
+.icono {
     color: #322653;
     float: right;
     font-size: 1.2rem;
@@ -408,9 +400,49 @@ main {
     cursor: pointer;
 }
 
-.icono:hover{
+.icono:hover {
     color: #EEF1FF;
 }
+
+/*------------------------------------------------------------------*/
+/* Fin sección task posts*/
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Sección barra de progreso*/
+/*------------------------------------------------------------------*/
+progress[value] {
+    appearance: none;
+}
+
+progress[value]::-webkit-progress-bar {
+    overflow: hidden;
+    position: absolute;
+    top: 50%;
+    height: 6px;
+    border-radius: 15px;
+}
+
+progress[value]::-webkit-progress-value {
+    border-radius: 15px;
+}
+
+/* Estilo para progreso menor o igual al 30% */
+.progress-low::-webkit-progress-value {
+    background-color: #DDFFBB;
+}
+
+/* Estilo para progreso entre 31% y 70% */
+.progress-medium::-webkit-progress-value {
+    background-color: #FFE17B;
+}
+
+/* Estilo para progreso mayor al 70% */
+.progress-high::-webkit-progress-value {
+    background-color: #C51605;
+}
+
 /*------------------------------------------------------------------*/
 /* Fin sección task posts*/
 /*------------------------------------------------------------------*/

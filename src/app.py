@@ -1,5 +1,6 @@
 # Apartado en el que se importan todos los modulos necesarios para el proyecto.
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from datetime import date, timedelta
 from random import sample
 import os
 import database as db
@@ -44,11 +45,9 @@ def datosUsuarios():
     dataUser=insertObject  
     #Retorna la variable dataUser
     return dataUser
+# --------------------------------------------------------------------------------------
 
-
-# Tenemos la ruta principal donde se visualizaran los procesos almacenados en la BD.
-@app.route("/")
-def home():
+def datos_proceso():
     cursor = db.database.cursor()
     query = """
     SELECT p.*, GROUP_CONCAT(u.id) AS id_usuario, GROUP_CONCAT(u.fullname) AS nombre_usuario
@@ -68,30 +67,48 @@ def home():
             "id_proceso": row[0],  # Usar el índice numérico correspondiente
             "Titulo": row[1],      # Usar el índice numérico correspondiente
             "Descripcion": row[2], # Usar el índice numérico correspondiente
-            "Fecha_creacion": row[3], # Usar el índice numérico correspondiente
-            "Fecha_terminación": row[4], # Usar el índice numérico correspondiente
-            "nombre_usuario": row[6].split(",") if row[6] is not None else [],
-            "id_usuario": row[5].split(",") if row[5] is not None else [],
+            "fecha_inicio": row[3], # Usar el índice numérico correspondiente
+            "fecha_limite": row[4], # Usar el índice numérico correspondiente
+            "nombre_usuario": row[7].split(",") if row[7] is not None else [],
+            "id_usuario": row[6].split(",") if row[6] is not None else [],
         }
         processed_data.append(proceso)
+    return processed_data
+# --------------------------------------------------------------------------------------
 
-    cursor.close()  # Cierra el cursor aquí
+# Tenemos la ruta principal donde se visualizaran los procesos almacenados en la BD.
+@app.route("/")
+def home():
+    umbral_maximo_dias = 30
+    processed_data = datos_proceso()
+    dataUser = datosUsuarios()
+    for processed in processed_data:
+        diferencia = processed["fecha_limite"] - processed["fecha_inicio"]
+                
+        progreso = 1.0 - min(diferencia.days / umbral_maximo_dias, 1.0)
+
+        if progreso <= 0:
+            progreso = 0.03
+            # Redondear el valor de progreso a un número entero
+        processed["diferencia_dias"] = diferencia.days
+        processed["progreso"] = round(progreso * 100)
     return render_template("index.html", data=processed_data, datosU=dataUser)
-
+# --------------------------------------------------------------------------------------
 
 # Ruta para guardar usuarios en la Base de datos.
 @app.route('/proceso', methods=['POST'])
 def addUser():
     Titulo = request.form['Titulo']
     Descripcion = request.form['Descripcion']
-    Fecha = request.form['fecha']
+    FechaIn = request.form['fecha_I']
+    Fechali = request.form['fecha_L']
     id_proceso = idAleatorio()
     asignados = request.form.getlist('usuarios_seleccionados')
 
     if Titulo and Descripcion:
         cursor = db.database.cursor()
-        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_terminación) VALUES (%s, %s, %s, %s)"
-        data = (id_proceso, Titulo, Descripcion, Fecha)
+        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación) VALUES (%s, %s, %s, %s, %s)"
+        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali)
         cursor.execute(sql, data)
         db.database.commit()
 
@@ -103,7 +120,7 @@ def addUser():
             cursor.execute(sql, data)
             db.database.commit()
     return redirect(url_for('home'))
-
+# --------------------------------------------------------------------------------------
 
 # Ruta para eliminar los procesos registrados en la base de datos.
 @app.route('/delete/<string:idP>')
@@ -114,7 +131,7 @@ def delete(idP):
     cursor.execute(sql.format(dato))
     db.database.commit()
     return redirect(url_for('home'))
-
+# --------------------------------------------------------------------------------------
 
 # Ruta para eliminar las asignaciones en los procesos registrados en la base de datos.
 @app.route('/deleteAsignacion', methods=['POST'])
@@ -130,7 +147,7 @@ def deleteAsignados():
     cursor.execute(sql, (idU, idP))
     db.database.commit()
     return jsonify({"status": "success", "message": idP})
-
+# --------------------------------------------------------------------------------------
 
 # Ruta para realizar la actualización de los datos de los procesos.
 @app.route('/edit/<string:id_proceso>', methods=['POST'])
@@ -147,10 +164,10 @@ def edit(id_proceso):
         db.database.commit()
         
     return redirect(url_for('home'))
-
+# --------------------------------------------------------------------------------------
 
 # Condicional para dar inicialización al proyecto.
 if __name__ == '__main__':   
-    app.run(debug=True, port=4040)
+    app.run(debug=True, port=3040)
 
 
