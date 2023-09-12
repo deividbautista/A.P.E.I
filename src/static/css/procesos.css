@@ -430,7 +430,12 @@ progress[value]::-webkit-progress-value {
 
 /* Estilo para progreso menor o igual al 30% */
 .progress-low::-webkit-progress-value {
-    background-color: #DDFFBB;
+    /* background-color: #CBFFA9; */
+    /* background-color: #B3C890; */
+    /* background-color: #CDE990; */
+    /* background-color: #68B984; */
+    /* background-color: #A8DF8E; */
+    background-color: #CBFFA9;
 }
 
 /* Estilo para progreso entre 31% y 70% */
@@ -440,7 +445,7 @@ progress[value]::-webkit-progress-value {
 
 /* Estilo para progreso mayor al 70% */
 .progress-high::-webkit-progress-value {
-    background-color: #C51605;
+    background-color: #B31312;
 }
 
 /*------------------------------------------------------------------*/

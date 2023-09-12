@@ -129,7 +129,7 @@
                             <progress
                             value="{{datos.progreso}}"
                             min="10" max="100"
-                            class="{% if datos.progreso <= 40 %}progress-low{% elif datos.progreso <= 70 %}progress-medium{% else %}progress-high{% endif %}"></progress>
+                            class="{% if datos.progreso <= 30 %}progress-low{% elif datos.progreso <= 75 %}progress-medium{% else %}progress-high{% endif %}"></progress>
                         </div>
                         <div class="button-right">
                             <button>Generar reporte...</button>
