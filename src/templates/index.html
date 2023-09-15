@@ -194,12 +194,14 @@
                     </div>
                     <div class="modal-body">
                         <form action="/edit/{{datos.id_proceso}}" method="post">
+                            <!-- Campo para diligenciar el titulo -->
                             <label>Titulo:</label>
                             <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}">
-                            <label>Descripción:</label>
-                            <input type="text" class="form-control mb-3" name="Descripcion"
-                                value="{{datos.Descripcion}}">
-                            <hr>
+                            <!-- Campo para diligenciar la descripción -->
+                            <label for="descripcion">Descripción:</label>
+                            <textarea class="form-control" rows="6" type="text" class="form-control mb-3" 
+                            name="Descripcion">{{datos.Descripcion}}</textarea> <hr>
+                            <!-- Campo donde se observar los usuarios asignados -->
                             <label>Personal asignado:</label>
                             <br>
                             {% if datos.nombre_usuario %}
@@ -273,7 +275,7 @@
                             <input type="text" class="form-control mb-3" name="descripcion" value="">
                             <!-- Botón donde podremos subir el archivo con la foto del perfil -->
                             <div class="mb-3">
-                                <label for="formFileSm" class="form-label">Evidencia fotografica</label>
+                                <label for="formFileSm" class="form-label">Evidencia fotografica:</label>
                                 <input class="form-control form-control-sm" id="formFileSm" type="file" name="archivo">
                             </div>
                             <div class="modal-footer">
