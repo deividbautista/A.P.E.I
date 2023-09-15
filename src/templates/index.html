@@ -132,7 +132,8 @@
                             class="{% if datos.progreso <= 30 %}progress-low{% elif datos.progreso <= 75 %}progress-medium{% else %}progress-high{% endif %}"></progress>
                         </div>
                         <div class="button-right">
-                            <button>Generar reporte...</button>
+                            <button data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">
+                                Generar reporte...</button>
                         </div>
                     </div>
                     <div class="">
@@ -259,15 +260,29 @@
                 <div class="modal-content">
 
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{datos.Titulo}}</h1>
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Generar reporte</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                             aria-label="Close"></button>
                     </div>
                     <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
                     <div class="modal-body">
-                        <h1>hola</h1>
+                        <form method="POST" action="/generar_pdf" enctype="multipart/form-data">
+                            <label>Titulo:</label>
+                            <input type="text" class="form-control mb-3" name="titulo" value="">
+                            <label>Descripción:</label>
+                            <input type="text" class="form-control mb-3" name="descripcion" value="">
+                            <!-- Botón donde podremos subir el archivo con la foto del perfil -->
+                            <div class="mb-3">
+                                <label for="formFileSm" class="form-label">Evidencia fotografica</label>
+                                <input class="form-control form-control-sm" id="formFileSm" type="file" name="archivo">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="secundario btn btn-secondary"
+                                    data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="principal btn btn-primary">Generar reporte</button>
+                            </div>
+                        </form>
                     </div>
-
                 </div>
             </div>
         </div>

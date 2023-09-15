@@ -422,6 +422,7 @@ progress[value]::-webkit-progress-bar {
     top: 50%;
     height: 6px;
     border-radius: 15px;
+    background-color: rgba(155, 115, 155, 0.377);
 }
 
 progress[value]::-webkit-progress-value {
@@ -435,7 +436,8 @@ progress[value]::-webkit-progress-value {
     /* background-color: #CDE990; */
     /* background-color: #68B984; */
     /* background-color: #A8DF8E; */
-    background-color: #CBFFA9;
+    /* background-color: #CBFFA9; */
+    background-color: #9df891;
 }
 
 /* Estilo para progreso entre 31% y 70% */
