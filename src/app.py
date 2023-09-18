@@ -1,6 +1,6 @@
 # Apartado en el que se importan todos los modulos necesarios para el proyecto.
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from xhtml2pdf import pisa
 from tempfile import TemporaryFile
 from random import sample
@@ -91,8 +91,8 @@ def home():
     processed_data = datos_proceso()
     dataUser = datosUsuarios()
     for processed in processed_data:
+        # Se realiza la operación para la diferencia entre los dias, utilizando la biblioteca datetime.
         diferencia = processed["fecha_limite"] - processed["fecha_inicio"]
-                
         progreso = 1.0 - min(diferencia.days / umbral_maximo_dias, 1.0)
 
         if progreso <= 0:

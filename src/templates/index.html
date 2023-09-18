@@ -174,8 +174,11 @@
                         <button class="principal btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
                             data-bs-toggle="modal" data-bs-target="#modal{{datos.id_proceso}}">Editar
                             proceso</button>
-                        <a href="{{url_for('delete', idP=datos.id_proceso)}}"
-                            class="eliminar btn btn-danger btn-sm">Borrar proceso</a>
+                        <!-- <a href="{{url_for('delete', idP=datos.id_proceso)}}"
+                            class="eliminar btn btn-danger btn-sm">Borrar proceso</a> -->
+                        <a href="#" class="eliminar btn btn-danger btn-sm"
+                        data-id="{{ datos.id_proceso }}"
+                        data-url="{{ url_for('delete', idP=datos.id_proceso) }}">Borrar proceso</a>
                     </div>
                 </div>
             </div>
