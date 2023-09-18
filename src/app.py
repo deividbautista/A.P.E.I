@@ -37,6 +37,7 @@ def idAleatorio():
     id_aleatorio     = "".join(resultado_aleatorio)
     # Finalmente retornamos de nuestra función el resultado con el valor aleatorio.
     return id_aleatorio
+# --------------------------------------------------------------------------------------
 
 # Definimos la función que retornara los datos de los usuarios.
 def datosUsuarios():

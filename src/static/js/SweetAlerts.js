@@ -1,5 +1,4 @@
 // Definimos las constantes para obtener los objetos con lo que interactuaremos.
-const userLabels = document.querySelectorAll(".NombreUsuario");
 const idlabel = document.querySelectorAll(".usuariosSeleccionados");
 const boton = document.getElementById("boton");
 const checkboxes = document.querySelectorAll(".usuariosSelect");
