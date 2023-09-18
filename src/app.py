@@ -62,7 +62,8 @@ def datos_proceso():
     FROM procesos p
     LEFT JOIN asignaciones a ON p.id_proceso = a.id_proceso
     LEFT JOIN users u ON a.id = u.id
-    GROUP BY p.id_proceso;
+    GROUP BY p.id_proceso
+    ORDER BY p.fecha_creacion DESC;
     """
     cursor.execute(query)
     data = cursor.fetchall()
@@ -77,10 +78,22 @@ def datos_proceso():
             "Descripcion": row[2], # Usar el índice numérico correspondiente
             "fecha_inicio": row[3], # Usar el índice numérico correspondiente
             "fecha_limite": row[4], # Usar el índice numérico correspondiente
-            "nombre_usuario": row[7].split(",") if row[7] is not None else [],
-            "id_usuario": row[6].split(",") if row[6] is not None else [],
+            "nombre_usuario": row[9].split(",") if row[9] is not None else [],
+            "id_usuario": row[8].split(",") if row[8] is not None else [],
         }
-        processed_data.append(proceso)
+        # # Lista de claves que deseas formatear
+        # claves_a_formatear = ["fecha_inicio", "fecha_limite"]
+
+        # # Formatea las fechas especificadas en "DD/MM/AA"
+        # for key in claves_a_formatear:
+        #     fecha = proceso.get(key)  # Obtiene el valor de la clave (si existe)
+        #     if fecha:
+        #         proceso[key] = fecha.strftime("%d/%m/%y")
+
+        # En la siguiente linea se utiliza el metodo "append", para agregar los
+        # elementos a la lista de proceso que se renderizara en el archivo template html.
+        processed_data.append(proceso)    
+    # Retornamos finalmente los datos del proceso.
     return processed_data
 # --------------------------------------------------------------------------------------
 
@@ -193,6 +206,7 @@ def extensiones_validas(filename):
     else:
         # Reetornar falso si el resultado es negativo.
         return False
+# --------------------------------------------------------------------------------------
 
 # Ruta principal para la construcción del pdf.
 @app.route('/generar_pdf', methods=['GET', 'POST'])
@@ -238,7 +252,7 @@ def generate_pdf():
         response.headers['Content-Disposition'] = 'inline; filename=mi_pdf.pdf'
         
         # Ruta completa de guardado (puedes cambiarla según tus necesidades)
-        ruta_de_guardado = 'E:/documentación etapa productiva -_-/Proyecto_APEI/GENERAR-PDF/Metodo con xhtml2pdf/src/static/pdf/pdfgenerado.pdf'
+        ruta_de_guardado = 'F:\documentacion Etapa pr0ductiva -_-\Proyecto_APEI\Generador de procesos\Metodo-3.1\src\static\pdf\123456789.pdf'
 
         # Guarda el archivo PDF con el nombre generado automáticamente
         with open(ruta_de_guardado, 'wb') as pdf_file:
@@ -250,7 +264,7 @@ def generate_pdf():
         # Si no se envió el formulario, muestra un mensaje
         mensaje = "No se encontraron datos, por lo que no es posible generar el PDF correctamente."
         return mensaje
-
+# --------------------------------------------------------------------------------------
 
 # Condicional para dar inicialización al proyecto.
 if __name__ == '__main__':   
