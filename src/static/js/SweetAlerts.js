@@ -1,7 +1,5 @@
 // Definimos las constantes para obtener los objetos con lo que interactuaremos.
-const idlabel = document.querySelectorAll(".usuariosSeleccionados");
 const boton = document.getElementById("boton");
-const checkboxes = document.querySelectorAll(".usuariosSelect");
 const inputOculto = document.getElementById('inputOculto');
 // --------------------------------------------------------------------------------
 
@@ -112,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
           showCancelButton: true,
           confirmButtonText: 'Sí, eliminar',
           cancelButtonText: 'Cancelar',
-
+          // Lista con las caracteristicas de estilos personalizados.
           customClass: {
             confirmButton: 'custom-button-confirmation-1',
             cancelButton: 'custom-button-cancel-1',

@@ -1,5 +1,7 @@
+// --------------------------------------------------------------------------------
 // Definimos las constantes para obtener los objetos con lo que interactuaremos.
 const userLabels = document.querySelectorAll(".NombreUsuario");
+var labels = document.querySelectorAll('.NombreUsuario_2');
 
 
 // --------------------------------------------------------------------------------
@@ -16,11 +18,36 @@ userLabels.forEach(label => {
 // --------------------------------------------------------------------------------
 // Función para obtener la fecha del dia de hoy y asignarla automaticament en el campo de periodo.
 window.onload = function () {
-  var dateField = document.getElementById("fecha");
+  var dateFields = document.querySelectorAll("#fecha");
   var today = new Date().toISOString().split("T")[0];
-  dateField.value = today;
+
+  dateFields.forEach(function (dateField) {
+    dateField.value = today;
+  });
 };
 // --------------------------------------------------------------------------------
+
+
+// Obtén todos los elementos con la clase "dropdown-toggle"
+var toggleButtons = document.querySelectorAll('.desplegable-toggle');
+
+// Agrega un evento de clic a cada botón
+toggleButtons.forEach(function(button) {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
+        var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
+        dropdown.classList.toggle('active');
+    });
+});
+
+
+
+
+
+
+
+
+
 
 
 

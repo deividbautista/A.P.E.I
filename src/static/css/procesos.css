@@ -46,7 +46,7 @@ h1 {
     font-size: 1.1rem;
 }
 
-
+/*-----------------------------------------------------*/
 .li-container-tareas {
     background-color: white;
     width: 100%;
@@ -55,7 +55,7 @@ h1 {
 }
 
 
-li {
+.elementoLista{
     list-style: none;
     background-color: lightgray;
     border-radius: 10px;
@@ -74,6 +74,10 @@ li p {
     width: 80%;
 }
 
+.deplegableNombres {
+    width: 93.3%;
+}
+
 .dropdown-menu li {
     background-color: rgba(142, 180, 252, 0) !important;
 }
@@ -86,17 +90,14 @@ li p {
 .dropdowns-menu li {
     background-color: rgba(142, 180, 252, 0) !important;
 }
+/*-------------------------------------------------------*/
 
-#submenu {
-    width: 30% !important;
-    overflow-y: auto;
-}
-
+/*-------------------------------------------------------*/
 .NombreUsuario {
     cursor: pointer;
     width: 95%;
     text-align: center;
-    border: solid 0.3px;
+    border: solid 0.2px;
     border-color: #aca6a6 !important;
     border-radius: 6px;
 }
@@ -104,6 +105,7 @@ li p {
 .usuariosSelect[type="checkbox"]:checked+.NombreUsuario {
     cursor: pointer;
     background-color: #82b1e7;
+    border-color: #82b1e7 !important;
     width: 95%;
     text-align: center;
     color: #f7f7f7;
@@ -117,6 +119,7 @@ li p {
     width: 100%;
     text-align: center;
 }
+/*-------------------------------------------------------*/
 
 .NombreAsignado {
     border-radius: 10px;
@@ -128,7 +131,6 @@ li p {
     margin-bottom: 3px;
     padding-left: 8px;
 }
-
 
 
 /*------------------------------------------------------------------*/
@@ -449,7 +451,45 @@ progress[value]::-webkit-progress-value {
 .progress-high::-webkit-progress-value {
     background-color: #B31312;
 }
-
 /*------------------------------------------------------------------*/
 /* Fin sección task posts*/
 /*------------------------------------------------------------------*/
+
+.PersonalAsignados{
+   cursor: pointer;
+}
+
+.labelpendejo span{
+    border: 1px solid;
+    border-radius: 4px;
+    width: 94%;
+    text-align: center ;
+    position: absolute !important;
+}
+
+/* Estilo para ocultar la lista desplegable por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 0;
+}
+
+.checkbox_nombres{
+   opacity: 0%;
+}
+
+/* Estilo para mostrar la lista desplegable cuando el botón se haga clic */
+.dropdown.active .dropdown-menu {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Estilo para el label cuando el checkbox está seleccionado */
+input[type="checkbox"]:checked+.PersonalAsignados{
+    background-color: #e78282;
+    color: #000000;
+}

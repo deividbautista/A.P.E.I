@@ -68,7 +68,6 @@ def datos_proceso():
     """
     cursor.execute(query)
     data = cursor.fetchall()
-    dataUser = datosUsuarios()
 
     # Procesa los resultados para formar una estructura de datos más adecuada
     processed_data = []
@@ -79,18 +78,10 @@ def datos_proceso():
             "Descripcion": row[2], # Usar el índice numérico correspondiente
             "fecha_inicio": row[3], # Usar el índice numérico correspondiente
             "fecha_limite": row[4], # Usar el índice numérico correspondiente
-            "nombre_usuario": row[9].split(",") if row[9] is not None else [],
-            "id_usuario": row[8].split(",") if row[8] is not None else [],
+            "Nivel_importancia": row[8], #Usar el índice numérico correspondiente
+            "nombre_usuario": row[10].split(",") if row[10] is not None else [],
+            "id_usuario": row[9].split(",") if row[9] is not None else [],
         }
-        # # Lista de claves que deseas formatear
-        # claves_a_formatear = ["fecha_inicio", "fecha_limite"]
-
-        # # Formatea las fechas especificadas en "DD/MM/AA"
-        # for key in claves_a_formatear:
-        #     fecha = proceso.get(key)  # Obtiene el valor de la clave (si existe)
-        #     if fecha:
-        #         proceso[key] = fecha.strftime("%d/%m/%y")
-
         # En la siguiente linea se utiliza el metodo "append", para agregar los
         # elementos a la lista de proceso que se renderizara en el archivo template html.
         processed_data.append(proceso)    
