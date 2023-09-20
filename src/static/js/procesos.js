@@ -1,7 +1,8 @@
 // --------------------------------------------------------------------------------
 // Definimos las constantes para obtener los objetos con lo que interactuaremos.
 const userLabels = document.querySelectorAll(".NombreUsuario");
-var labels = document.querySelectorAll('.NombreUsuario_2');
+const labels = document.querySelectorAll('.NombreUsuario_2');
+const toggleButtons = document.querySelectorAll('.desplegable-toggle');
 
 
 // --------------------------------------------------------------------------------
@@ -28,17 +29,38 @@ window.onload = function () {
 // --------------------------------------------------------------------------------
 
 
-// Obtén todos los elementos con la clase "dropdown-toggle"
-var toggleButtons = document.querySelectorAll('.desplegable-toggle');
+// --------------------------------------------------------------------------------
+// Agrega un evento de clic a cada botón
+// toggleButtons.forEach(function(button) {
+//     button.addEventListener('click', function(event) {
+//         event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
+//         var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
+//         dropdown.classList.toggle('active');
+//     });
+// });
 
 // Agrega un evento de clic a cada botón
 toggleButtons.forEach(function(button) {
-    button.addEventListener('click', function(event) {
-        event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
-        var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
-        dropdown.classList.toggle('active');
-    });
+  button.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
+      var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
+      dropdown.classList.toggle('active');
+      event.stopPropagation(); // Evita que el clic llegue al documento
+  });
 });
+
+// Agrega un controlador de eventos clic al documento
+document.addEventListener('click', function(event) {
+  var dropdowns = document.querySelectorAll('.dropdown');
+  dropdowns.forEach(function(dropdown) {
+      if (!dropdown.contains(event.target)) {
+          // Si el clic ocurrió fuera del menú desplegable, ciérralo
+          dropdown.classList.remove('active');
+      }
+  });
+});
+
+// --------------------------------------------------------------------------------
 
 
 

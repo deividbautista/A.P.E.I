@@ -37,8 +37,8 @@
                     <div class="modal-body">
                         <form action="/proceso" method="POST">
                             <div class="row mb-3">
-                                <label>Titulo</label>
-                                <input type="text" class="form-control mb-3" name="Titulo">
+                                <label>Titulo *</label>
+                                <input type="text" class="form-control mb-3" name="Titulo" required>
 
                                 <label>Descripción</label>
                                 <input type="text" class="form-control mb-3" name="Descripcion">
@@ -76,10 +76,10 @@
             </div>
         </div>
         <!-- Fin modal-1 -->
+        <!------------------------------------------------------------------------------------------------------------------------------------>
 
-
-        <!---------------------------------------------------------------------------------------->
-        <!-- Tabla -->
+        
+        <!-- Apartado de posts -->
         {% for datos in data %}
         <div class="contenedorprin">
             <main>
@@ -110,7 +110,9 @@
                                 {% endfor %}
                             </ul>
                             {% else %}
-                            <p class="Texto-importancia">Ningún usuario asignado.</p>
+                            <p class="Texto-importancia">Ningún usuario asignado 
+                                <i class="fa-solid fa-user-slash">.</i>
+                            </p>
                             {% endif %}
                         </div>
                         <div class="moreInfo">
@@ -143,6 +145,8 @@
                 </section>
             </main>
         </div>
+        <!-- Fin apartado posts -->
+        <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
         <!-- Modal 2 De vista de los datos del proceso -->
@@ -180,6 +184,8 @@
             </div>
         </div>
         <!-- Fin modal-2 -->
+        <!------------------------------------------------------------------------------------------------------------------------------------>
+
 
         <!-- Modal 3 para editar proceso-->
         <div class="modal fade" id="modal{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -193,8 +199,8 @@
                     <div class="modal-body">
                         <form action="/edit/{{datos.id_proceso}}" method="post">
                             <!-- Campo para diligenciar el titulo -->
-                            <label>Titulo:</label>
-                            <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}">
+                            <label>Titulo: *</label>
+                            <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}" required>
                             <!-- Campo para diligenciar la descripción -->
                             <label for="descripcion">Descripción:</label>
                             <textarea class="form-control" rows="6" type="text" class="form-control mb-3"
@@ -215,7 +221,6 @@
                                 <button type="submit" class="btnEliminarAsignacion" data-id="{{ datos.id_proceso }}"
                                     data-id-asignado="{{ datos.id_usuario[loop.index0] }}">
                                     <i class="iconoX fa-solid fa-xmark"></i>
-
                                 </button>
                                 <br>
                                 {% endif %}
@@ -231,22 +236,24 @@
                                     <button class="btnAsignar desplegable-toggle"><i class="fa-solid fa-user"></i> 
                                         Actualizar asignados</button>
                                     <ul class="dropdown-menu">
+                                        <br>
                                         <!---------------------------------------------------------->
                                         {% for Usuario in datosU %}
-                                        <br>
+                                        {% if Usuario.id not in datos.id_usuario %}
                                         <li class="labelAsignados">
-                                            <label>
+                                            <label> 
                                                 <input type="checkbox" class="checkbox_nombres" name="usuarios_seleccionados_2"
-                                                value="{{ Usuario.id }}" id="{{ Usuario.id }}" 
-                                                {% if Usuario.id in datos.id_usuario %} checked {% endif %}>
+                                                value="{{ Usuario.id }}" id="{{ Usuario.id }}">
                                                 <span class="PersonalAsignados">{{Usuario.fullname}}</span>
+                                                <br><br>
                                             </label>
                                         </li>
+                                        {% endif %}
                                         {% endfor %}
                                     </ul>
                                 </div>
-
                             </div>
+                            <br>
                             <div class="modal-footer">
                                 <button type="button" class="secundario btn btn-secondary"
                                     data-bs-dismiss="modal">Cerrar</button>
@@ -258,6 +265,8 @@
             </div>
         </div>
         <!-- Fin modal-3 -->
+        <!------------------------------------------------------------------------------------------------------------------------------------>
+
 
         <!-- Modal 4 -->
         <div class="modal fade" id="modal-4{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"

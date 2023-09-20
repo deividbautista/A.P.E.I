@@ -1,16 +1,14 @@
 # Apartado en el que se importan todos los modulos necesarios para el proyecto.
-from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask import Flask, render_template, Response, request, redirect, url_for, jsonify
 from datetime import date, timedelta, datetime
 from xhtml2pdf import pisa
 from tempfile import TemporaryFile
 from random import sample
+from flask_mysqldb import MySQL
+from database import config
 
 import os
 import io
-
-import database as db
-
-from flask import Flask, render_template, Response, request
 
 
 # En este apartado realizamos la configuración de las rutas en flask.
@@ -20,28 +18,31 @@ template_dir = os.path.join(template_dir, 'src', 'templates')
 # En este apartado inicializamos la configuración de la ruta.
 app = Flask(__name__, template_folder = template_dir)
 
-# Definimos la función denominada "idAleatorio", la cual nos retornara un numero 
-# generado al azar, dentro de los valores 1 al 9, con una extención o longitud de 9 digitos o 9 caracteres
+mysql = MySQL(app)
+# --------------------------------------------------------------------------------------
+
+# Definimos la función denominada "idAleatorio", la cual nos retornara un número 
+# generado al azar, dentro de los valores 1 al 9, con una extención o longitud de 9 digitos o 9 caracteres.
 def idAleatorio():
     # Caracteres que puede poseer el int aleatorio.
-    id_aleatorio = "123456789"
+    id_aleatorio         = "123456789"
     # Logintud determinada para el int aleatorio.
-    longitud         = 9
+    longitud             = 9
     # Utilizamos la función upper para combertir los caracteres en mayuscula.
-    secuencia        = id_aleatorio.upper()
+    secuencia            = id_aleatorio.upper()
     # Definimos la variable "resultado_aleatorio", que con la función sample 
     # y los parametros de secuencia y longitud, generamos el int aleatorio.
     resultado_aleatorio  = sample(secuencia, longitud)
     # Volvemos a definir a la varibale "id_aleatorio", pero esta vez le 
     # insertamos el valor optenido de "resultado_aleatorio". 
-    id_aleatorio     = "".join(resultado_aleatorio)
+    id_aleatorio         = "".join(resultado_aleatorio)
     # Finalmente retornamos de nuestra función el resultado con el valor aleatorio.
     return id_aleatorio
 # --------------------------------------------------------------------------------------
 
 # Definimos la función que retornara los datos de los usuarios.
 def datosUsuarios():
-    cursor = db.database.cursor()
+    cursor = mysql.connection.cursor()
     cursor.execute("SELECT * FROM users")
     myresult = cursor.fetchall()
     #Convertir los datos a diccionario.
@@ -56,8 +57,9 @@ def datosUsuarios():
     return dataUser
 # --------------------------------------------------------------------------------------
 
+# Definimos la función "datos_proceso", la cual nos retornara todos los valores hallados en los registros de la base de datos.
 def datos_proceso():
-    cursor = db.database.cursor()
+    cursor = mysql.connection.cursor()
     query = """
     SELECT p.*, GROUP_CONCAT(u.id) AS id_usuario, GROUP_CONCAT(u.fullname) AS nombre_usuario
     FROM procesos p
@@ -85,7 +87,10 @@ def datos_proceso():
         # En la siguiente linea se utiliza el metodo "append", para agregar los
         # elementos a la lista de proceso que se renderizara en el archivo template html.
         processed_data.append(proceso)    
-    # Retornamos finalmente los datos del proceso.
+
+    cursor.close()  # Cierra el cursor aquí
+
+    # Retornamos finalmente los datos de los procesos.
     return processed_data
 # --------------------------------------------------------------------------------------
 
@@ -120,19 +125,19 @@ def addUser():
     asignados = request.form.getlist('usuarios_seleccionados')
 
     if Titulo and Descripcion:
-        cursor = db.database.cursor()
+        cursor = mysql.connection.cursor()
         sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación) VALUES (%s, %s, %s, %s, %s)"
         data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali)
         cursor.execute(sql, data)
-        db.database.commit()
+        mysql.connection.commit()
 
     if len (asignados) > 0:
         for Numid in asignados:
-            cursor = db.database.cursor()
+            cursor = mysql.connection.cursor()
             sql = "INSERT INTO asignaciones (id, id_proceso) VALUES (%s, %s)"
             data = (Numid, id_proceso)
             cursor.execute(sql, data)
-            db.database.commit()
+            mysql.connection.commit()
     return redirect(url_for('home'))
 # --------------------------------------------------------------------------------------
 
@@ -140,10 +145,10 @@ def addUser():
 @app.route('/delete/<string:idP>')
 def delete(idP):
     dato = (idP)
-    cursor = db.database.cursor()
+    cursor = mysql.connection.cursor()
     sql ="DELETE FROM procesos WHERE id_proceso= {}"
     cursor.execute(sql.format(dato))
-    db.database.commit()
+    mysql.connection.commit()
     return redirect(url_for('home'))
 # --------------------------------------------------------------------------------------
 
@@ -154,12 +159,12 @@ def deleteAsignados():
     idU = data.get("id_asignado")
     idP = data.get("id_proceso")
 
-    cursor = db.database.cursor()
+    cursor = mysql.connection.cursor()
     sql = """DELETE FROM asignaciones
              WHERE id = %s AND id_proceso = %s"""
              
     cursor.execute(sql, (idU, idP))
-    db.database.commit()
+    mysql.connection.commit()
     return jsonify({"status": "success", "message": idP})
 # --------------------------------------------------------------------------------------
 
@@ -168,15 +173,24 @@ def deleteAsignados():
 def edit(id_proceso):
     Titulo = request.form['Titulo']
     Descripcion = request.form['Descripcion']
+    asignados = request.form.getlist('usuarios_seleccionados_2')
 
     if Titulo and Descripcion:
-        cursor = db.database.cursor()
-        sql="""UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}' WHERE id_proceso = {2}"""
+        cursor = mysql.connection.cursor()
+        sql="UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}' WHERE id_proceso = {2}"
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
         data = (Titulo, Descripcion, id_proceso)
         cursor.execute(sql.format(data[0],data[1],data[2]))
-        db.database.commit()
-        
+        mysql.connection.commit()
+
+    if len (asignados) > 0:
+        for Numid in asignados:
+            cursor = mysql.connection.cursor()
+            sql = "INSERT INTO asignaciones (id, id_proceso) VALUES (%s, %s)"
+            data = (Numid, id_proceso)
+            cursor.execute(sql, data)
+            mysql.connection.commit()
+
     return redirect(url_for('home'))
 # --------------------------------------------------------------------------------------
 
@@ -260,7 +274,8 @@ def generate_pdf():
 # --------------------------------------------------------------------------------------
 
 # Condicional para dar inicialización al proyecto.
-if __name__ == '__main__':   
+if __name__ == '__main__':  
+    app.config.from_object(config["development"]) 
     app.run(debug=True, port=3040)
 
 
