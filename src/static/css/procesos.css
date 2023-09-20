@@ -1,3 +1,6 @@
+/*------------------------------------------------------------------*/
+/* Sección con estilos generales*/
+/*------------------------------------------------------------------*/
 * {
     margin: 0;
     padding: 0;
@@ -42,20 +45,19 @@ h1 {
 .boton-tareas:hover {
     cursor: pointer;
     color: antiquewhite;
-    background-color: #16425B;
+    background-color: #4F709C;
     font-size: 1.1rem;
 }
 
-/*-----------------------------------------------------*/
-.li-container-tareas {
-    background-color: white;
-    width: 100%;
-    color: darkslategray;
-    margin-top: 20px;
-}
+/*------------------------------------------------------------------*/
+/* Fin sección con estilos generales*/
+/*------------------------------------------------------------------*/
 
 
-.elementoLista{
+/*------------------------------------------------------------------*/
+/* Sección boton desplegable*/
+/*------------------------------------------------------------------*/
+.elementoLista {
     list-style: none;
     background-color: lightgray;
     border-radius: 10px;
@@ -90,9 +92,15 @@ li p {
 .dropdowns-menu li {
     background-color: rgba(142, 180, 252, 0) !important;
 }
-/*-------------------------------------------------------*/
 
-/*-------------------------------------------------------*/
+/*------------------------------------------------------------------*/
+/* Sección boton desplegable*/
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Sección de checkbox*/
+/*------------------------------------------------------------------*/
 .NombreUsuario {
     cursor: pointer;
     width: 95%;
@@ -130,6 +138,56 @@ li p {
     margin-bottom: 3px;
     padding-left: 8px;
 }
+
+/*------------------------------------------------------------------*/
+/* Fin sección de checkbox*/
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Sección checkbox edit*/
+/*------------------------------------------------------------------*/
+.PersonalAsignados {
+    cursor: pointer;
+}
+
+.labelAsignados span {
+    border: 1px solid;
+    border-radius: 4px;
+    width: 94%;
+    text-align: center;
+    border-color: #aca6a6 !important;
+    position: absolute !important;
+}
+
+/* Estilo para ocultar la lista desplegable por defecto */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    list-style: none;
+    padding: 0;
+}
+
+.checkbox_nombres {
+    opacity: 0%;
+}
+
+/* Estilo para mostrar la lista desplegable cuando el botón se haga clic */
+.dropdown.active .dropdown-menu {
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+/* Estilo para el label cuando el checkbox está seleccionado */
+input[type="checkbox"]:checked+.PersonalAsignados {
+    background-color: #82b1e7;
+    border-color: #82b1e7 !important;
+    color: #fff;
+}
+
+/*------------------------------------------------------------------*/
+/* Fin sección checkbox edit*/
 /*------------------------------------------------------------------*/
 
 
@@ -451,45 +509,7 @@ progress[value]::-webkit-progress-value {
 .progress-high::-webkit-progress-value {
     background-color: #B31312;
 }
+
 /*------------------------------------------------------------------*/
 /* Fin sección task posts*/
 /*------------------------------------------------------------------*/
-
-.PersonalAsignados{
-   cursor: pointer;
-}
-
-.labelAsignados span{
-    border: 1px solid ;
-    border-radius: 4px;
-    width: 94%;
-    text-align: center ;
-    border-color: #aca6a6 !important;
-    position: absolute !important;
-}
-
-/* Estilo para ocultar la lista desplegable por defecto */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    list-style: none;
-    padding: 0;
-}
-
-.checkbox_nombres{
-   opacity: 0%;
-}
-
-/* Estilo para mostrar la lista desplegable cuando el botón se haga clic */
-.dropdown.active .dropdown-menu {
-    display: block;
-    width: 100%;
-    margin-top: 5px;
-}
-
-/* Estilo para el label cuando el checkbox está seleccionado */
-input[type="checkbox"]:checked+.PersonalAsignados{
-    background-color: #82b1e7;
-    border-color: #82b1e7 !important;
-    color: #fff;
-}
