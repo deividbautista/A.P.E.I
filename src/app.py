@@ -80,7 +80,7 @@ def datos_proceso():
             "fecha_limite": row[4], # Usar el índice numérico correspondiente
             "Nivel_importancia": row[8], #Usar el índice numérico correspondiente
             "nombre_usuario": row[10].split(",") if row[10] is not None else [],
-            "id_usuario": row[9].split(",") if row[9] is not None else [],
+            "id_usuario": [int(id) for id in row[9].split(",")] if row[9] is not None else [],
         }
         # En la siguiente linea se utiliza el metodo "append", para agregar los
         # elementos a la lista de proceso que se renderizara en el archivo template html.
@@ -105,6 +105,7 @@ def home():
             # Redondear el valor de progreso a un número entero
         processed["diferencia_dias"] = diferencia.days
         processed["progreso"] = round(progreso * 100)
+
     return render_template("index.html", data=processed_data, datosU=dataUser)
 # --------------------------------------------------------------------------------------
 

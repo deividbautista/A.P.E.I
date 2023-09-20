@@ -119,7 +119,6 @@ li p {
     width: 100%;
     text-align: center;
 }
-/*-------------------------------------------------------*/
 
 .NombreAsignado {
     border-radius: 10px;
@@ -131,6 +130,7 @@ li p {
     margin-bottom: 3px;
     padding-left: 8px;
 }
+/*------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------*/
@@ -459,11 +459,12 @@ progress[value]::-webkit-progress-value {
    cursor: pointer;
 }
 
-.labelpendejo span{
-    border: 1px solid;
+.labelAsignados span{
+    border: 1px solid ;
     border-radius: 4px;
     width: 94%;
     text-align: center ;
+    border-color: #aca6a6 !important;
     position: absolute !important;
 }
 
@@ -471,8 +472,6 @@ progress[value]::-webkit-progress-value {
 .dropdown-menu {
     display: none;
     position: absolute;
-    background-color: #fff;
-    border: 1px solid #ccc;
     list-style: none;
     padding: 0;
 }
@@ -490,6 +489,7 @@ progress[value]::-webkit-progress-value {
 
 /* Estilo para el label cuando el checkbox está seleccionado */
 input[type="checkbox"]:checked+.PersonalAsignados{
-    background-color: #e78282;
-    color: #000000;
+    background-color: #82b1e7;
+    border-color: #82b1e7 !important;
+    color: #fff;
 }

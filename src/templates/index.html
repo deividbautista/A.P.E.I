@@ -234,10 +234,11 @@
                                         <!---------------------------------------------------------->
                                         {% for Usuario in datosU %}
                                         <br>
-                                        <li class="labelpendejo">
+                                        <li class="labelAsignados">
                                             <label>
                                                 <input type="checkbox" class="checkbox_nombres" name="usuarios_seleccionados_2"
-                                                value="{{ Usuario.id }}" id="{{Usuario.id}}">
+                                                value="{{ Usuario.id }}" id="{{ Usuario.id }}" 
+                                                {% if Usuario.id in datos.id_usuario %} checked {% endif %}>
                                                 <span class="PersonalAsignados">{{Usuario.fullname}}</span>
                                             </label>
                                         </li>
