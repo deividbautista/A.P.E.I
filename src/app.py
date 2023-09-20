@@ -175,6 +175,7 @@ def edit(id_proceso):
     Descripcion = request.form['Descripcion']
     asignados = request.form.getlist('usuarios_seleccionados_2')
 
+    # En este apartado se realizara la actualización de los datos del proceso.
     if Titulo and Descripcion:
         cursor = mysql.connection.cursor()
         sql="UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}' WHERE id_proceso = {2}"
@@ -183,6 +184,7 @@ def edit(id_proceso):
         cursor.execute(sql.format(data[0],data[1],data[2]))
         mysql.connection.commit()
 
+    # En este apartado se realizara la actualización de asignaciones del proceso.
     if len (asignados) > 0:
         for Numid in asignados:
             cursor = mysql.connection.cursor()
