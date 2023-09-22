@@ -3,6 +3,7 @@
 const userLabels = document.querySelectorAll(".NombreUsuario");
 const labels = document.querySelectorAll('.NombreUsuario_2');
 const toggleButtons = document.querySelectorAll('.desplegable-toggle');
+var dropdowns = document.querySelectorAll('.dropdown');
 
 
 // --------------------------------------------------------------------------------
@@ -17,7 +18,7 @@ userLabels.forEach(label => {
 
 
 // --------------------------------------------------------------------------------
-// Función para obtener la fecha del dia de hoy y asignarla automaticament en el campo de periodo.
+// Función para obtener la fecha del dia de hoy y asignarla automaticamente en el campo de periodo.
 window.onload = function () {
   var dateFields = document.querySelectorAll("#fecha");
   var today = new Date().toISOString().split("T")[0];
@@ -31,15 +32,6 @@ window.onload = function () {
 
 // --------------------------------------------------------------------------------
 // Agrega un evento de clic a cada botón
-// toggleButtons.forEach(function(button) {
-//     button.addEventListener('click', function(event) {
-//         event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
-//         var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
-//         dropdown.classList.toggle('active');
-//     });
-// });
-
-// Agrega un evento de clic a cada botón
 toggleButtons.forEach(function(button) {
   button.addEventListener('click', function(event) {
       event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
@@ -51,7 +43,6 @@ toggleButtons.forEach(function(button) {
 
 // Agrega un controlador de eventos clic al documento
 document.addEventListener('click', function(event) {
-  var dropdowns = document.querySelectorAll('.dropdown');
   dropdowns.forEach(function(dropdown) {
       if (!dropdown.contains(event.target)) {
           // Si el clic ocurrió fuera del menú desplegable, ciérralo
@@ -59,7 +50,6 @@ document.addEventListener('click', function(event) {
       }
   });
 });
-
 // --------------------------------------------------------------------------------
 
 

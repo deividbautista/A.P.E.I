@@ -37,18 +37,28 @@
                     <div class="modal-body">
                         <form action="/proceso" method="POST">
                             <div class="row mb-3">
-                                <label>Titulo *</label>
+                                <label>Titulo: *</label>
                                 <input type="text" class="form-control mb-3" name="Titulo" required>
 
-                                <label>Descripción</label>
+                                <label>Descripción: </label>
                                 <input type="text" class="form-control mb-3" name="Descripcion">
 
-                                <label for="fecha_inicio">Fecha de Inicio:</label>
+                                <label>Fecha de Inicio:</label>
                                 <input type="date" class="form-control mb-3" id="fecha" name="fecha_I" readonly>
 
-                                <label for="fecha">Fecha Limite:</label>
+                                <label>Fecha Limite:</label>
                                 <input type="date" class="form-control mb-3" id="fecha" name="fecha_L">
 
+                                <hr>
+                                <label>Nivel de importancia: </label>
+                                <div class="ContentInputSelect">
+                                    <!-- The second value will be selected initially -->
+                                    <select name="select" class="InputSelect">
+                                        <option value="1" class="Optionselect">Bajo </option>
+                                        <option value="2" class="Optionselect">Medio </option>
+                                        <option value="3" class="Optionselect">Alto </option>
+                                    </select>
+                                </div>
                                 <hr>
                                 <div class="desplagable_1">
                                     <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
@@ -56,7 +66,7 @@
                                         personal...</button>
                                     <ul class="deplegableNombres dropdown-menu">
                                         {% for Usuario in datosU %}
-                                        <li class="elementoLista" >
+                                        <li class="elementoLista">
                                             <input type="checkbox" class="usuariosSelect" name="usuarios_seleccionados"
                                                 value="{{ Usuario.id }}" id="{{Usuario.id}}">
                                             <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
@@ -67,8 +77,11 @@
                                     </ul>
                                 </div>
                                 <br><br>
-                                <hr>
-                                <button class="principal btn btn-primary mb-3 mt-4" type="submit">Guardar</button>
+                                <div class="modal-footer">
+                                    <button type="button" class="secundario btn btn-secondary"
+                                        data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="principal btn btn-primary">Guardar</button>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -78,15 +91,19 @@
         <!-- Fin modal-1 -->
         <!------------------------------------------------------------------------------------------------------------------------------------>
 
-        
+
         <!-- Apartado de posts -->
         {% for datos in data %}
+        
         <div class="contenedorprin">
             <main>
                 <section class="section-main-container">
                     <div class="titleC">
                         <i class="icono fa-solid fa-pencil" id="btn-edit{{datos.id_proceso}}" data-bs-toggle="modal"
                             data-bs-target="#modal{{datos.id_proceso}}"></i>
+                        <a href="#" class="eliminar" data-id="{{ datos.id_proceso }}"
+                            data-url="{{ url_for('delete', idP=datos.id_proceso) }}"><i class="iconoD fa-solid fa-trash"></i></a>
+                            
                         <h1 class="titleP">{{datos.Titulo}}</h1>
                     </div>
                     <div class="info-container">
@@ -99,7 +116,7 @@
                             {% if datos.nombre_usuario %}
                             <button class="btnAsignar2" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">Asignado
-                                <i class="fa-solid fa-user"></i>.
+                                <i class="fa-regular fa-user"></i>.
                             </button>
                             <ul class="dropdown-menu" id="submenu">
                                 {% for usuario in datos.nombre_usuario %}
@@ -110,7 +127,7 @@
                                 {% endfor %}
                             </ul>
                             {% else %}
-                            <p class="Texto-importancia">Ningún usuario asignado 
+                            <p class="Texto-importancia">Ningún usuario asignado
                                 <i class="fa-solid fa-user-slash">.</i>
                             </p>
                             {% endif %}
@@ -118,11 +135,14 @@
                         <div class="moreInfo">
                             <button class="btnAsignar2" type="button" data-bs-toggle="modal"
                                 data-bs-target="#modal-3{{datos.id_proceso}}" aria-expanded="false">Ver más
-                                <i class="fa-solid fa-eye"></i>...
+                                <i class="fa-regular fa-eye"></i>...
                         </div>
                         <div class="important-user">
                             <p class="Texto-importancia">
-                                Nivel de importancia
+                                Nivel importancia: 
+                                {% for nivel in range(datos.Nivel_importancia) %}
+                                <i class="fa-regular fa-star"></i>
+                                {% endfor %}
                             </p>
                         </div>
                     </div>
@@ -166,7 +186,22 @@
                         </p>
                         <hr>
                         <p class="text-break">
-                            {{datos.fecha_inicio}} // {{datos.fecha_limite}}
+                            Periodo de fechas del proceso: <br> {{datos.fecha_inicio}} // {{datos.fecha_limite}}
+                        </p>
+                        <hr>
+                        {% if datos.diferencia_dias == 0 %}
+                        <p>Proceso cerrado por fecha limite.</p>
+                        {% elif datos.diferencia_dias > 0 and datos.diferencia_dias < 2 %}
+                        <p>Queda {{datos.diferencia_dias}} día, para terminar el proceso.</p>
+                        {% elif datos.diferencia_dias > 1 %}
+                        <p>Quedan {{datos.diferencia_dias}} días, para terminar el proceso.</p>
+                        {% endif %}
+                        <hr>
+                        <p>
+                            Nivel importancia: 
+                            {% for nivel in range(datos.Nivel_importancia) %}
+                            <i class="fa-regular fa-star"></i>
+                            {% endfor %}
                         </p>
                     </div>
                     <div class="modal-footer">
@@ -200,11 +235,23 @@
                         <form action="/edit/{{datos.id_proceso}}" method="post">
                             <!-- Campo para diligenciar el titulo -->
                             <label>Titulo: *</label>
-                            <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}" required>
+                            <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}"
+                                required>
                             <!-- Campo para diligenciar la descripción -->
                             <label for="descripcion">Descripción:</label>
                             <textarea class="form-control" rows="6" type="text" class="form-control mb-3"
-                                name="Descripcion">{{datos.Descripcion}}</textarea>
+                                name="Descripcion">{{datos.Descripcion}}
+                            </textarea>
+                            <br>
+                            <label>Nivel de importancia: </label>
+                                <div class="ContentInputSelect">
+                                    <!-- The second value will be selected initially -->
+                                    <select name="select" class="InputSelect">
+                                        <option value="1" class="Optionselect">Bajo </option>
+                                        <option value="2" class="Optionselect">Medio </option>
+                                        <option value="3" class="Optionselect">Alto </option>
+                                    </select>
+                                </div>
                             <hr>
                             <!-- Campo donde se observar los usuarios asignados -->
                             <label>Personal asignado:</label>
@@ -233,7 +280,7 @@
                             <hr>
                             <div class="deplegable_1">
                                 <div class="dropdown">
-                                    <button class="btnAsignar desplegable-toggle"><i class="fa-solid fa-user"></i> 
+                                    <button class="btnAsignar desplegable-toggle"><i class="fa-solid fa-user"></i>
                                         Actualizar asignados</button>
                                     <ul class="dropdown-menu">
                                         <br>
@@ -241,9 +288,10 @@
                                         {% for Usuario in datosU %}
                                         {% if Usuario.id not in datos.id_usuario %}
                                         <li class="labelAsignados">
-                                            <label> 
-                                                <input type="checkbox" class="checkbox_nombres" name="usuarios_seleccionados_2"
-                                                value="{{ Usuario.id }}" id="{{ Usuario.id }}">
+                                            <label>
+                                                <input type="checkbox" class="checkbox_nombres"
+                                                    name="usuarios_seleccionados_2" value="{{ Usuario.id }}"
+                                                    id="{{ Usuario.id }}">
                                                 <span class="PersonalAsignados">{{Usuario.fullname}}</span>
                                                 <br><br>
                                             </label>
@@ -268,7 +316,7 @@
         <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
-        <!-- Modal 4 -->
+        <!-- Modal 4 Generar reporte -->
         <div class="modal fade" id="modal-4{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
             aria-hidden="true">
             <div class="modal-dialog">
@@ -285,6 +333,7 @@
                             <input type="text" class="form-control mb-3" name="titulo" value="">
                             <label>Descripción:</label>
                             <input type="text" class="form-control mb-3" name="descripcion" value="">
+                            <input type="hidden" name="idProceso" value="{{datos.id_proceso}}"> 
                             <!-- Botón donde podremos subir el archivo con la foto del perfil -->
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label">Evidencia fotografica:</label>

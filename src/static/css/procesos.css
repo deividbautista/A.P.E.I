@@ -6,6 +6,9 @@
     padding: 0;
     box-sizing: border-box;
 }
+.row{
+    --bs-gutter-x: 0rem !important;
+}
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -14,7 +17,9 @@ body {
 
 h1 {
     text-align: center;
-    color: #322653;
+    /* color: #322653; */
+    /* color: #212A3E; */
+    color: #2C3333;
 }
 
 .container-tareas {
@@ -313,7 +318,11 @@ input[type="checkbox"]:checked+.PersonalAsignados {
 main {
     display: grid;
     border-radius: 1.5rem;
-    background-color: #C4DFDF;
+    /* background-color: #C4DFDF; */
+    /* background-color: #176B87; */
+    /* background-color: #AED8CC; */
+    background-color: #c4d2df; 
+    /* background-color: #9BA4B5; */
     width: 70%;
     min-width: 275px;
 }
@@ -451,8 +460,8 @@ main {
     font-size: 1.1rem;
 }
 
-.icono {
-    color: #322653;
+.icono, .iconoD {
+    color: #2C3333;
     float: right;
     font-size: 1.2rem;
     margin-top: 1.4rem;
@@ -461,7 +470,13 @@ main {
 }
 
 .icono:hover {
-    color: #EEF1FF;
+    /* color: #79a3b6; */
+    color: #8dbcd1;
+}
+
+.iconoD:hover {
+    /* color: #900c3fe1; */
+    color: #B31312;
 }
 
 /*------------------------------------------------------------------*/
@@ -512,4 +527,44 @@ progress[value]::-webkit-progress-value {
 
 /*------------------------------------------------------------------*/
 /* Fin sección task posts*/
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Sección input select*/
+/*------------------------------------------------------------------*/
+.ContentInputSelect{
+    border-radius: 7px !important;
+    border: solid 1px #ced4da;
+    margin-bottom: 1rem;
+}
+
+.InputSelect{
+    width: 97.3%;
+    height: 2.3rem;
+    border: none !important;
+    background: none !important;
+}
+.InputSelect:focus {
+    outline: none; /* Elimina el borde de enfoque */
+    box-shadow: none; /* Elimina cualquier sombra de enfoque */
+    /* Agrega cualquier otro estilo de tu elección */
+}
+.Optionselect{
+    margin-bottom: 1rem !important;
+    color: #000000;
+    background-color: #f5faff;
+}
+
+/*------------------------------------------------------------------*/
+/* Fin sección input select*/
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Sección input select 2*/
+/*------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------*/
+/* Fin sección input select 2*/
 /*------------------------------------------------------------------*/

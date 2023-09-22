@@ -97,7 +97,7 @@ def datos_proceso():
 # Tenemos la ruta principal donde se visualizaran los procesos almacenados en la BD.
 @app.route("/")
 def home():
-    umbral_maximo_dias = 30
+    umbral_maximo_dias = 15
     processed_data = datos_proceso()
     dataUser = datosUsuarios()
     for processed in processed_data:
@@ -110,24 +110,28 @@ def home():
             # Redondear el valor de progreso a un número entero
         processed["diferencia_dias"] = diferencia.days
         processed["progreso"] = round(progreso * 100)
-
+        print(processed['diferencia_dias'])
     return render_template("index.html", data=processed_data, datosU=dataUser)
 # --------------------------------------------------------------------------------------
 
 # Ruta para guardar usuarios en la Base de datos.
 @app.route('/proceso', methods=['POST'])
 def addUser():
+    # Definimos las variables con los valores obtenidos en el formulario.
     Titulo = request.form['Titulo']
     Descripcion = request.form['Descripcion']
     FechaIn = request.form['fecha_I']
     Fechali = request.form['fecha_L']
-    id_proceso = idAleatorio()
+    NivelImportancia = request.form['select']
     asignados = request.form.getlist('usuarios_seleccionados')
+
+    id_proceso = idAleatorio()
+    NivelImportancia = int(NivelImportancia)
 
     if Titulo and Descripcion:
         cursor = mysql.connection.cursor()
-        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación) VALUES (%s, %s, %s, %s, %s)"
-        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali)
+        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación, Nivel_importancia) VALUES (%s, %s, %s, %s, %s, %s)"
+        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia)
         cursor.execute(sql, data)
         mysql.connection.commit()
 
@@ -222,10 +226,12 @@ def extensiones_validas(filename):
 def generate_pdf():
     if request.method == 'POST':
         # Captura los datos del formulario
+        idProceso = request.form.get('idProceso')
         titulo = request.form['titulo']
         descripcion = request.form['descripcion']
         imagen = request.files['archivo']
 
+        print(idProceso)
         # Condicional donde utilizaremos la funcion de extensiones_validas, para evaluar si el archivo esta permitido o no.
         if(request.files['archivo'] and extensiones_validas(imagen.filename)):
             # Crea un archivo temporal para guardar la imagen
@@ -261,7 +267,8 @@ def generate_pdf():
         response.headers['Content-Disposition'] = 'inline; filename=mi_pdf.pdf'
         
         # Ruta completa de guardado (puedes cambiarla según tus necesidades)
-        ruta_de_guardado = 'F:\documentacion Etapa pr0ductiva -_-\Proyecto_APEI\Generador de procesos\Metodo-3.1\src\static\pdf\123456789.pdf'
+        ruta_de_guardado = 'E:\\documentación etapa productiva -_-\\Proyecto_APEI\\Generador de procesos\\Metodo-3.1\\src\\static\\pdf\\' + idProceso +'.pdf'
+        
 
         # Guarda el archivo PDF con el nombre generado automáticamente
         with open(ruta_de_guardado, 'wb') as pdf_file:
