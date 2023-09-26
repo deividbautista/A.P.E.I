@@ -75,12 +75,14 @@ def datos_proceso():
     processed_data = []
     for row in data:
         proceso = {
-            "id_proceso": row[0],  # Usar el índice numérico correspondiente
-            "Titulo": row[1],      # Usar el índice numérico correspondiente
-            "Descripcion": row[2], # Usar el índice numérico correspondiente
-            "fecha_inicio": row[3], # Usar el índice numérico correspondiente
-            "fecha_limite": row[4], # Usar el índice numérico correspondiente
-            "Nivel_importancia": row[8], #Usar el índice numérico correspondiente
+            "id_proceso": row[0],        # Usar el índice numérico correspondiente
+            "Titulo": row[1],            # Usar el índice numérico correspondiente
+            "Descripcion": row[2],       # Usar el índice numérico correspondiente
+            "fecha_inicio": row[3],      # Usar el índice numérico correspondiente
+            "fecha_limite": row[4],      # Usar el índice numérico correspondiente
+            "ReporteGenerado": row[6],   # Usar el índice numérico correspondiente
+            "estado_proceso": row[7],    # Usar el índice numérico correspondiente
+            "Nivel_importancia": row[8], # Usar el índice numérico correspondiente
             "nombre_usuario": row[10].split(",") if row[10] is not None else [],
             "id_usuario": [int(id) for id in row[9].split(",")] if row[9] is not None else [],
         }
@@ -110,7 +112,7 @@ def home():
             # Redondear el valor de progreso a un número entero
         processed["diferencia_dias"] = diferencia.days
         processed["progreso"] = round(progreso * 100)
-        print(processed['diferencia_dias'])
+
     return render_template("index.html", data=processed_data, datosU=dataUser)
 # --------------------------------------------------------------------------------------
 
@@ -124,14 +126,15 @@ def addUser():
     Fechali = request.form['fecha_L']
     NivelImportancia = request.form['select']
     asignados = request.form.getlist('usuarios_seleccionados')
+    Estado_proceso = 1
 
     id_proceso = idAleatorio()
     NivelImportancia = int(NivelImportancia)
 
     if Titulo and Descripcion:
         cursor = mysql.connection.cursor()
-        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación, Nivel_importancia) VALUES (%s, %s, %s, %s, %s, %s)"
-        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia)
+        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación, Nivel_importancia, Estado_proceso) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, Estado_proceso)
         cursor.execute(sql, data)
         mysql.connection.commit()
 
@@ -178,14 +181,17 @@ def edit(id_proceso):
     Titulo = request.form['Titulo']
     Descripcion = request.form['Descripcion']
     asignados = request.form.getlist('usuarios_seleccionados_2')
+    NivelImportancia = request.form['selectI']
+    Estado_proceso = request.form['selectP']
 
     # En este apartado se realizara la actualización de los datos del proceso.
     if Titulo and Descripcion:
         cursor = mysql.connection.cursor()
-        sql="UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}' WHERE id_proceso = {2}"
+        sql="""UPDATE procesos SET Titulo = '{0}', Descripcion = '{1}', Nivel_importancia = '{2}',
+        Estado_proceso = '{3}'  WHERE id_proceso = {4}""" 
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
-        data = (Titulo, Descripcion, id_proceso)
-        cursor.execute(sql.format(data[0],data[1],data[2]))
+        data = (Titulo, Descripcion, NivelImportancia, Estado_proceso, id_proceso)
+        cursor.execute(sql.format(data[0],data[1],data[2],data[3],data[4]))
         mysql.connection.commit()
 
     # En este apartado se realizara la actualización de asignaciones del proceso.
@@ -226,12 +232,20 @@ def extensiones_validas(filename):
 def generate_pdf():
     if request.method == 'POST':
         # Captura los datos del formulario
-        idProceso = request.form.get('idProceso')
+        id_proceso = request.form.get('idProceso')
         titulo = request.form['titulo']
         descripcion = request.form['descripcion']
         imagen = request.files['archivo']
+        Estado_proceso = request.form['EstadoProceso']
+        nombrepdf = id_proceso + '.pdf'
 
-        print(idProceso)
+        if Estado_proceso:
+            cursor = mysql.connection.cursor()
+            sql = "UPDATE procesos SET Estado_proceso = %s, ReporteGenerado = %s WHERE id_proceso = %s "
+            data = (Estado_proceso, nombrepdf, id_proceso)
+            cursor.execute(sql, data)
+            mysql.connection.commit()            
+
         # Condicional donde utilizaremos la funcion de extensiones_validas, para evaluar si el archivo esta permitido o no.
         if(request.files['archivo'] and extensiones_validas(imagen.filename)):
             # Crea un archivo temporal para guardar la imagen
@@ -260,14 +274,14 @@ def generate_pdf():
         # Mueve el puntero al inicio del objeto BytesIO
         pdf_buffer.seek(0)
         
-        # Crea un objeto Response para enviar el PDF al navegador
-        response = Response(pdf_buffer.read(), content_type='application/pdf')
+        # # Crea un objeto Response para enviar el PDF al navegador
+        # response = Response(pdf_buffer.read(), content_type='application/pdf')
         
-        # Agrega el encabezado para la descarga del PDF
-        response.headers['Content-Disposition'] = 'inline; filename=mi_pdf.pdf'
+        # # Agrega el encabezado para la descarga del PDF
+        # response.headers['Content-Disposition'] = 'inline; filename=mi_pdf.pdf'
         
         # Ruta completa de guardado (puedes cambiarla según tus necesidades)
-        ruta_de_guardado = 'E:\\documentación etapa productiva -_-\\Proyecto_APEI\\Generador de procesos\\Metodo-3.1\\src\\static\\pdf\\' + idProceso +'.pdf'
+        ruta_de_guardado = 'E:\\documentación etapa productiva -_-\\Proyecto_APEI\\Generador de procesos\\Metodo-3.1\\src\\static\\pdf\\' + nombrepdf
         
 
         # Guarda el archivo PDF con el nombre generado automáticamente
@@ -275,7 +289,7 @@ def generate_pdf():
             pdf_file.write(pdf_buffer.getvalue())
         
         # Retorna la petición http, entregando el resultado, osea la visualización del pdf construido.  
-        return response
+        return redirect(url_for('home'))
     else:
         # Si no se envió el formulario, muestra un mensaje
         mensaje = "No se encontraron datos, por lo que no es posible generar el PDF correctamente."

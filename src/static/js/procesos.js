@@ -4,7 +4,7 @@ const userLabels = document.querySelectorAll(".NombreUsuario");
 const labels = document.querySelectorAll('.NombreUsuario_2');
 const toggleButtons = document.querySelectorAll('.desplegable-toggle');
 var dropdowns = document.querySelectorAll('.dropdown');
-
+var select = document.getElementById("SelectLevel");
 
 // --------------------------------------------------------------------------------
 // Agrega un evento click a cada label.
@@ -51,6 +51,15 @@ document.addEventListener('click', function(event) {
   });
 });
 // --------------------------------------------------------------------------------
+
+// --------------------------------------------------------------------------------
+// Evita que el formulario se envie si no se escoje un una opción del valida del input select.
+document.getElementById("formularioActualizarP").addEventListener("submit", function(event) {
+  if (select.value === "") {
+    event.preventDefault(); // Evitar el envío del formulario
+    alert("Por favor, elija una opción válida antes de enviar el formulario.");
+  }
+});
 
 
 

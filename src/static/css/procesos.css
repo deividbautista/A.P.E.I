@@ -300,7 +300,6 @@ input[type="checkbox"]:checked+.PersonalAsignados {
     color: #7a316f6c !important;
     border-color: #7a316f6c !important;
 }
-
 /*------------------------------------------------------------------*/
 /* Fin sección botones*/
 /*------------------------------------------------------------------*/
@@ -435,6 +434,10 @@ main {
     margin-left: 2rem;
 }
 
+
+/*------------------------------------------------------------------*/
+/* Inicio sección boton GenerarPdf Post */
+/*------------------------------------------------------------------*/
 .div-bottom-container .button-right {
     display: flex;
     align-items: flex-end;
@@ -459,6 +462,37 @@ main {
     background-color: #79a3b6;
     font-size: 1.1rem;
 }
+/*------------------------------------------------------------------*/
+/* Fin sección boton derecho de la Post */
+/*------------------------------------------------------------------*/
+
+
+/*------------------------------------------------------------------*/
+/* Inicio sección boton VisualizarPdf Post */
+/*------------------------------------------------------------------*/
+.div-bottom-container .button-right a {
+    width: 100%;
+    height: 50px;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 5px;
+    margin: 10px auto;
+    cursor: pointer;
+    text-decoration: none;
+    outline: none;
+}
+
+.div-bottom-container .button-right a:hover {
+    text-decoration: none;
+    outline: none;
+    font-size: 1.1rem;
+}
+/*------------------------------------------------------------------*/
+/* Fin inicio sección boton VisualizarPdf Post */
+/*------------------------------------------------------------------*/
+
 
 .icono, .iconoD {
     color: #2C3333;

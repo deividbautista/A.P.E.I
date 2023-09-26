@@ -92,9 +92,12 @@
         <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
-        <!-- Apartado de posts -->
+        <!------------------------------------------------------------------------------------------------------------------------------------>
+        <!-- Apartado principal donde se optiene los datos iterados con base a el diccionario renderizado en data-->
         {% for datos in data %}
-        
+
+        <!-- 
+        {% if datos.estado_proceso == 1%}
         <div class="contenedorprin">
             <main>
                 <section class="section-main-container">
@@ -102,8 +105,9 @@
                         <i class="icono fa-solid fa-pencil" id="btn-edit{{datos.id_proceso}}" data-bs-toggle="modal"
                             data-bs-target="#modal{{datos.id_proceso}}"></i>
                         <a href="#" class="eliminar" data-id="{{ datos.id_proceso }}"
-                            data-url="{{ url_for('delete', idP=datos.id_proceso) }}"><i class="iconoD fa-solid fa-trash"></i></a>
-                            
+                            data-url="{{ url_for('delete', idP=datos.id_proceso) }}"><i
+                                class="iconoD fa-solid fa-trash"></i></a>
+
                         <h1 class="titleP">{{datos.Titulo}}</h1>
                     </div>
                     <div class="info-container">
@@ -139,7 +143,7 @@
                         </div>
                         <div class="important-user">
                             <p class="Texto-importancia">
-                                Nivel importancia: 
+                                Nivel importancia:
                                 {% for nivel in range(datos.Nivel_importancia) %}
                                 <i class="fa-regular fa-star"></i>
                                 {% endfor %}
@@ -156,6 +160,90 @@
                             <button data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">
                                 Generar reporte...</button>
                         </div>
+                    </div>
+                    <div class="">
+                        <p class="numeroid">
+                            N° {{datos.id_proceso}}
+                        </p>
+                    </div>
+                </section>
+            </main>
+        </div>
+        {% endif%}
+        -->
+
+        <!------------------------------------------------------------------------------------------------------------------------------------>
+        <!-- Apartado de posts -->
+        <div class="contenedorprin">
+            <main>
+                <section class="section-main-container">
+                    <div class="titleC">
+                        <i class="icono fa-solid fa-pencil" id="btn-edit{{datos.id_proceso}}" data-bs-toggle="modal"
+                            data-bs-target="#modal{{datos.id_proceso}}"></i>
+                        <a href="#" class="eliminar" data-id="{{ datos.id_proceso }}"
+                            data-url="{{ url_for('delete', idP=datos.id_proceso) }}"><i
+                                class="iconoD fa-solid fa-trash"></i></a>
+
+                        <h1 class="titleP">{{datos.Titulo}}</h1>
+                    </div>
+                    <div class="info-container">
+                        <div class="description">
+                            <p class="descriptiontext">
+                                {{datos.Descripcion}}
+                            </p>
+                        </div>
+                        <div class="nameUser">
+                            {% if datos.nombre_usuario %}
+                            <button class="btnAsignar2" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">Asignado
+                                <i class="fa-regular fa-user"></i>.
+                            </button>
+                            <ul class="dropdown-menu" id="submenu">
+                                {% for usuario in datos.nombre_usuario %}
+                                <label id="AsignarUsu" class="UsuariosAsignados">
+                                    {{ usuario }}
+                                </label>
+                                <br>
+                                {% endfor %}
+                            </ul>
+                            {% else %}
+                            <p class="Texto-importancia">Ningún usuario asignado
+                                <i class="fa-solid fa-user-slash">.</i>
+                            </p>
+                            {% endif %}
+                        </div>
+                        <div class="moreInfo">
+                            <button class="btnAsignar2" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modal-3{{datos.id_proceso}}" aria-expanded="false">Ver más
+                                <i class="fa-regular fa-eye"></i>...
+                        </div>
+                        <div class="important-user">
+                            <p class="Texto-importancia">
+                                Nivel importancia:
+                                {% for nivel in range(datos.Nivel_importancia) %}
+                                <i class="fa-regular fa-star"></i>
+                                {% endfor %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="div-bottom-container">
+                        <div class="hr-container">
+                            <progress value="{{datos.progreso}}" min="10" max="100"
+                                class="{% if datos.progreso <= 30 %}progress-low{% elif datos.progreso <= 75 %}progress-medium{% else %}progress-high{% endif %}"></progress>
+                        </div>
+                        {% if not datos.ReporteGenerado %}
+                        <div class="button-right">
+                            <button data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">
+                                Generar reporte...</button>
+                        </div>
+                        {% else %}
+                        <div class="button-right">
+                            <button>
+                                <a href="../static/pdf/{{datos.ReporteGenerado}}"> Ver reporte...</a>
+                            </button>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="">
                         <p class="numeroid">
@@ -191,18 +279,39 @@
                         <hr>
                         {% if datos.diferencia_dias == 0 %}
                         <p>Proceso cerrado por fecha limite.</p>
-                        {% elif datos.diferencia_dias > 0 and datos.diferencia_dias < 2 %}
+                            
+                        {% elif datos.diferencia_dias > 0 and datos.diferencia_dias < 2 %} 
                         <p>Queda {{datos.diferencia_dias}} día, para terminar el proceso.</p>
+                            
                         {% elif datos.diferencia_dias > 1 %}
                         <p>Quedan {{datos.diferencia_dias}} días, para terminar el proceso.</p>
                         {% endif %}
                         <hr>
                         <p>
-                            Nivel importancia: 
+                            {% if datos.estado_proceso == 1 %}
+                            Proceso abierto.
+                            {% elif datos.estado_proceso == 2 %}
+                            Proceso cerrado.
+                            {% elif datos.estado_proceso == 3 %}
+                            Proceso vencido por tiempo.
+                            {% endif%}
+                        </p>
+                        <hr>
+                        <p>
+                            Nivel importancia:
                             {% for nivel in range(datos.Nivel_importancia) %}
                             <i class="fa-regular fa-star"></i>
                             {% endfor %}
                         </p>
+                        <hr>
+                        {% if not datos.ReporteGenerado  %}
+                            <p>Reporte pendiente.</p>
+                        {% else %}
+                        <div class="containerViewPdf">
+                            <iframe class="view-pdf" src="../static/pdf/{{datos.ReporteGenerado}}"
+                                allow="autoplay"></iframe>
+                        </div>
+                        {% endif %}
                     </div>
                     <div class="modal-footer">
                         <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
@@ -232,7 +341,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form action="/edit/{{datos.id_proceso}}" method="post">
+                        <form action="/edit/{{datos.id_proceso}}" method="post" id="formularioActualizarP">
                             <!-- Campo para diligenciar el titulo -->
                             <label>Titulo: *</label>
                             <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}"
@@ -244,14 +353,25 @@
                             </textarea>
                             <br>
                             <label>Nivel de importancia: </label>
-                                <div class="ContentInputSelect">
-                                    <!-- The second value will be selected initially -->
-                                    <select name="select" class="InputSelect">
-                                        <option value="1" class="Optionselect">Bajo </option>
-                                        <option value="2" class="Optionselect">Medio </option>
-                                        <option value="3" class="Optionselect">Alto </option>
-                                    </select>
-                                </div>
+                            <div class="ContentInputSelect">
+                                <!-- The second value will be selected initially -->
+                                <select name="selectI" id="" class="InputSelect">
+                                    <option value="" class="Optionselect"> Seleccionar el nivel de importancia</option>
+                                    <option value="1" class="Optionselect">Bajo </option>
+                                    <option value="2" class="Optionselect">Medio </option>
+                                    <option value="3" class="Optionselect">Alto </option>
+                                </select>
+                            </div>
+                            <hr>
+                            <label>Estado del proceso: </label>
+                            <div class="ContentInputSelect">
+                                <!-- The second value will be selected initially -->
+                                <select name="selectP" id="SelectLevel" class="InputSelect">
+                                    <option value="1" class="Optionselect">Abierto </option>
+                                    <option value="2" class="Optionselect">Finalizado </option>
+                                    <option value="3" class="Optionselect">Vencido </option>
+                                </select>
+                            </div>
                             <hr>
                             <!-- Campo donde se observar los usuarios asignados -->
                             <label>Personal asignado:</label>
@@ -333,7 +453,9 @@
                             <input type="text" class="form-control mb-3" name="titulo" value="">
                             <label>Descripción:</label>
                             <input type="text" class="form-control mb-3" name="descripcion" value="">
-                            <input type="hidden" name="idProceso" value="{{datos.id_proceso}}"> 
+                            <input type="hidden" name="idProceso" value="{{datos.id_proceso}}">
+                            <input type="hidden" name="EstadoProceso" value="2">
+
                             <!-- Botón donde podremos subir el archivo con la foto del perfil -->
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label">Evidencia fotografica:</label>
