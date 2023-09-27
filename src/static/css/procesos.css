@@ -259,6 +259,7 @@ input[type="checkbox"]:checked+.PersonalAsignados {
     background-color: #8CABFF !important;
 }
 
+/*______________________________________________________*/
 .btnReport {
     padding: 4.2px !important;
     color: rgb(0, 0, 0) !important;
@@ -272,6 +273,16 @@ input[type="checkbox"]:checked+.PersonalAsignados {
     border-color: #ffffff00 !important;
     background-color: rgb(119, 165, 252) !important;
 }
+/*______________________________________________________*/
+.Areport{
+    text-decoration: none;
+    outline: none;
+    color: #000000;
+}
+.Areport:hover{
+    color: #ffffff;
+}
+/*______________________________________________________*/
 
 .secundario {
     border-color: #33415c !important;

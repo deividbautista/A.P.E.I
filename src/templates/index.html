@@ -257,26 +257,29 @@
         <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
-        <!-- Modal 2 De vista de los datos del proceso -->
+        <!-- Modal 2 De vista de los datos del proceso. -->
         <div class="modal fade" id="modal-3{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-
+                    <!-- Encabezado del proceso-->
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel">{{datos.Titulo}}</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario. -->
                     <div class="modal-body">
+                        <!-- Descripción del proceso. -->
                         <p class="text-break">
                             {{datos.Descripcion}}
                         </p>
                         <hr>
+                        <!-- Periodo de fechas del proceso. -->
                         <p class="text-break">
                             Periodo de fechas del proceso: <br> {{datos.fecha_inicio}} // {{datos.fecha_limite}}
                         </p>
                         <hr>
+                        <!-- Apartado donde se observan los días faltantes del proceso. -->
                         {% if datos.diferencia_dias == 0 %}
                         <p>Proceso cerrado por fecha limite.</p>
                             
@@ -287,6 +290,7 @@
                         <p>Quedan {{datos.diferencia_dias}} días, para terminar el proceso.</p>
                         {% endif %}
                         <hr>
+                        <!-- Estado del proceso actual. -->
                         <p>
                             {% if datos.estado_proceso == 1 %}
                             Proceso abierto.
@@ -297,6 +301,7 @@
                             {% endif%}
                         </p>
                         <hr>
+                        <!-- Nivel de importancia del proceso actual, representado por la cantidad de estrellas. -->
                         <p>
                             Nivel importancia:
                             {% for nivel in range(datos.Nivel_importancia) %}
@@ -304,6 +309,7 @@
                             {% endfor %}
                         </p>
                         <hr>
+                        <!-- Apartado donde observaremos el pdf en caso de que este ya se haya generado. -->
                         {% if not datos.ReporteGenerado  %}
                             <p>Reporte pendiente.</p>
                         {% else %}
@@ -313,9 +319,17 @@
                         </div>
                         {% endif %}
                     </div>
+                    <!-- Sección de footer del proceso-->
                     <div class="modal-footer">
+                        {% if not datos.ReporteGenerado %}
                         <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
-                            data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">Reporte...</button>
+                            data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">Generar Reporte...</button>
+                        {% else %}
+                        <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
+                            data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}"> 
+                            <a class="Areport" href="../static/pdf/{{datos.ReporteGenerado}}">Descargar Reporte...</a></button>
+                        {% endif %} 
+
                         <button class="principal btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
                             data-bs-toggle="modal" data-bs-target="#modal{{datos.id_proceso}}">Editar
                             proceso</button>
