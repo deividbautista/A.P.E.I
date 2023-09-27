@@ -260,7 +260,7 @@ input[type="checkbox"]:checked+.PersonalAsignados {
 }
 
 /*______________________________________________________*/
-.btnReport {
+.btnReport, .btnReport2 {
     padding: 4.2px !important;
     color: rgb(0, 0, 0) !important;
     border-color: #ffffff00 !important;
@@ -277,10 +277,17 @@ input[type="checkbox"]:checked+.PersonalAsignados {
 .Areport{
     text-decoration: none;
     outline: none;
+    text-align: center;
+    padding-top: 3.3px;
+    height: 1.9rem;
+    border-radius: .3rem;
+    width: 10rem;
+    background-color: #A0E4CB;
     color: #000000;
 }
 .Areport:hover{
     color: #ffffff;
+    background-color: rgb(119, 165, 252);
 }
 /*______________________________________________________*/
 
@@ -316,9 +323,9 @@ input[type="checkbox"]:checked+.PersonalAsignados {
 /*------------------------------------------------------------------*/
 
 
-/*------------------------------------------------------------------*/
-/* Sección task posts*/
-/*------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------*/
+/* Inicio de sección task posts*/
+/*---------------------------------------------------------------------------------------------------*/
 .contenedorprin {
     display: grid;
     place-items: center;
@@ -447,7 +454,7 @@ main {
 
 
 /*------------------------------------------------------------------*/
-/* Inicio sección boton GenerarPdf Post */
+/* Inicio sección boton Generar reporte */
 /*------------------------------------------------------------------*/
 .div-bottom-container .button-right {
     display: flex;
@@ -474,12 +481,12 @@ main {
     font-size: 1.1rem;
 }
 /*------------------------------------------------------------------*/
-/* Fin sección boton derecho de la Post */
+/* Fin sección boton Generar reporte */
 /*------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------*/
-/* Inicio sección boton VisualizarPdf Post */
+/* Inicio sección boton Visualizar reporte */
 /*------------------------------------------------------------------*/
 .div-bottom-container .button-right a {
     width: 100%;
@@ -495,13 +502,14 @@ main {
     outline: none;
 }
 
+
 .div-bottom-container .button-right a:hover {
     text-decoration: none;
     outline: none;
     font-size: 1.1rem;
 }
 /*------------------------------------------------------------------*/
-/* Fin inicio sección boton VisualizarPdf Post */
+/* Fin inicio sección boton Visualizar reporte */
 /*------------------------------------------------------------------*/
 
 
@@ -524,9 +532,25 @@ main {
     color: #B31312;
 }
 
+
 /*------------------------------------------------------------------*/
+/* Sección visualizar pdf */
+/*------------------------------------------------------------------*/
+.containerViewPdf{
+    width: 500px;
+}
+.view-pdf{
+    width: 375px;
+    height: 250px;
+}
+/*------------------------------------------------------------------*/
+/* Sección visualizar pdf */
+/*------------------------------------------------------------------*/
+
+
+/*---------------------------------------------------------------------------------------------------*/
 /* Fin sección task posts*/
-/*------------------------------------------------------------------*/
+/*---------------------------------------------------------------------------------------------------*/
 
 
 /*------------------------------------------------------------------*/

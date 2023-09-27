@@ -325,9 +325,7 @@
                         <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
                             data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">Generar Reporte...</button>
                         {% else %}
-                        <button class="btnReport btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
-                            data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}"> 
-                            <a class="Areport" href="../static/pdf/{{datos.ReporteGenerado}}">Descargar Reporte...</a></button>
+                        <a class="Areport" href="../static/pdf/{{datos.ReporteGenerado}}" download="nombre_estandar.pdf">Descargar Reporte...</a>
                         {% endif %} 
 
                         <button class="principal btn btn-primary btn-sm" id="btn-edit{{datos.id_proceso}}"
@@ -370,10 +368,9 @@
                             <div class="ContentInputSelect">
                                 <!-- The second value will be selected initially -->
                                 <select name="selectI" id="" class="InputSelect">
-                                    <option value="" class="Optionselect"> Seleccionar el nivel de importancia</option>
-                                    <option value="1" class="Optionselect">Bajo </option>
-                                    <option value="2" class="Optionselect">Medio </option>
-                                    <option value="3" class="Optionselect">Alto </option>
+                                    <option value="1" class="Optionselect"{% if datos.Nivel_importancia == 1  %}selected{% endif %}>Bajo  </option>
+                                    <option value="2" class="Optionselect"{% if datos.Nivel_importancia == 2  %}selected{% endif %}>Medio </option>
+                                    <option value="3" class="Optionselect"{% if datos.Nivel_importancia == 3  %}selected{% endif %}>Alto  </option>
                                 </select>
                             </div>
                             <hr>
@@ -381,9 +378,9 @@
                             <div class="ContentInputSelect">
                                 <!-- The second value will be selected initially -->
                                 <select name="selectP" id="SelectLevel" class="InputSelect">
-                                    <option value="1" class="Optionselect">Abierto </option>
-                                    <option value="2" class="Optionselect">Finalizado </option>
-                                    <option value="3" class="Optionselect">Vencido </option>
+                                    <option value="1" class="Optionselect"{% if datos.estado_proceso == 1  %}selected{% endif %}>Abierto    </option>
+                                    <option value="2" class="Optionselect"{% if datos.estado_proceso == 2  %}selected{% endif %}>Finalizado </option>
+                                    <option value="3" class="Optionselect"{% if datos.estado_proceso == 3  %}selected{% endif %}>Vencido    </option>
                                 </select>
                             </div>
                             <hr>
