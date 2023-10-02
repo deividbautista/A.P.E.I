@@ -2,6 +2,8 @@
 #-----------------------------------------------------
 #Sección donde importaremos Modulos, Instancias y variables, que utilizaresmos.
 #-----------------------------------------------------
+
+# Construcción de la clase user con todos sus atributos
 from .entities.User import *
 
 #-----------------------------------------------------
@@ -58,3 +60,23 @@ class ModelUser():
         #se utiliza except para dar fin al bloqué.
         except Exception as ex:
             raise Exception(ex)
+
+#-----------------------------------------------------    
+# Obtener nombre de todos los usuarios registrados para poder asignarlos.
+#-----------------------------------------------------
+# Definimos la función que retornara los datos de los usuarios.
+def datosUsuarios(Database):
+    cursor = Database.connection.cursor()
+    cursor.execute("SELECT id_usuarios, Nombre_completo FROM usuarios")
+    myresult = cursor.fetchall()
+    #Convertir los datos a diccionario.
+    insertObject = []
+    columnNames = [column[0] for column in cursor.description]
+    for record in myresult:
+        insertObject.append(dict(zip(columnNames, record)))
+    cursor.close()  
+    #Almacenamos los datos o contenido obtenido de la consulta en la variable dataUser.
+    dataUser=insertObject  
+    #Retorna la variable dataUser
+    return dataUser
+# --------------------------------------------------------------------------------------

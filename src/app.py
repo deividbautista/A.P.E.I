@@ -1,6 +1,7 @@
 
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
+from datetime import date, timedelta, datetime
 from flask_wtf.csrf import CSRFProtect
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
@@ -15,12 +16,16 @@ from os import path
 # -----------------------------------------------------------------------------------------
 # Apartado para importar modulos del paquete / directorio models.
 # -----------------------------------------------------------------------------------------
+
+# Conexión base de datos:
 from database import config
 
 # Models:
-from models.ModelUser import ModelUser
+from models.ModelUser import ModelUser, datosUsuarios
 
 from models.ModelGeneral import idAleatorio, extensiones_validas
+
+from models.ModelProcess import datos_proceso, deleteP
 
 # Entities:
 from models.entities.User import User
@@ -29,6 +34,7 @@ from models.entities.User import *
 
 # Para subir archivo tipo foto al servidor
 from werkzeug.utils import secure_filename 
+
 # -----------------------------------------------------------------------------------------
 # Fin apartado para importar modulos del paquete / directorio models.
 # -----------------------------------------------------------------------------------------
@@ -102,6 +108,42 @@ def profile():
 @login_required
 def help():
     return render_template("help/help.html")
+
+
+# -----------------------------------------------------
+# Ruta de home donde nos llevara a la hora de realizar la verificación de usuario.
+@app.route("/posts")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
+def posts():    
+
+    dataUser = datosUsuarios(Database)
+    processed_data = datos_proceso(Database)
+
+    umbral_maximo_dias = 15
+
+    for processed in processed_data:
+        # Se realiza la operación para la diferencia entre los dias, utilizando la biblioteca datetime.
+        diferencia = processed["fecha_limite"] - processed["fecha_inicio"]
+        progreso = 1.0 - min(diferencia.days / umbral_maximo_dias, 1.0)
+
+        if progreso <= 0:
+            progreso = 0.03
+            # Redondear el valor de progreso a un número entero
+        processed["diferencia_dias"] = diferencia.days
+        processed["progreso"] = round(progreso * 100)
+
+    return render_template("task posts/task posts.html", data=processed_data, datosU=dataUser)
+
+
+# -----------------------------------------------------
+# Ruta para eliminar los procesos registrados en la base de datos.
+@app.route('/deleteProcess/<string:idP>')
+def eliminarP(idP):
+    deleteP(Database, idP)
+    return redirect(url_for('home'))
+# --------------------------------------------------------------------------------------
 
 
 # -----------------------------------------------------
@@ -266,7 +308,10 @@ def login():
 #          raise Exception(ex)
 
 #--------------------------------------------------------------------------------------------------------------------------
+# Fin prueba cronos UnU
 #--------------------------------------------------------------------------------------------------------------------------
+
+
 
 
 # -----------------------------------------------------
