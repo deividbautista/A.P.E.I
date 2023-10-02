@@ -39,7 +39,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                     <!-- Se usa current, como funcion del modulo user, dentro de corchetes dobles, que es la sintaxis ofrecida por flask, para 
                     poder obtener el nombre del usuario por medio de la función llamada: "fullname", definida em la carpeta "models/entities", en el modulo de "User"
                     la cual contiene los parametros de los datos de el usario por medio de consulta sql dictaminada en el aparado de "ModelsUser"-->
-                    <h3 class="titulo2">{{ current_user.fullname}}
+                    <h3 class="titulo2">{{ current_user.Nombre_completo}}
 
                         <!-- Botón para acceder al modal, que contiene la sección principal para la actualización de datos del usario -->
                         <button type="button" class="boton-edit" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -88,7 +88,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <form action="/edit" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <label for="">Nombre completo:</label>
-                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
+                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.Nombre_completo}}">
                             <label for="">Direccion:</label>
                             <input type="text" class="form-control mb-3" name="Direccion" value="{{ current_user.Direccion}}">
                             <label for="">Telefono:</label>

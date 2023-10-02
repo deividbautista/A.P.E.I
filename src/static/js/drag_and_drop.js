@@ -33,5 +33,3 @@ dropArea.addEventListener("drop", (e) => {
     // La siguiente linea retira la clase activate que contiene los estilos del evento dragover.
     dropArea.classList.remove("activate");
 });
-
-

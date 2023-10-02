@@ -1,21 +1,26 @@
-# Codigo sustraido del canal url=('https://youtu.be/FX0lMm_Qj10')
-# creditos respectivos al autor y o su equipo de trabajo, "Repositorio=('https://github.com/UskoKruM/flask-login-mysql')"
 
-
-# -----------------------------------------------------
-# Sección donde importaremos Modulos, Instancias y variables, que utilizaresmos.
-# -----------------------------------------------------
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 import re
 
-from config import config
+# El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
+import os 
+
+# Modulo para obtener la ruta o directorio
+from os import path 
+
+# -----------------------------------------------------------------------------------------
+# Apartado para importar modulos del paquete / directorio models.
+# -----------------------------------------------------------------------------------------
+from database import config
 
 # Models:
 from models.ModelUser import ModelUser
+
+from models.ModelGeneral import idAleatorio, extensiones_validas
 
 # Entities:
 from models.entities.User import User
@@ -24,16 +29,10 @@ from models.entities.User import *
 
 # Para subir archivo tipo foto al servidor
 from werkzeug.utils import secure_filename 
+# -----------------------------------------------------------------------------------------
+# Fin apartado para importar modulos del paquete / directorio models.
+# -----------------------------------------------------------------------------------------
 
-# El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
-import os 
-
-# Modulo para obtener la ruta o directorio
-from os import path 
-
-# -----------------------------------------------------
-# Sección donde inicializaremos o definiremos las instancias principales.
-# -----------------------------------------------------
 
 # Constructor principal para ejecutar el sistema de información.
 app = Flask(__name__)
@@ -42,7 +41,7 @@ app = Flask(__name__)
 csrf = CSRFProtect()
 
 # Para utilizar sentencias sql
-db = MySQL(app)
+Database = MySQL(app)
 
 # Para el control de vistas a usuarios no registrados.
 login_manager_app = LoginManager(app)
@@ -51,7 +50,7 @@ login_manager_app = LoginManager(app)
 # Función para poder hacer uso de las instancias de LoginManager.
 @login_manager_app.user_loader
 def load_user(id):
-    return ModelUser.get_by_id(db, id)
+    return ModelUser.get_by_id(Database, id)
 
 
 # -----------------------------------------------------
@@ -122,13 +121,13 @@ def login():
         )
 
         # Funcion para comprovar el logged del usuario, osea verificar que es una cuenta existente.
-        logged_user = ModelUser.login(db, user)
+        logged_user = ModelUser.login(Database, user)
 
         # Siguiendo con la misma funcionalidad, tenemos la comprovación de que el usuario esta registrado
         # es certera, se procedera a realizar los siguientes if.
         if logged_user != None:
             # Este if nos comprueba si la contraseña sustraida, esta registrada o no, en la base de datos.
-            if logged_user.password:
+            if logged_user.Contraseña:
                 login_user(logged_user)
                 # En cuyo caso que el metodo de verificación nos comprueve que efectivamente es un usario y contraseña valida
                 # se retornara a la vista que desea el usuario.
@@ -152,25 +151,123 @@ def login():
         # Para dar retorno a nuestra ruta principal.
         return render_template("auth/login.html")
 
-
-# -----------------------------------------------------
-# Sección para validar extensión del archivo.
-# -----------------------------------------------------
-def extensiones_validas(filename):
-    # Lista de extensiones permitidas para los archivos de imagen
-    extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'svga', 'webp'}
-
-    # Obtener la extensión del archivo
-    extension = filename.rsplit('.', 1)[1].lower()
-
-    # Verificar si la extensión está permitida
-    if '.' in filename and extension in extensiones_permitidas:
-        print("yes")
-        return True
-    else:
-        return False
-
     
+#--------------------------------------------------------------------------------------------------------------------------
+# Prueba cronos UnU
+#--------------------------------------------------------------------------------------------------------------------------
+# # -----------------------------------------------------
+# # Sección principal de actualización de usuario.
+# # -----------------------------------------------------
+# @app.route("/edit", methods=["POST"])
+# # Definimos la función "update", para poder ejecutar las distintas actividades que se realizara en este modulo.
+# def update():
+#     # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
+#     # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
+#     # regulares del usuario.
+#     try:
+#         # Definimos la condicional "if", con la cual se iniciara si optiene información de un formulario. 
+#         # por metodo 'POST'
+#         archivo = request.files['archivo']
+#         if request.method == 'POST':
+#             if archivo.filename != '':
+#             # La siguiente condicional se inicializara si encuentra un archivo en el boton del nombre "archivo" de tipo "file".
+#                 if(request.files['archivo'] and extensiones_validas(archivo.filename)):
+#                     # Definimos el parametro que utilizaremos en la consulta para guardar el nombre del archivo subido.
+#                     NumDoc          = request.form['NDI']
+#                     # Definimos el nombre del archivo.
+#                     nombreArchivo   = NumDoc
+#                     # Definimos la variable que almacenara lo enviado por el formulario.
+#                     file            = request.files['archivo']
+#                     # Definimos la variable que almacenara el nombre del archivo obtenido desde el path.
+#                     basepath        = path.dirname (__file__)
+#                     # Definimos el tipo de extensión que utilizaremos, en este caso "jpg".
+#                     extension           = ('.jpg')
+#                     # Definimos la vaariable que almacenara el núevo nombre asignado para la imagen.
+#                     nuevoNombreFile     = nombreArchivo + extension
+            
+#                     # En la siguiente linea de cofigo se da el proceso para almacenar el archivo, definiendo el 
+#                     # archivo, la ruta y el nuevo nombre del archivo.
+#                     upload_path = path.join (basepath, 'static/img/avatars', nuevoNombreFile) 
+#                     # Con la variable file y el metodo save para poder alamcenar el archivo, con los parametros que definimos anteriormente.
+#                     file.save(upload_path)
+
+#                     # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
+#                     cursor = Database.connection.cursor()
+#                     # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+#                     sql="""UPDATE usuarios SET Nombre_img = '{1}'  WHERE NDI = {0}"""
+#                     # Definimos la variable atr con los parametros para realizar la consulta de manera dinamica.
+#                     Atr = (NumDoc, nuevoNombreFile)
+#                     # Usamos el execute para poder realizar la consulta anteriormente mostrada.
+#                     cursor.execute(sql.format(Atr[0],Atr[1]))
+#                     # cursor.execute(sql)
+#                     Database.connection.commit()
+#                     print(archivo.filename)
+#                 else:
+#                     flash ("Archivo invalido😢", "error")
+#                     return redirect("profile")
+#         #----------------------------------------------------------------------------------------------------------------------------------    
+#         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
+#         # los datos en la consulta posterior de MySql.
+#         Nnombre= request.form['fullname']
+#         Ndireccion= request.form['Direccion']
+#         NTelefono = request.form['Telefono']
+#         NEmpresa = request.form['Empresa']
+#         NCargo = request.form['Cargo']
+#         NArea = request.form['Area']
+#         NFecha_nacimiento = request.form['FDN']
+#         NNumDoc = request.form['NDI']
+#         NEmail = request.form['Email']
+
+#         # Definimos un array llamado datos para poder utilizar las vriables anteriormente definidas.
+#         # datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
+#         Datos_actualizar = {
+#             'Nombre_completo':   Nnombre, 
+#             'Direccion':         Ndireccion,
+#             'Telefono':          NTelefono,
+#             'Empresa':           NEmpresa,
+#             'Cargo':             NCargo,
+#             'Area_locativa':     NArea,
+#             'Fecha_nacimiento':  NFecha_nacimiento,
+#             'NDI':               NNumDoc,
+#             'Email':             NEmail
+#         }
+
+#         usuario = ModelUser()
+#         usuario_actual = usuario.get_by_id(Database, current_user.id)
+
+#         actualizaciones_sql = []
+
+#         # Recorrer los campos y comparar con los datos actuales
+#         for campo, nuevo_valor in Datos_actualizar.items():
+#             valor_actual = getattr(usuario_actual, campo)
+#             if nuevo_valor != valor_actual:
+#                 # El valor ha cambiado, agregar a la lista de actualizaciones SQL
+#                 actualizaciones_sql.append(f"{campo} = %s")
+
+#         # Comprobar si hay actualizaciones que hacer
+#         if actualizaciones_sql:
+#             # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
+#             cursor = Database.connection.cursor()
+
+#             # Construir la consulta SQL dinámicamente
+#             sql = "UPDATE usuarios SET " + ", ".join(actualizaciones_sql) + " WHERE id = %s"
+
+#             # Crear una tupla con los nuevos valores y el ID del usuario
+#             valores = [valor for campo, valor in Datos_actualizar.items() if campo in actualizaciones_sql]
+#             valores.append(current_user.id)
+
+#             # Ejecutar la consulta SQL
+#             cursor.execute(sql, valores)
+#             Database.connection.commit()
+
+#         flash("Se actualizó correctamente🥳","success")
+#         return redirect("profile")
+#     except Exception as ex:
+#          raise Exception(ex)
+
+#--------------------------------------------------------------------------------------------------------------------------
+#--------------------------------------------------------------------------------------------------------------------------
+
 
 # -----------------------------------------------------
 # Sección principal de actualización de usuario.
@@ -209,7 +306,7 @@ def update():
                     file.save(upload_path)
 
                     # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
-                    cursor = db.connection.cursor()
+                    cursor = Database.connection.cursor()
                     # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
                     sql="""UPDATE users SET Nombre_img = '{1}'  WHERE NDI = {0}"""
                     # Definimos la variable atr con los parametros para realizar la consulta de manera dinamica.
@@ -217,7 +314,7 @@ def update():
                     # Usamos el execute para poder realizar la consulta anteriormente mostrada.
                     cursor.execute(sql.format(Atr[0],Atr[1]))
                     # cursor.execute(sql)
-                    db.connection.commit()
+                    Database.connection.commit()
                     print(archivo.filename)
                 else:
                     flash ("Archivo invalido😢", "error")
@@ -240,20 +337,21 @@ def update():
         datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
 
         # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
-        cursor = db.connection.cursor()
+        cursor = Database.connection.cursor()
         # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
-        sql="""UPDATE users SET fullname = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
+        sql="""UPDATE usuarios SET Nombre_completo = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
                 Area_locativa= '{5}', Fecha_nacimiento = '{6}', NDI= '{7}', Email= '{8}' WHERE NDI = {7}"""
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
         cursor.execute(sql.format(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8]))
         # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
         # cursor.execute(sql)
-        db.connection.commit()
+        Database.connection.commit()
 
         flash("Se actualizó correctamente🥳","success")
         return redirect("profile")
     except Exception as ex:
          raise Exception(ex)
+    
     
 
 # -----------------------------------------------------
@@ -280,4 +378,6 @@ if __name__ == "__main__":
     csrf.init_app(app)
     app.register_error_handler(401, status_401)
     app.register_error_handler(404, status_404)
-    app.run()
+    app.run(debug=True, port=5050)
+
+
