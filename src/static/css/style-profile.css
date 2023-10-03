@@ -10,6 +10,16 @@
 estilos generales
 =====================================*/
 
+.bodyPrincipal{
+    height: 100vh;
+}
+
+
+.container1 {
+    height: 100vh;
+}
+
+
 .seccion-perfil-usuario .perfil-usuario-body,
 .seccion-perfil-usuario {
     padding-top: 4.5em;

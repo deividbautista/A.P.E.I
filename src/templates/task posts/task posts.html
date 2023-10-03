@@ -18,10 +18,12 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 <!-- Inicio contenido principal del modulo "home"-->
 
 <body class="bodyPrincipal">
-
+    <br>
     <!-- Contenido principal "En desarrollo..."-->
-    <div class="container1">
-        <!-- <div class="container-tareas">
+    <div class="container3">
+        <div class="container4">
+            <br><br>
+            <!-- <div class="container-tareas">
                 <h1>Lista de Procesos</h1>
                 <h2></h2>
                 <div class="search-tareas">
@@ -31,167 +33,166 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                     </form>
                 </div>
             </div> -->
-        <!-- Modal 1 Para crear proceso -->
-        <div class="modal fade" id="ModalCrearproceso" tabindex="-1" aria-labelledby="ModalCrearproceso"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo proceso.</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
-                    <div class="modal-body">
-                        <form action="/proceso" method="POST">
-                            <div class="row mb-3">
-                                <label>Titulo: *</label>
-                                <input type="text" class="form-control mb-3" name="Titulo" required>
+            <!-- Modal 1 Para crear proceso -->
+            <div class="modal fade" id="ModalCrearproceso" tabindex="-1" aria-labelledby="ModalCrearproceso"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo proceso.</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                        <div class="modal-body">
+                            <form action="/proceso" method="POST">
+                                <div class="row mb-3">
+                                    <label>Titulo: *</label>
+                                    <input type="text" class="form-control mb-3" name="Titulo" required>
 
-                                <label>Descripción: </label>
-                                <input type="text" class="form-control mb-3" name="Descripcion">
+                                    <label>Descripción: </label>
+                                    <input type="text" class="form-control mb-3" name="Descripcion">
 
-                                <label>Fecha de Inicio:</label>
-                                <input type="date" class="form-control mb-3" id="fecha" name="fecha_I" readonly>
+                                    <label>Fecha de Inicio:</label>
+                                    <input type="date" class="form-control mb-3" id="fecha" name="fecha_I" readonly>
 
-                                <label>Fecha Limite:</label>
-                                <input type="date" class="form-control mb-3" id="fecha" name="fecha_L">
+                                    <label>Fecha Limite:</label>
+                                    <input type="date" class="form-control mb-3" id="fecha" name="fecha_L">
 
-                                <hr>
-                                <label>Nivel de importancia: </label>
-                                <div class="ContentInputSelect">
-                                    <!-- The second value will be selected initially -->
-                                    <select name="select" class="InputSelect">
-                                        <option value="1" class="Optionselect">Bajo </option>
-                                        <option value="2" class="Optionselect">Medio </option>
-                                        <option value="3" class="Optionselect">Alto </option>
-                                    </select>
+                                    <hr>
+                                    <label>Nivel de importancia: </label>
+                                    <div class="ContentInputSelect">
+                                        <!-- The second value will be selected initially -->
+                                        <select name="select" class="InputSelect">
+                                            <option value="1" class="Optionselect">Bajo </option>
+                                            <option value="2" class="Optionselect">Medio </option>
+                                            <option value="3" class="Optionselect">Alto </option>
+                                        </select>
+                                    </div>
+                                    <hr>
+                                    <div class="desplagable_1">
+                                        <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
+                                            personal...</button>
+                                        <ul class="deplegableNombres dropdown-menu">
+                                            {% for Usuario in datosU %}
+                                            <li class="elementoLista">
+                                                <input type="checkbox" class="usuariosSelect"
+                                                    name="usuarios_seleccionados" value="{{ Usuario.id }}"
+                                                    id="{{Usuario.id}}">
+                                                <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
+                                                    {{Usuario.fullname}}
+                                                </label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <br><br>
+                                    <div class="modal-footer">
+                                        <button type="button" class="secundario btn btn-secondary"
+                                            data-bs-dismiss="modal">Cerrar</button>
+                                        <button type="submit" class="principal btn btn-primary">Guardar</button>
+                                    </div>
                                 </div>
-                                <hr>
-                                <div class="desplagable_1">
-                                    <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
-                                        aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
-                                        personal...</button>
-                                    <ul class="deplegableNombres dropdown-menu">
-                                        {% for Usuario in datosU %}
-                                        <li class="elementoLista">
-                                            <input type="checkbox" class="usuariosSelect" name="usuarios_seleccionados"
-                                                value="{{ Usuario.id }}" id="{{Usuario.id}}">
-                                            <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
-                                                {{Usuario.fullname}}
-                                            </label>
-                                        </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                                <br><br>
-                                <div class="modal-footer">
-                                    <button type="button" class="secundario btn btn-secondary"
-                                        data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="principal btn btn-primary">Guardar</button>
-                                </div>
-                            </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- Fin modal-1 -->
-        <!------------------------------------------------------------------------------------------------------------------------------------>
+            <!-- Fin modal-1 -->
+            <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
-        <!------------------------------------------------------------------------------------------------------------------------------------>
-        <!-- Apartado principal donde se optiene los datos iterados con base a el diccionario renderizado en data-->
-        {% for datos in data %}
-        <!------------------------------------------------------------------------------------------------------------------------------------>
-        <!-- Apartado de posts -->
-        <div class="contenedorprin">
-            <main>
-                <section class="section-main-container">
-                    <div class="titleC">
-                        <i class="iconoE fa-solid fa-pencil" id="btn-edit{{datos.id_proceso}}" data-bs-toggle="modal"
-                            data-bs-target="#modal{{datos.id_proceso}}"></i>
-                        <a href="#" class="eliminar" data-id="{{ datos.id_proceso }}"
-                            data-url="{{ url_for('eliminarP', idP=datos.id_proceso) }}"><i
-                                class="iconoD fa-solid fa-trash"></i></a>
+            <!------------------------------------------------------------------------------------------------------------------------------------>
+            <!-- Apartado principal donde se optiene los datos iterados con base a el diccionario renderizado en data-->
+            {% for datos in data %}
+            <!------------------------------------------------------------------------------------------------------------------------------------>
+            <!-- Apartado de posts -->
+            <div class="contenedorprin">
+                <main>
+                    <section class="section-main-container">
+                        <div class="titleC">
+                            <i class="iconoE fa-solid fa-pencil" id="btn-edit{{datos.id_proceso}}"
+                                data-bs-toggle="modal" data-bs-target="#modal{{datos.id_proceso}}"></i>
+                            <a href="#" class="eliminar" data-id="{{ datos.id_proceso }}"
+                                data-url="{{ url_for('eliminarP', idP=datos.id_proceso) }}"><i
+                                    class="iconoD fa-solid fa-trash"></i></a>
 
-                        <h1 class="titleP">{{datos.Titulo}}</h1>
-                    </div>
-                    <div class="info-container">
-                        <div class="description">
-                            <p class="descriptiontext">
-                                {{datos.Descripcion}}
-                            </p>
+                            <h1 class="titleP">{{datos.Titulo}}</h1>
                         </div>
-                        <div class="nameUser">
-                            {% if datos.nombre_usuario %}
-                            <button class="btnAsignar2" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Asignado
-                                <i class="fa-regular fa-user"></i>.
-                            </button>
-                            <ul class="dropdown-menu" id="submenu">
-                                {% for usuario in datos.nombre_usuario %}
-                                <label id="AsignarUsu" class="UsuariosAsignados">
-                                    {{ usuario }}
-                                </label>
-                                <br>
-                                {% endfor %}
-                            </ul>
+                        <div class="info-container">
+                            <div class="description">
+                                <p class="descriptiontext">
+                                    {{datos.Descripcion}}
+                                </p>
+                            </div>
+                            <div class="nameUser">
+                                {% if datos.nombre_usuario %}
+                                <button class="btnAsignar2" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">Asignado
+                                    <i class="fa-regular fa-user"></i>.
+                                </button>
+                                <ul class="dropdown-menu" id="submenu">
+                                    {% for usuario in datos.nombre_usuario %}
+                                    <label id="AsignarUsu" class="UsuariosAsignados">
+                                        {{ usuario }}
+                                    </label>
+                                    <br>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p class="Texto-importancia">Ningún usuario asignado
+                                    <i class="fa-solid fa-user-slash">.</i>
+                                </p>
+                                {% endif %}
+                            </div>
+                            <div class="moreInfo">
+                                <button class="btnAsignar2" type="button" data-bs-toggle="modal"
+                                    data-bs-target="#modal-3{{datos.id_proceso}}" aria-expanded="false">Ver más
+                                    <i class="fa-regular fa-eye"></i>...
+                            </div>
+                            <div class="important-user">
+                                <p class="Texto-importancia">
+                                    Nivel importancia:
+                                    {% for nivel in range(datos.Nivel_importancia) %}
+                                    <i class="fa-regular fa-star"></i>
+                                    {% endfor %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="div-bottom-container">
+                            <div class="hr-container">
+                                <progress value="{{datos.progreso}}" min="10" max="100"
+                                    class="{% if datos.progreso <= 30 %}progress-low{% elif datos.progreso <= 75 %}progress-medium{% else %}progress-high{% endif %}"></progress>
+                            </div>
+                            {% if not datos.ReporteGenerado %}
+                            <div class="button-right">
+                                <button data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">
+                                    Generar reporte...</button>
+                            </div>
                             {% else %}
-                            <p class="Texto-importancia">Ningún usuario asignado
-                                <i class="fa-solid fa-user-slash">.</i>
-                            </p>
+                            <div class="button-right">
+                                <button>
+                                    <a href="../static/pdf/{{datos.ReporteGenerado}}"> Ver reporte...</a>
+                                </button>
+                            </div>
                             {% endif %}
                         </div>
-                        <div class="moreInfo">
-                            <button class="btnAsignar2" type="button" data-bs-toggle="modal"
-                                data-bs-target="#modal-3{{datos.id_proceso}}" aria-expanded="false">Ver más
-                                <i class="fa-regular fa-eye"></i>...
-                        </div>
-                        <div class="important-user">
-                            <p class="Texto-importancia">
-                                Nivel importancia:
-                                {% for nivel in range(datos.Nivel_importancia) %}
-                                <i class="fa-regular fa-star"></i>
-                                {% endfor %}
+                        <div class="">
+                            <p class="numeroid">
+                                N° {{datos.id_proceso}}
                             </p>
                         </div>
-                    </div>
-
-                    <div class="div-bottom-container">
-                        <div class="hr-container">
-                            <progress value="{{datos.progreso}}" min="10" max="100"
-                                class="{% if datos.progreso <= 30 %}progress-low{% elif datos.progreso <= 75 %}progress-medium{% else %}progress-high{% endif %}"></progress>
-                        </div>
-                        {% if not datos.ReporteGenerado %}
-                        <div class="button-right">
-                            <button data-bs-toggle="modal" data-bs-target="#modal-4{{datos.id_proceso}}">
-                                Generar reporte...</button>
-                        </div>
-                        {% else %}
-                        <div class="button-right">
-                            <button>
-                                <a href="../static/pdf/{{datos.ReporteGenerado}}"> Ver reporte...</a>
-                            </button>
-                        </div>
-                        {% endif %}
-                    </div>
-                    <div class="">
-                        <p class="numeroid">
-                            N° {{datos.id_proceso}}
-                        </p>
-                    </div>
-                </section>
-            </main>
+                    </section>
+                </main>
+            </div>
+            <!-- Fin apartado posts -->
+            <!------------------------------------------------------------------------------------------------------------------------------------>
+            <!-- Fin modal-4 -->
+            {% endfor %}
         </div>
-        <!-- Fin apartado posts -->
-        <!------------------------------------------------------------------------------------------------------------------------------------>
-
-
-
-        <!-- Fin modal-4 -->
-        {% endfor %}
-
     </div>
+    <br>
 </body>
 <!-- Fin contenido principal del modulo "home"-->
 

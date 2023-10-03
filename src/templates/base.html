@@ -84,7 +84,6 @@
                     <div class="perfil-usuario-avatar-nav">
                         <a href="/profile">
                             <img class="img-avatar-nav" src="static/img/avatars/{{ current_user.Nombre_img }}"
-                            
                                 alt="img-avatar-nav">
                         </a>
                         <!-- <ul class="">
@@ -114,16 +113,16 @@
     <!-- Declaramos la sentencia if que evalua el tipo de categoria del mensaje enviado con flash, para evitar errores con los distintos alerts-->
     {% if category == "error" %}
     <!-- Tenemos el estilo de los alerts personalizados-->
-        <div class="toast_alert erno active">
-            <div class="toast_alert-content">
-                <i class="fa-solid fa-circle-exclamation errno"></i>
-                <div class="message">
-                    <span class="text text-1">{{message}}</span>
-                </div>
+    <div class="toast_alert erno active">
+        <div class="toast_alert-content">
+            <i class="fa-solid fa-circle-exclamation errno"></i>
+            <div class="message">
+                <span class="text text-1">{{message}}</span>
             </div>
-            <i class="fa-solid fa-xmark close"></i>
-            <div class="progress active"></div>
         </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress active"></div>
+    </div>
     {% endif %}
     <!-- Fin de la condicional-->
     {% endfor %}
@@ -181,7 +180,7 @@
 
 <!-- Sección footer general-->
 <!--Se vera utilizado en todo el aplicativo y por ello debe estar en el archivo base-->
-<footer class="footer mt-auto py-3 bg-light" id="container-footer">
+<!-- <footer>
     <div class="content-footer">
         <span class="text-copy"><small>&copy; 2023 <b>Deivid Bautista</b>- Todos los derechos reservados.</small></span>
         <a href="#" class="icono fa-brands fa-facebook"></a>
@@ -189,8 +188,17 @@
         <a href="#" class="icono fa-brands fa-twitter"></a>
         <a href="https://github.com/deividbautista/Profile-flask" class="icono fa-brands fa-github"></a>
     </div>
-</footer>
+</footer> -->
 <!-- Fin sección footer general-->
+
+<!-- Inicio footer responsive -->
+<footer class="pie_de_pagina ">
+    <div class="grupo-2">
+        <small>&copy; 2023 <b>Deivid Bautista</b>- Todos los derechos reservados.</small>
+    </div>
+</footer>
+<!-- Fin footer responsive -->
+
 
 <!-- Sección de enlaces de los scripst para darle fluides he interactividad a la plataforma
 incluyendo los scripts que brinda Bootstrap, para sus animaciones-->

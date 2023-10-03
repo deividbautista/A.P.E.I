@@ -4,20 +4,16 @@ estilos generales
 
 
 /*Estilos generales que se utilizaran a lo largo de los modulos del proyecto*/
+
+
+/*Fin sección Footer principal*/
 .bodyPrincipal {
     background-color: rgb(233, 236, 238);
-    height: 110vh;
 }
 
 
-#container-footer {
-    position: fixed;
-    left: 0px;
-    bottom: 0px;
-    height: 50px;
-    width: 100%;
-    background: #999;
-    background-color: #d6d3fc !important;
+.container2{
+    height: 100vh;
 }
 
 
@@ -131,21 +127,19 @@ estilos generales
 /*Fin sección de modulo de ayuda*/
 
 
-/*Inicio sección Footer principal*/
-
-.content-footer {
+/*Pie de pagina...*/
+.pie_de_pagina{
+    width: 100%;
+    background-color: #d6d3fc
+    /* Optional color: #bdc5e9 */
+    /* Optional color: #d6d3fc */
+}
+.pie_de_pagina .grupo-2 {
+    padding: 15px 10px;
     text-align: center;
+    color: #000000;
 }
-
-.content-footer .icono {
-    text-decoration: none;
-    color: rgb(34, 34, 34);
-}
-
-.content-footer .icono:hover {
-    color: #2785ff;
-}
-/*Fin sección Footer principal*/
+/*fin pie de pagina*/
 
 
 /*Inicio sección para la configuración responsive*/
@@ -179,6 +173,7 @@ estilos generales
         margin: auto;
         margin-bottom: 10px;
     }
+
     .containerViewPdf {
         margin: auto;
         width: 300px;
@@ -188,7 +183,7 @@ estilos generales
         left: 50%;
         transform: translate(-50%);
     }
-    
+
     .view-pdf {
         width: 100%;
         height: 60vh;
