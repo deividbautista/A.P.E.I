@@ -178,19 +178,6 @@
 </body>
 <!-- Fin sección body principal -->
 
-<!-- Sección footer general-->
-<!--Se vera utilizado en todo el aplicativo y por ello debe estar en el archivo base-->
-<!-- <footer>
-    <div class="content-footer">
-        <span class="text-copy"><small>&copy; 2023 <b>Deivid Bautista</b>- Todos los derechos reservados.</small></span>
-        <a href="#" class="icono fa-brands fa-facebook"></a>
-        <a href="#" class="icono fa-brands fa-instagram"></a>
-        <a href="#" class="icono fa-brands fa-twitter"></a>
-        <a href="https://github.com/deividbautista/Profile-flask" class="icono fa-brands fa-github"></a>
-    </div>
-</footer> -->
-<!-- Fin sección footer general-->
-
 <!-- Inicio footer responsive -->
 <footer class="pie_de_pagina ">
     <div class="grupo-2">
@@ -201,6 +188,7 @@
 
 
 <!-- Sección de enlaces de scripts locales -->
+{% block scripts %}{%endblock%}
 <script src="../static/js/main.js"></script>
 <script src="../static/js/drag_and_drop.js"></script>
 <script src="../static/js/alerts.js"></script>

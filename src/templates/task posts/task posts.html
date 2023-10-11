@@ -22,18 +22,27 @@ poder personalizar y ahorrar lineas de codigo en los modulos
     <!-- Contenido principal "En desarrollo..."-->
     <div class="container3">
         <div class="container4">
-            <br><br>
-            <!-- <div class="container-tareas">
-                <h1>Lista de Procesos</h1>
-                <h2></h2>
-                <div class="search-tareas">
-                    <form class="Formulario-tareas">
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#ModalCrearproceso"
-                            class="boton-tareas"> Agregar proceso...</button>
-                    </form>
+            <!-- Sección de cabecera del contenedor de los procesos -->
+            <br>
+            <div class="containerHead">
+                <div class="container-search-bar">
+                    <div class="item item-1">
+                        <input type="text" placeholder="Escriba el nombre del proceso..." id="buscador">
+                    </div>
+                    <div class="item item-2">
+                        <i class="search-icon fa-solid fa-magnifying-glass"></i>
+                    </div>
                 </div>
-            </div> -->
-            <!-- Modal 1 Para crear proceso -->
+        
+                <div class="containerButomGenerate">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#ModalCrearproceso"
+                    class="butomGenerate "> <i class="fa-solid fa-plus"></i> </button>
+                </div>
+            </div>
+            <!-- Fin sección de cabecera del contenedor de los procesos -->
+            <!------------------------------------------------------------------------------------------------------------------------------------>
+
+            <!-- Inicio modal-1 crear posts -->
             <div class="modal fade" id="ModalCrearproceso" tabindex="-1" aria-labelledby="ModalCrearproceso"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -44,8 +53,10 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         </div>
                         <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
                         <div class="modal-body">
-                            <form action="/proceso" method="POST">
+                            <form action="/addPosts" method="POST">
                                 <div class="row mb-3">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
                                     <label>Titulo: *</label>
                                     <input type="text" class="form-control mb-3" name="Titulo" required>
 
@@ -77,10 +88,10 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                             {% for Usuario in datosU %}
                                             <li class="elementoLista">
                                                 <input type="checkbox" class="usuariosSelect"
-                                                    name="usuarios_seleccionados" value="{{ Usuario.id }}"
-                                                    id="{{Usuario.id}}">
-                                                <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
-                                                    {{Usuario.fullname}}
+                                                    name="usuarios_seleccionados" value="{{ Usuario.id_usuarios }}"
+                                                    id="{{Usuario.id_usuarios}}">
+                                                <label for="{{Usuario.id_usuarios}}" id="AsignarUsu" class="NombreUsuario">
+                                                    {{Usuario.Nombre_completo}}
                                                 </label>
                                             </li>
                                             {% endfor %}
@@ -98,7 +109,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                     </div>
                 </div>
             </div>
-            <!-- Fin modal-1 -->
+            <!-- Fin modal-1 crear posts -->
             <!------------------------------------------------------------------------------------------------------------------------------------>
 
 
@@ -293,8 +304,9 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <div class="modal-body">
                             <form action="/edit/{{datos.id_proceso}}" method="post" id="formularioActualizarP"
                                 enctype="multipart/form-data">
-                                <!-- Campo para diligenciar el titulo -->
+                                <!-- Campo con el token de sección -->
                                 <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <!-- Campo para diligenciar el titulo -->
                                 <label>Titulo:</label>
                                 <input type="text" class="form-control mb-3" name="Titulo" value="{{datos.Titulo}}"
                                     required>
@@ -435,6 +447,8 @@ poder personalizar y ahorrar lineas de codigo en los modulos
     </div>
     <br>
 </body>
-<!-- Fin contenido principal del modulo "home"-->
 
+{% block scripts %}<script src="../static/js/procesos.js"></script>{%endblock%}
+
+<!-- Fin contenido principal del modulo "home"-->
 {%endblock%}

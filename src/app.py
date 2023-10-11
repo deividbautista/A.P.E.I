@@ -28,7 +28,7 @@ from models.ModelUser import ModelUser, datosUsuarios
 
 from models.ModelGeneral import extensiones_validas
 
-from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf
+from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts
 
 # Entities:
 from models.entities.User import User
@@ -147,6 +147,22 @@ def posts():
     return render_template("task posts/task posts.html", data=processed_data, datosU=dataUser)
 # ------------------------------------------------------
 
+# ------------------------------------------------------
+@app.route('/addPosts', methods=['POST'])
+def añadirP():
+    # Definimos las variables con los valores obtenidos en el formulario.
+    Titulo = request.form['Titulo']
+    Descripcion = request.form['Descripcion']
+    FechaIn = request.form['fecha_I']
+    Fechali = request.form['fecha_L']
+    NivelImportancia = request.form['select']
+    asignados = request.form.getlist('usuarios_seleccionados')
+    Estado_proceso = 1
+
+    addPosts(Database, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, asignados, Estado_proceso)
+
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
 
 # ------------------------------------------------------
 # Ruta para eliminar los procesos registrados en la base de datos.

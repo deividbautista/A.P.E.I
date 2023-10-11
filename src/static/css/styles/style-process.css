@@ -45,24 +45,6 @@ h1 {
     display: flex;
     width: 100%;
 }
-
-.boton-tareas {
-    padding: 15px 10px;
-    outline: none;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-    color: rgb(0, 0, 0);
-    background-color: rgb(153, 189, 255);
-}
-
-.boton-tareas:hover {
-    cursor: pointer;
-    color: antiquewhite;
-    background-color: #4F709C;
-    font-size: 1.1rem;
-}
-
 /*------------------------------------------------------------------*/
 /* Fin sección con estilos generales*/
 /*------------------------------------------------------------------*/
@@ -341,10 +323,20 @@ input[type="checkbox"]:checked+.PersonalAsignados {
 /* Inicio de sección task posts*/
 /*---------------------------------------------------------------------------------------------------*/
 
+.containerHead{
+    height: 30px;
+    width: 50%;
+    margin: auto;
+    margin-top: 15px;
+    margin-bottom: 25px;
+    display: grid;
+    grid-template-columns: 1fr 0fr;   
+}
+
 .contenedorprin {
     display: grid;
     place-items: center;
-    margin-bottom: 5rem;
+    background-color: #000000;
 }
 
 main {
@@ -357,6 +349,7 @@ main {
     /* background-color: #9BA4B5; */
     width: 75%;
     min-width: 275px;
+    margin-top: 5rem;
 }
 
 .section-main-container {
@@ -467,6 +460,69 @@ main {
     margin-left: 2rem;
 }
 
+/*------------------------------------------------------------------*/
+/* Inicio sección barra de busqueda */
+/*------------------------------------------------------------------*/
+.container-search-bar{
+    height: 30px;
+    border-radius: 15px;
+    border: 1px solid #D0CFCE;
+    background-color: rgba(255, 255, 255, 0.219);
+    display: grid;
+    grid-template-columns: 1fr 0fr;
+}
+
+.item-1 {
+    margin-left: 10px;
+}
+
+.item-1 input[type=text] {
+    border: none;
+    font-size: 17px;
+    background: none;
+    width: 100%;
+}
+
+.item-1 input[type=text]:focus {
+    outline: none;
+}
+
+.item-1 input[type=text]:focus::-webkit-input-placeholder{
+    -webkit-transition: opacity 0.45s ease;
+    transition: opacity 0.45s ease;
+    opacity: 0;
+}
+
+
+.item-2 {
+    margin: auto;
+    padding-right: 8px;
+}
+
+.item-2 .search-icon{
+    font-size: 1rem;
+}
+/*------------------------------------------------------------------*/
+/* Fin sección barra de busqueda */
+/*------------------------------------------------------------------*/
+
+/*------------------------------------------------------------------*/
+/* Inicio sección boton para generar procesos */
+/*------------------------------------------------------------------*/
+.butomGenerate{
+    margin-top: 3px;
+    margin-left: 15px;
+    border: none;
+    cursor: pointer;
+    background: none;
+}
+.butomGenerate:hover{
+    font-size: 1.1rem;
+    color: #8dbcd1;
+}
+/*------------------------------------------------------------------*/
+/* Fin sección barra de busqueda */
+/*------------------------------------------------------------------*/
 
 /*------------------------------------------------------------------*/
 /* Inicio sección boton Generar reporte */
@@ -680,3 +736,7 @@ progress[value]::-webkit-progress-value {
 /*------------------------------------------------------------------*/
 /* Fin sección input select*/
 /*------------------------------------------------------------------*/
+
+.filtro{
+    display: none;
+}

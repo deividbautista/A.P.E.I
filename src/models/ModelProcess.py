@@ -1,6 +1,6 @@
 
 # Importar las dependencias necesarias para la correcta función de las funciones.
-from models.ModelGeneral import extensiones_validas
+from models.ModelGeneral import extensiones_validas, idAleatorio
 
 from flask import jsonify
 from xhtml2pdf import pisa
@@ -48,6 +48,29 @@ def datos_proceso(Database):
 
     # Retornamos finalmente los datos de los procesos.
     return processed_data
+# --------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------
+def addPosts(Database, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, asignados, Estado_proceso):
+
+    id_proceso = idAleatorio()
+    NivelImportancia = int(NivelImportancia)
+
+    if Titulo and Descripcion:
+        cursor = Database.connection.cursor()
+        sql = "INSERT INTO procesos (id_proceso, Titulo, Descripcion, Fecha_inicio, Fecha_terminación, Nivel_importancia, Estado_proceso) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        data = (id_proceso, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, Estado_proceso)
+        cursor.execute(sql, data)
+        Database.connection.commit()
+
+    if len (asignados) > 0:
+        for Numid in asignados:
+            cursor = Database.connection.cursor()
+            sql = "INSERT INTO asignaciones (id_usuarios, id_proceso) VALUES (%s, %s)"
+            data = (Numid, id_proceso)
+            cursor.execute(sql, data)
+            Database.connection.commit()
+            
 # --------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------
