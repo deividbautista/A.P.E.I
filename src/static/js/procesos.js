@@ -40,6 +40,22 @@ toggleButtons.forEach(function(button) {
     });
 });
 
+document.addEventListener("keyup", e=>{
+  if (e.target.matches("#buscador")){
+    if(e.key === "Escape")e.target.value = ""
+
+    document.querySelectorAll(".section-main-container").forEach(palabra =>{
+
+      const tituloP = palabra.querySelector(".titleP");
+
+      palabra.textContent.toLocaleLowerCase().includes(e.target.value.toLowerCase())
+      ?palabra.classList.remove("filtro")
+      :palabra.classList.add("filtro")
+
+    })
+  }
+
+})
 
 
 

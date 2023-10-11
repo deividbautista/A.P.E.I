@@ -1,47 +1,62 @@
+// --------------------------------------------------------------------------------
+// Definimos las constantes para obtener los objetos con lo que interactuaremos.
+const userLabels = document.querySelectorAll(".NombreUsuario");
+const labels = document.querySelectorAll('.NombreUsuario_2');
+const toggleButtons = document.querySelectorAll('.desplegable-toggle');
+var dropdowns = document.querySelectorAll('.dropdown');
+var select = document.getElementById("SelectLevel");
 
-//-------------------------------------------------------
-//Sección donde definiremos todas las constantes que utiliaremos
-//para brindar la funcionalidad ocultar y ver contraseña.
-//-------------------------------------------------------
+// --------------------------------------------------------------------------------
+// Agrega un evento click a cada label.
+userLabels.forEach(label => {
+  label.addEventListener('click', (event) => {
+    // Prevenir que se cierre la lista.
+    event.stopPropagation();
+  });
+});
+// --------------------------------------------------------------------------------
 
-//Esto se realiza a travez del query selector, el cual nos permite 
-//selecciónar un elemento de nuestro html y darle funciones.
-const iconEye = document.querySelector('#icon-eye')
-const password = document.querySelector('#password')
-const eye = document.querySelector('#eye')
-//-------------------------------------------------------
-//Sección de funcionalidad para ver y ocultar contraseña.
-//-------------------------------------------------------
 
-//Utilizamos la contante definida anteriormente, le brindamos el 
-//evento click, en pocas palabras, cuando se seleccione el objeto 
-//realizara lo siguiente.
-iconEye.addEventListener('click', () =>{
+// --------------------------------------------------------------------------------
+// Función para obtener la fecha del dia de hoy y asignarla automaticamente en el campo de periodo.
+window.onload = function () {
+  var dateFields = document.querySelectorAll("#fecha");
+  var today = new Date().toISOString().split("T")[0];
 
-    //Definimos la condicional if, en la que si el tipo del input
-    //es igual a password, tenemos el primer estado en el que al moomento
-    //de dar click se realizara lo que determinemos dentro del if.
-    if (password.type === 'password'){
+  dateFields.forEach(function (dateField) {
+    dateField.value = today;
+  });
+};
+// --------------------------------------------------------------------------------
 
-        //Se cambia el tipo del input, por text.
-        password.type = 'text'
 
-        //Se remueve la clase, que nos da el icono del ojo cerrado.
-        eye.classList.remove('fa-eye-slash')
+// --------------------------------------------------------------------------------
+// Agrega un evento de clic a cada botón
+toggleButtons.forEach(function(button) {
+  button.addEventListener('click', function(event) {
+      event.preventDefault(); // Prevenir la acción predeterminada (puede evitar que la lista se abra/cierre)
+      var dropdown = button.closest('.dropdown'); // Encuentra el elemento .dropdown más cercano
+      dropdown.classList.toggle('active');
+      event.stopPropagation(); // Evita que el clic llegue al documento
+  });
+});
 
-        //Se añade la clase para el ojo abierto.
-        eye.classList.add('fa-eye')
+// Agrega un controlador de eventos clic al documento
+document.addEventListener('click', function(event) {
+  dropdowns.forEach(function(dropdown) {
+      if (!dropdown.contains(event.target)) {
+          // Si el clic ocurrió fuera del menú desplegable, ciérralo
+          dropdown.classList.remove('active');
+      }
+  });
+});
+// --------------------------------------------------------------------------------
 
-      //En cuyo caso que la condicional no se cumpla, osea que el imput sea
-      //tipo text, se procedera a realizar lo determiinado en el if, en el
-      //momento de seleccionar el elemento.
-    } else{
-        //Se cambia el tipo del input, por password.
-        password.type = 'password'
-        //Se remueve la clase para el ojo abierto.
-        eye.classList.remove('fa-eye')
-        //Se añade la clase para el el icono del ojo cerrado.
-        eye.classList.add('fa-eye-slash')
-    }
-
-})
+// --------------------------------------------------------------------------------
+// Evita que el formulario se envie si no se escoje un una opción del valida del input select.
+document.getElementById("formularioActualizarP").addEventListener("submit", function(event) {
+  if (select.value === "") {
+    event.preventDefault(); // Evitar el envío del formulario
+    alert("Por favor, elija una opción válida antes de enviar el formulario.");
+  }
+});

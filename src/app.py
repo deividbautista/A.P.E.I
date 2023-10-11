@@ -1,29 +1,14 @@
-# Codigo sustraido del canal url=('https://youtu.be/FX0lMm_Qj10')
-# creditos respectivos al autor y o su equipo de trabajo, "Repositorio=('https://github.com/UskoKruM/flask-login-mysql')"
-
-
-# -----------------------------------------------------
-# Sección donde importaremos Modulos, Instancias y variables, que utilizaresmos.
-# -----------------------------------------------------
-from flask import Flask, render_template, request, redirect, url_for, flash
+# Importar las librerias principales para la función del aplicativo.
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_mysqldb import MySQL
+from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_wtf import FlaskForm
+from wtforms import StringField, PasswordField, SubmitField
+from wtforms.validators import DataRequired
 
 import re
-
-from config import config
-
-# Models:
-from models.ModelUser import ModelUser
-
-# Entities:
-from models.entities.User import User
-
-from models.entities.User import *
-
-# Para subir archivo tipo foto al servidor
-from werkzeug.utils import secure_filename 
 
 # El módulo os en Python proporciona los detalles y la funcionalidad del sistema operativo.
 import os 
@@ -31,9 +16,29 @@ import os
 # Modulo para obtener la ruta o directorio
 from os import path 
 
-# -----------------------------------------------------
-# Sección donde inicializaremos o definiremos las instancias principales.
-# -----------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# Apartado para importar modulos del paquete / directorio models.
+# -----------------------------------------------------------------------------------------
+
+# Conexión base de datos:
+from database import config
+
+# Models:
+from models.ModelUser import ModelUser, datosUsuarios
+
+from models.ModelGeneral import extensiones_validas
+
+from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts
+
+# Entities:
+from models.entities.User import User
+
+from models.entities.User import *
+
+# -----------------------------------------------------------------------------------------
+# Fin apartado para importar modulos del paquete / directorio models.
+# -----------------------------------------------------------------------------------------
+
 
 # Constructor principal para ejecutar el sistema de información.
 app = Flask(__name__)
@@ -42,21 +47,29 @@ app = Flask(__name__)
 csrf = CSRFProtect()
 
 # Para utilizar sentencias sql
-db = MySQL(app)
+Database = MySQL(app)
 
 # Para el control de vistas a usuarios no registrados.
 login_manager_app = LoginManager(app)
 
-
+    
 # Función para poder hacer uso de las instancias de LoginManager.
 @login_manager_app.user_loader
 def load_user(id):
-    return ModelUser.get_by_id(db, id)
+    return ModelUser.get_by_id(Database, id)
 
 
 # -----------------------------------------------------
 # Apartado de las rutas principales con sus respectivas caracteristicas.
 # -----------------------------------------------------
+
+# -----------------------------------------------------
+# Apartado de las clases que se utilizara para la estructuración del formulario.
+# -----------------------------------------------------
+class LoginForm(FlaskForm):
+    NDI = StringField('Número de documento', validators=[DataRequired()])
+    password = PasswordField('Contraseña', validators=[DataRequired()])
+    submit = SubmitField('Ingresar')
 
 
 # Para incializar el sistema de información con la ruta indicada.
@@ -105,30 +118,148 @@ def help():
     return render_template("help/help.html")
 
 
-# -----------------------------------------------------
+# -----------------------------------------------------------------------------------------
+# Sección principal de control de posts / procesos.
+# -----------------------------------------------------------------------------------------
+# Ruta que renderiza la vista de los procesos.
+@app.route("/posts")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
+def posts():    
+
+    dataUser = datosUsuarios(Database)
+    processed_data = datos_proceso(Database)
+    fecha_actual = datetime.now().date()
+    umbral_maximo_dias = 15
+
+    for processed in processed_data:
+        # Se realiza la operación para la diferencia entre los dias, utilizando la biblioteca datetime.
+        diferencia = processed["fecha_limite"] - fecha_actual
+        progreso = 1.0 - min(diferencia.days / umbral_maximo_dias, 1.0)
+
+        if progreso <= 0:
+            progreso = 0.03
+            # Redondear el valor de progreso a un número entero
+        processed["diferencia_dias"] = diferencia.days
+        processed["progreso"] = round(progreso * 100)
+
+    return render_template("task posts/task posts.html", data=processed_data, datosU=dataUser)
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+@app.route('/addPosts', methods=['POST'])
+def añadirP():
+    # Definimos las variables con los valores obtenidos en el formulario.
+    Titulo = request.form['Titulo']
+    Descripcion = request.form['Descripcion']
+    FechaIn = request.form['fecha_I']
+    Fechali = request.form['fecha_L']
+    NivelImportancia = request.form['select']
+    asignados = request.form.getlist('usuarios_seleccionados')
+    Estado_proceso = 1
+
+    addPosts(Database, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, asignados, Estado_proceso)
+
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
+
+# ------------------------------------------------------
+# Ruta para eliminar los procesos registrados en la base de datos.
+@app.route('/deleteProcess/<string:idP>')
+def eliminarP(idP):
+    deleteP(Database, idP)
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
+
+
+# ------------------------------------------------------
+# Ruta para eliminar el reporte generado.
+@app.route('/deleteReport/<string:idP>')
+def eliminarR(idP):
+    deleteR(Database, idP)
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
+
+
+# ------------------------------------------------------
+# Ruta para editar los atributos insertados del proceso seleccionado.
+@app.route('/edit/<string:id_proceso>', methods=['POST'])
+def editarP(id_proceso):
+
+    Titulo =            request.form['Titulo']
+    Descripcion =       request.form['Descripcion']
+    asignados =         request.form.getlist('usuarios_seleccionados_2')
+    NivelImportancia =  request.form['selectI']
+    Estado_proceso =    request.form['selectP']
+
+    if Titulo and Descripcion:
+        data = (Titulo, Descripcion, NivelImportancia, Estado_proceso, id_proceso)
+        editP(Database, data, asignados)
+
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
+
+
+# ------------------------------------------------------
+# Ruta para eliminar asigandos en un proceso.
+@app.route('/deleteAsignacion', methods=['POST'])
+@csrf.exempt
+def eliminarAsignados():
+    data = request.json
+    idU = data.get("id_asignado")
+    idP = data.get("id_proceso")
+
+    deleteAsignados(Database, idU, idP)
+    return jsonify({"status": "success", "message": idP})
+# ------------------------------------------------------
+
+
+# ------------------------------------------------------
+# Ruta para generar reporte en pdf.
+@app.route('/generar_reporte', methods=['GET', 'POST'])
+def generar_reporte():
+    if request.method == 'POST':
+        # Captura los datos del formulario.
+        id_proceso       = request.form.get('idProceso')
+        titulo           = request.form['titulo']
+        descripcion      = request.form['descripcion']
+        imagen_file      = request.files['archivo']
+        Estado_proceso   = request.form['EstadoProceso']
+
+        # Variable que guarda el valor de la extensión deseada para aplicar.
+        nombrepdf        = id_proceso + '.pdf'
+
+        data = (Estado_proceso, nombrepdf, id_proceso)
+        generate_pdf(Database, data, imagen_file, titulo, descripcion)
+
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
+
+# -----------------------------------------------------------------------------------------
 # Sección principal de autentificación de usuario.
-# -----------------------------------------------------
+# -----------------------------------------------------------------------------------------
 # Para definir la ruta y metodos por los que obtendremos los datos del login.
 @app.route("/login", methods=["GET", "POST"])
-
 # Función principal de login, que sera el pilar principal de todo nuestro sistema de información.
 def login():
     # Este if principal reune el desarrollo principal en el que determinaremos las funcionalidades principales
     # como primero definir si tenemos los datos enviados por metodo POST
-    if request.method == "POST":
+    form = LoginForm()
+    if form.validate_on_submit():
         # Definir la instancia usuarios, la cual le pasamos los parametros del "NDI" y el "password".
         user = User(
             0, request.form["NDI"], request.form["password"], 0, 0, 0, 0, 0, 0, 0, 0, 0
         )
 
         # Funcion para comprovar el logged del usuario, osea verificar que es una cuenta existente.
-        logged_user = ModelUser.login(db, user)
+        logged_user = ModelUser.login(Database, user)
 
         # Siguiendo con la misma funcionalidad, tenemos la comprovación de que el usuario esta registrado
         # es certera, se procedera a realizar los siguientes if.
         if logged_user != None:
             # Este if nos comprueba si la contraseña sustraida, esta registrada o no, en la base de datos.
-            if logged_user.password:
+            if logged_user.Contraseña:
                 login_user(logged_user)
                 # En cuyo caso que el metodo de verificación nos comprueve que efectivamente es un usario y contraseña valida
                 # se retornara a la vista que desea el usuario.
@@ -151,31 +282,11 @@ def login():
     else:
         # Para dar retorno a nuestra ruta principal.
         return render_template("auth/login.html")
+# ------------------------------------------------------
 
 
-# -----------------------------------------------------
-# Sección para validar extensión del archivo.
-# -----------------------------------------------------
-def extensiones_validas(filename):
-    # Lista de extensiones permitidas para los archivos de imagen
-    extensiones_permitidas = {'png', 'jpg', 'jpeg', 'gif', 'svga', 'webp'}
-
-    # Obtener la extensión del archivo
-    extension = filename.rsplit('.', 1)[1].lower()
-
-    # Verificar si la extensión está permitida
-    if '.' in filename and extension in extensiones_permitidas:
-        print("yes")
-        return True
-    else:
-        return False
-
-    
-
-# -----------------------------------------------------
-# Sección principal de actualización de usuario.
-# -----------------------------------------------------
-@app.route("/edit", methods=["POST"])
+# ------------------------------------------------------
+@app.route("/editProfile", methods=["POST"])
 # Definimos la función "update", para poder ejecutar las distintas actividades que se realizara en este modulo.
 def update():
     # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
@@ -209,7 +320,7 @@ def update():
                     file.save(upload_path)
 
                     # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
-                    cursor = db.connection.cursor()
+                    cursor = Database.connection.cursor()
                     # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
                     sql="""UPDATE users SET Nombre_img = '{1}'  WHERE NDI = {0}"""
                     # Definimos la variable atr con los parametros para realizar la consulta de manera dinamica.
@@ -217,12 +328,12 @@ def update():
                     # Usamos el execute para poder realizar la consulta anteriormente mostrada.
                     cursor.execute(sql.format(Atr[0],Atr[1]))
                     # cursor.execute(sql)
-                    db.connection.commit()
+                    Database.connection.commit()
                     print(archivo.filename)
                 else:
                     flash ("Archivo invalido😢", "error")
                     return redirect("profile")
-        #-----------------------------------------------------------------------------------------------------------------------------------
+        #------------------------------------------------------------------------------------------------------
            
         # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
         # los datos en la consulta posterior de MySql.
@@ -240,27 +351,26 @@ def update():
         datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
 
         # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
-        cursor = db.connection.cursor()
+        cursor = Database.connection.cursor()
         # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
-        sql="""UPDATE users SET fullname = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
+        sql="""UPDATE usuarios SET Nombre_completo = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
                 Area_locativa= '{5}', Fecha_nacimiento = '{6}', NDI= '{7}', Email= '{8}' WHERE NDI = {7}"""
         # Usamos el execute para poder realizar la consulta anteriormente mostrada.
         cursor.execute(sql.format(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8]))
         # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
         # cursor.execute(sql)
-        db.connection.commit()
+        Database.connection.commit()
 
         flash("Se actualizó correctamente🥳","success")
         return redirect("profile")
     except Exception as ex:
          raise Exception(ex)
-    
-
-# -----------------------------------------------------
-# Apartado de las funciones de los errores
-# -----------------------------------------------------
+# ------------------------------------------------------
 
 
+# -----------------------------------------------------------------------------------------
+# Apartado de las funciones de los errores.
+# -----------------------------------------------------------------------------------------
 # Error en el que el usuario quiere acceder a una ruta que posee el "Login_requeried"
 # el cual lo redigira a la ruta login principal.
 def status_401(error):
@@ -270,14 +380,17 @@ def status_401(error):
 # Error en el que el usuario intenta accesar a una ruta invalida o incorrecta.
 def status_404(error):
     return "<h1>Pagina no encontrada :(...<h1/>", 404
+# ------------------------------------------------------
 
 
-# -----------------------------------------------------
+# -----------------------------------------------------------------------------------------
 # Apartado de inicialización del proyecto.
-# -----------------------------------------------------
+# -----------------------------------------------------------------------------------------
 if __name__ == "__main__":
     app.config.from_object(config["development"])
     csrf.init_app(app)
     app.register_error_handler(401, status_401)
     app.register_error_handler(404, status_404)
-    app.run()
+    app.run(debug=True, port=5050)
+
+

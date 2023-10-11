@@ -3,6 +3,9 @@ que contiene los links principales del javaScripts y Css, para brindar los estil
 -->
 {%extends './base.html' %}
 
+<!-- En esta sección personalizamos asignaremos la ruta de los estilos personalizados para este modulo-->
+{% block links %} <link rel="stylesheet" href="../static/css/styles/style-profile.css"> {%endblock%}
+
 <!-- En esta sección personalizamos el titulo correspondiente a cada modulo en el que nos encontremos-->
 {%block title%} Perfil de Usuario. {%endblock%}
 
@@ -39,7 +42,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                     <!-- Se usa current, como funcion del modulo user, dentro de corchetes dobles, que es la sintaxis ofrecida por flask, para 
                     poder obtener el nombre del usuario por medio de la función llamada: "fullname", definida em la carpeta "models/entities", en el modulo de "User"
                     la cual contiene los parametros de los datos de el usario por medio de consulta sql dictaminada en el aparado de "ModelsUser"-->
-                    <h3 class="titulo2">{{ current_user.fullname}}
+                    <h3 class="titulo2">{{ current_user.Nombre_completo}}
 
                         <!-- Botón para acceder al modal, que contiene la sección principal para la actualización de datos del usario -->
                         <button type="button" class="boton-edit" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -61,7 +64,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <li><i class="icono fa-solid fa-circle-user"></i>{{ current_user.Cargo}}.</li>
                     </ul>
                     <ul class="lista-datos">
-                        <li><i class="icono fas fa-map-marker-alt"></i>{{ current_user.Area}}.</li>
+                        <li><i class="icono fas fa-map-marker-alt"></i>{{ current_user.Area_locativa}}.</li>
                         <li><i class="icono fas fa-calendar-alt"></i>{{ current_user.Fecha_nacimiento}}.</li>
                         <li><i class="icono fa-solid fa-id-card"></i>{{ current_user.NDI}}.</li>
                         <li><i class="icono fa-solid fa-envelope"></i>{{ current_user.Email}}</li>
@@ -85,10 +88,10 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 
                     <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
                     <div class="modal-body">
-                        <form action="/edit" method="POST" enctype="multipart/form-data">
+                        <form action="/editProfile" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                             <label for="">Nombre completo:</label>
-                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.fullname}}">
+                            <input type="text" class="form-control mb-3" name="fullname" value="{{current_user.Nombre_completo}}">
                             <label for="">Direccion:</label>
                             <input type="text" class="form-control mb-3" name="Direccion" value="{{ current_user.Direccion}}">
                             <label for="">Telefono:</label>
@@ -98,7 +101,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             <label for="">Cargo:</label>
                             <input type="text" class="form-control mb-3" name="Cargo" value="{{ current_user.Cargo}}">
                             <label for="">Area locativa:</label>
-                            <input type="text" class="form-control mb-3" name="Area" value="{{ current_user.Area}}">
+                            <input type="text" class="form-control mb-3" name="Area" value="{{ current_user.Area_locativa}}">
                             <label for="">Fecha de nacimiento:</label>
                             <input type="date" class="form-control mb-3" name="FDN" value="{{ current_user.Fecha_nacimiento}}">
                             <label for="">Número de documento:</label>

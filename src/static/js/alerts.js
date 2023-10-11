@@ -9,7 +9,7 @@ if(closeIcon !=null){
   
   timer1 = setTimeout(() => {
     toast.classList.remove("active");
-  }, 10000); //1s = 1000 milliseconds
+  }, 5000); //1s = 1000 milliseconds
 
   timer2 = setTimeout(() => {
     progress.classList.remove("active");
@@ -21,7 +21,7 @@ if(closeIcon !=null){
 
     setTimeout(() => {
       progress.classList.remove("active");
-    }, 300);
+    }, 100);
 
     clearTimeout(timer1);
     clearTimeout(timer2);

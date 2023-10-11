@@ -11,11 +11,13 @@ estilos generales
     background-color: rgb(233, 236, 238);
 }
 
-
-.container2{
+.container1 {
     height: 100vh;
 }
 
+.container2 {
+    height: 100vh;
+}
 
 .P1 {
     padding-top: 7rem;
@@ -33,7 +35,7 @@ estilos generales
 }
 
 .navbar {
-    background-image: linear-gradient(45deg, #a5c8ff, #8b89fc);
+    background: linear-gradient(45deg, #D2E0FB, #8b89fc);
     height: fit-content;
 }
 
@@ -128,17 +130,19 @@ estilos generales
 
 
 /*Pie de pagina...*/
-.pie_de_pagina{
+.pie_de_pagina {
     width: 100%;
     background-color: #d6d3fc
-    /* Optional color: #bdc5e9 */
-    /* Optional color: #d6d3fc */
+        /* Optional color: #bdc5e9 */
+        /* Optional color: #d6d3fc */
 }
+
 .pie_de_pagina .grupo-2 {
     padding: 15px 10px;
     text-align: center;
     color: #000000;
 }
+
 /*fin pie de pagina*/
 
 
