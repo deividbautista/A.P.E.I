@@ -1,0 +1,195 @@
+/*=====================================
+estilos generales
+=====================================*/
+
+
+/*Estilos generales que se utilizaran a lo largo de los modulos del proyecto*/
+.bodyPrincipal {
+    background-color: rgb(233, 236, 238);
+    height: 110vh;
+}
+
+#container-footer {
+    position: fixed;
+    left: 0px;
+    bottom: 0px;
+    height: 50px;
+    width: 100%;
+    background: #999;
+    background-color: #d6d3fc !important;
+}
+
+
+.P1 {
+    padding-top: 7rem;
+    margin-left: 15%;
+    color: rgb(0, 0, 0);
+    width: 70%;
+    text-align: justify;
+}
+
+/*Inicio sección Navbar principal*/
+.navbarPrincipal {
+    width: 100%;
+    position: fixed;
+    z-index: 2;
+}
+
+.navbar {
+    background-image: linear-gradient(45deg, #a5c8ff, #8b89fc);
+    height: fit-content;
+}
+
+#sectionNavbar {
+    border-radius: 0.4rem;
+}
+
+#sectionNavbar:hover {
+    color: #fff;
+    background: #5367b8 !important;
+    border-color: #241f5f;
+}
+
+#botonCerrar {
+    margin-top: -1px;
+    background: none;
+    border-color: none;
+    margin-left: 0.5rem;
+    border-radius: 0.4rem;
+}
+
+#botonCerrar:hover {
+    color: #fff;
+    background: #5367b8 !important;
+    border-color: #241f5f;
+}
+
+.img-avatar-nav {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.perfil-usuario-avatar-nav {
+    width: 70px;
+    height: 70px;
+    left: -0.3em;
+    justify-content: center;
+    border: 1px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 12px rgba(0, 0, 0, .2);
+    position: relative;
+}
+
+/*Fin sección Navbar principal*/
+
+
+/*Inicio seccción botones*/
+#botonDescargar {
+    color: black;
+    margin-top: -1px;
+    background: none;
+    border-color: none;
+    margin-left: 0.5rem;
+    border-radius: 0.4rem;
+    width: 9rem;
+    margin: auto;
+}
+
+#botonDescargar:hover {
+    color: #fff;
+    background: #91b2e4 !important;
+    border-color: #241f5f;
+}
+
+.dropdownAyuda {
+    margin-top: -1px;
+    width: 9rem;
+    margin: auto;
+}
+
+/*Fin seccción botones*/
+
+
+/*Inicio sección de modulo de ayuda*/
+.containerViewPdf {
+    margin: auto;
+    padding-top: 1rem;
+    padding-bottom: 4rem;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.view-pdf {
+    width: 600px;
+    height: 60vh;
+}
+
+/*Fin sección de modulo de ayuda*/
+
+
+/*Inicio sección Footer principal*/
+
+.content-footer {
+    text-align: center;
+}
+
+.content-footer .icono {
+    text-decoration: none;
+    color: rgb(34, 34, 34);
+}
+
+.content-footer .icono:hover {
+    color: #2785ff;
+}
+/*Fin sección Footer principal*/
+
+
+/*Inicio sección para la configuración responsive*/
+@media (max-width: 750px) {
+    #Name_nav {
+        margin-top: -2.5rem;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+    }
+
+    #sectionNavbar {
+        margin: auto;
+        text-align: center;
+        width: 18%;
+        border-color: #5d1f5f;
+        margin-bottom: 10px;
+    }
+
+    #botonCerrar {
+        margin: auto;
+        position: relative;
+        width: 25%;
+        margin-bottom: 10px;
+    }
+
+    .perfil-usuario-avatar-nav {
+        width: 90px;
+        height: 90px;
+        left: 0.5px;
+        margin: auto;
+        margin-bottom: 10px;
+    }
+    .containerViewPdf {
+        margin: auto;
+        width: 300px;
+        padding-top: 1rem;
+        padding-bottom: 4rem;
+        position: absolute;
+        left: 50%;
+        transform: translate(-50%);
+    }
+    
+    .view-pdf {
+        width: 100%;
+        height: 60vh;
+    }
+}
