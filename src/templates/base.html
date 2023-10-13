@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Sección header-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Apartado de links para otorgar los estilos -->
+    {% block links %}{%endblock%}
+    <link rel="stylesheet" href="../static/css/styles/style-general.css">
+    <link rel="stylesheet" href="../static/css/alerts/alerts.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <!-- Fin apartado de links para otorgar los estilos -->
+
+    <!-- Apartado para la personalización del titulo del modulo por medio del uso de las propiedades block
+    que nos brinda el procesador de renderizado "FLASK"-->
+    <title>{%block title%}{%endblock%}</title>
+    <link rel="icon" type="image/x-icon" href="../static/img/logo/favicon.ico">
+</head>
+<!-- Fin sección header-->
+
+<!-- Sección body principal -->
+
+<body>
+
+    <!-- Contenedor general del navbar general del proyecto, implementando botstrap para su elaboración-->
+    <div class="navbarPrincipal">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <!-- Botón encargado de desplegar el menú cuando adquiere las propiedades responsive adaptandose al tamaño
+                adecuado para un dispositivo mobil-->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Contenedor principal que alberga la lista con los elementos deseados para reflejar en el menú-->
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+
+                    <!-- Titúlo que contiene el nombre del aplicativo y tambien posee la funcionalidad de redirecciónar a la
+                    landing page principal-->
+                    <a id="Name_nav" class="navbar-brand" href="/home">A.P.E.I</a>
+
+                    <!-- Lista donde se tienen los distintos titulos de los modulos del proyecto-->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a id="sectionNavbar" class="nav-link" href="/home">INICIO</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="sectionNavbar" class="nav-link" href="/posts">TAREAS</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="sectionNavbar" class="nav-link" href="/help">AYUDA</a>
+                        </li>
+                        <!-- Botón de cerrar para finalizar la sesión dentro del aplicativo, utilizando la sintaxis proporcinada por flask, podemos
+                        ejecutar la acción "logout" o "Cerrar sesión" gracias a "url_for"-->
+                        <li class="nav-item">
+                            <a id="botonCerrar" class="nav-link btn btn-secondary" href="{{ url_for('logout') }}">CERRAR
+                                SESIÓN</a>
+                        </li>
+
+
+                        <!-- Sección donde adaptariamos la foto de perfil del usario para tener un menú deplegable, se encuentra en desarrollo...-->
+                        <!-- <li class="nav-item">
+                            <div class="perfil-usuario-avatar-nav">
+                                <a href="/profile">
+                                    <img class="img-avatar-nav"
+                                    src="https://studiosol-a.akamaihd.net/uploadfile/letras/fotos/7/6/5/a/765afb557fabd371fd0a3ba386728100.jpg"
+                                    alt="img-avatar-nav">
+                                </a>
+                            </div>
+                            <ul class="submenu">
+                                <li><a href="index.html#cabecera"><a id="botonCerrar" class="nav-link btn btn-secondary" href="{{ url_for('logout') }}">CERRAR SESIÓN</a></a></li>
+                              </ul>
+                        </li> -->
+                    </ul>
+                    <!-- Sección donde se reflejara la foto de perfil del usuario -->
+
+
+                    <div class="perfil-usuario-avatar-nav">
+                        <a href="/profile">
+                            <img class="img-avatar-nav" src="static/img/avatars/{{ current_user.Nombre_img }}"
+                                alt="img-avatar-nav">
+                        </a>
+                        <!-- <ul class="">
+                            <li><a href="index.html#cabecera">Iniciar sesión</a></li>
+                            <li><a href="index.html#cabecera">Registrarse</a></li>
+                        </ul> -->
+                    </div>
+                    <!-- Fin sección donde se reflejara la foto de perfil del usuario -->
+                </div>
+            </div>
+        </nav>
+        <!-- Fin contenedor general del navbar general del proyecto-->
+    </div>
+
+    <!------------------------------------------------------------------------------------------>
+    <!--
+        Mensaje negativo sobre la respuesta del servidor.
+    -->
+    <!------------------------------------------------------------------------------------------>
+    <!-- Iniciamos el with menssage, que utilizamos para recibir los mensajes por medio de esta propiedad brindada por Flask-->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <!-- Declaramos la condicional en que si encontramos un mensaje, realizaremos lo siguiente-->
+    {% if messages %}
+    <!-- Utilizando el ciclo repetitivo for, recorremos los mensajes envidados por el metodo flash en el archivo del app.py, dependiendo
+        de la situación se determinara cierto mensaje-->
+    {% for category, message in messages %}
+    <!-- Declaramos la sentencia if que evalua el tipo de categoria del mensaje enviado con flash, para evitar errores con los distintos alerts-->
+    {% if category == "error" %}
+    <!-- Tenemos el estilo de los alerts personalizados-->
+    <div class="toast_alert erno active">
+        <div class="toast_alert-content">
+            <i class="fa-solid fa-circle-exclamation errno"></i>
+            <div class="message">
+                <span class="text text-1">{{message}}</span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress active"></div>
+    </div>
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endfor %}
+    <!-- Fin ciclo repetitivo for-->
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endwith %}
+    <!-- Fin de with menssage-->
+    <!------------------------------------------------------------------------------------------>
+
+
+    <!------------------------------------------------------------------------------------------>
+    <!--
+        Mensaje positivo sobre la respuesta del servidor.
+    -->
+    <!------------------------------------------------------------------------------------------>
+    <!-- Iniciamos el with menssage, que utilizamos para recibir los mensajes por medio de esta propiedad brindada por Flask-->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <!-- Declaramos la condicional en que si encontramos un mensaje, realizaremos lo siguiente-->
+    {% if messages %}
+    <!-- Utilizando el ciclo repetitivo for, recorremos los mensajes envidados por el metodo flash en el archivo del app.py, dependiendo
+        de la situación se determinara cierto mensaje-->
+    {% for category, message in messages %}
+    <!-- Declaramos la sentencia if que evalua el tipo de categoria del mensaje enviado con flash, para evitar errores con los distintos alerts-->
+    {% if category == "success" %}
+    <!-- Tenemos el estilo de los alerts personalizados-->
+    <div class="toast_alert active">
+        <div class="toast_alert-content">
+            <i class="fa-solid fa-check check"></i>
+            <div class="message">
+                <span class="text text-1">{{message}}</span>
+            </div>
+        </div>
+        <i class="fa-solid fa-xmark close"></i>
+        <div class="progress active"></div>
+    </div>
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endfor %}
+    <!-- Fin ciclo repetitivo for-->
+    {% endif %}
+    <!-- Fin de la condicional-->
+    {% endwith %}
+    <!-- Fin de with menssage-->
+    <!------------------------------------------------------------------------------------------>
+
+    <!-- Utilizando la propiedad block podemos indicar un apartado para personalización del modulo en especifico, por ello definimos el bloque body
+    para poder tener como plantilla general la pagina con un background establecido, el navbar y footer generales, con la finalidad de ahorrar y optimizar
+    lineas de código-->
+    {%block body%}
+    {%endblock%}
+
+</body>
+<!-- Fin sección body principal -->
+
+<!-- Inicio footer responsive -->
+<footer class="pie_de_pagina ">
+    <div class="grupo-2">
+        <small>&copy; 2023 <b>Deivid Bautista</b>- Todos los derechos reservados.</small>
+    </div>
+</footer>
+<!-- Fin footer responsive -->
+
+
+<!-- Sección de enlaces de scripts locales -->
+{% block scripts %}{%endblock%}
+<script src="../static/js/drag_and_drop.js"></script>
+<script src="../static/js/alerts.js"></script>
+<script src="../static/js/SweetAlerts.js"></script>
+
+<!-- Sección de enlaces de Librerias / modulos externos -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://kit.fontawesome.com/9c61ead5a6.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+    crossorigin="anonymous"></script>
+<!-- Fin sección de enlaces de los scripst-->
+</html>
