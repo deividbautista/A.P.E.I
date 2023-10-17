@@ -10,7 +10,7 @@
 estilos generales
 =====================================*/
 
-.bodyPrincipal{
+.bodyPrincipal {
     height: 100vh;
 }
 
@@ -187,24 +187,26 @@ estilos generales
     margin-top: .5rem;
 }
 
-.img-modal{
+.img-modal {
     width: 100%;
     object-fit: cover;
 }
 
-.modal-body{
+.modal-body {
     padding: 1% !important;
 }
-.modal-content.activate{
+
+.modal-content.activate {
     background-color: #b8d4fe !important;
-    border: dashed 0.4rem #618ac9!important;
+    border: dashed 0.4rem #618ac9 !important;
 }
+
 /*-----------------------------------------------------------------*/
-.menu > li{
+.menu>li {
     float: left;
 }
 
-.menu > li > a{
+.menu>li>a {
     display: block;
     padding: 15px 20px;
     color: rgb(255, 255, 255);
@@ -214,22 +216,24 @@ estilos generales
     text-transform: uppercase;
 }
 
-li a.active, li a:hover{
-    border-radius:5px;
-    background-color: rgb(60, 14, 87) ;
+li a.active,
+li a:hover {
+    border-radius: 5px;
+    background-color: rgb(60, 14, 87);
     transition: all .3s;
 }
+
 /*Fin menú principal*/
 
 /*submenu*/
-.submenu ul{
+.submenu ul {
     margin-top: -1em;
 }
 
-.submenu{
+.submenu {
     position: absolute;
-    border-radius:5px;
-    background: #333333 ;
+    border-radius: 5px;
+    background: #333333;
     width: 150px;
     visibility: hidden;
     opacity: 80%;
@@ -238,9 +242,9 @@ li a.active, li a:hover{
     transition: .1s;
 }
 
-.submenu li a{
+.submenu li a {
     display: block;
-    border-radius:5px;
+    border-radius: 5px;
     padding: 12px;
     color: rgb(255, 228, 228);
     font-family: "open sans";
@@ -248,16 +252,18 @@ li a.active, li a:hover{
     text-transform: uppercase;
     font-size: 13px;
 }
-.menu li:hover .submenu{
+
+.menu li:hover .submenu {
     visibility: visible;
     opacity: 1;
 }
+
 /*-----------------------------------------------------------------*/
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 /* adactacion a dispositivos */
@@ -265,8 +271,8 @@ input[type=number]::-webkit-outer-spin-button {
 
     .seccion-perfil-usuario .perfil-usuario-footer,
     .seccion-perfil-usuario .perfil-usuario-bio {
-    padding: 1rem 0rem !important;
-    margin-bottom: 4rem;
+        padding: 1rem 0rem !important;
+        margin-bottom: 4rem;
     }
 
     .seccion-perfil-usuario .perfil-usuario-body .titulo2 {
@@ -276,9 +282,11 @@ input[type=number]::-webkit-outer-spin-button {
         padding-top: 0 !important;
         position: 0 !important;
     }
+
     .perfil-usuario-bio {
         display: flex !important;
     }
+
     .seccion-perfil-usuario .perfil-usuario-bio {
         margin-bottom: 1.25rem;
         height: auto !important;
@@ -320,5 +328,5 @@ input[type=number]::-webkit-outer-spin-button {
     .seccion-perfil-usuario .lista-datos li {
         width: 100%;
     }
-   
+
 }

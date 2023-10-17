@@ -102,6 +102,12 @@ document.addEventListener("keyup", e => {
   }
 });
 
+var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+socket.on('notification_received', function(data) {
+    // Maneja la notificación recibida y actualiza la interfaz de usuario.
+    alert(data.message);  // Ejemplo: muestra una alerta con la notificación.
+});
 
 
 

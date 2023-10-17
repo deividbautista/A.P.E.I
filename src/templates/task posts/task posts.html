@@ -5,7 +5,9 @@ que contiene los links principales del javaScripts y Css, para brindar los estil
 
 <!-- En esta sección personalizamos asignaremos la ruta de los estilos personalizados para este modulo-->
 {% block links %}
-<link rel="stylesheet" href="../static/css/styles/style-process.css"> {%endblock%}
+<link rel="stylesheet" href="../static/css/styles/style-process.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+{%endblock%}
 
 <!-- En esta sección personalizamos el titulo correspondiente a cada modulo en el que nos encontremos-->
 {%block title%}Pagina principal.{%endblock%}
@@ -33,16 +35,20 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                         <i class="search-icon fa-solid fa-magnifying-glass"></i>
                     </div>
                 </div>
-        
+
                 <div class="containerButomGenerate">
                     <button type="button" data-bs-toggle="modal" data-bs-target="#ModalCrearproceso"
-                    class="butomGenerate "> <i class="fa-solid fa-plus"></i> </button>
+                        class="butomGenerate "> <i class="fa-solid fa-plus"></i> </button>
                 </div>
             </div>
+
+            <!-- Mensaje de no coincidencia -->
+            <h1 class="MensajeError"> No se encontró ningún resultado coincidente.... </h1>
+            <!-- Mensaje de no coincidencia -->
+
             <!-- Fin sección de cabecera del contenedor de los procesos -->
             <!------------------------------------------------------------------------------------------------------------------------------------>
 
-            <h1 class="MensajeError"> No se encontró ningún resultado coincidente.... </h1>
 
             <!-- Inicio modal-1 crear posts -->
             <div class="modal fade" id="ModalCrearproceso" tabindex="-1" aria-labelledby="ModalCrearproceso"
@@ -92,7 +98,8 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                                 <input type="checkbox" class="usuariosSelect"
                                                     name="usuarios_seleccionados" value="{{ Usuario.id_usuarios }}"
                                                     id="{{Usuario.id_usuarios}}">
-                                                <label for="{{Usuario.id_usuarios}}" id="AsignarUsu" class="NombreUsuario">
+                                                <label for="{{Usuario.id_usuarios}}" id="AsignarUsu"
+                                                    class="NombreUsuario">
                                                     {{Usuario.Nombre_completo}}
                                                 </label>
                                             </li>
@@ -232,43 +239,45 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             </p>
                             <hr>
                             <!-- Apartado donde se observan los días faltantes del proceso. -->
-                            {% if datos.diferencia_dias <= 0 %} <p>Proceso cerrado por fecha limite.</p>
+                            {% if datos.diferencia_dias <= 0 %} 
+                                <p>Proceso cerrado por fecha limite.</p>
 
-                                {% elif datos.diferencia_dias > 0 and datos.diferencia_dias < 2 %} <p>Queda
-                                    {{datos.diferencia_dias}} día, para terminar el proceso.</p>
+                            {% elif datos.diferencia_dias > 0 and datos.diferencia_dias < 2 %} 
+                                <p>Queda {{datos.diferencia_dias}} día, para terminar el proceso.</p>
 
-                                    {% elif datos.diferencia_dias > 1 %}
-                                    <p>Quedan {{datos.diferencia_dias}} días, para terminar el proceso.</p>
-                                    {% endif %}
-                                    <hr>
-                                    <!-- Estado del proceso actual. -->
-                                    <p>
-                                        {% if datos.estado_proceso == 1 %}
-                                        Proceso abierto.
-                                        {% elif datos.estado_proceso == 2 %}
-                                        Proceso cerrado.
-                                        {% elif datos.estado_proceso == 3 %}
-                                        Proceso vencido por tiempo.
-                                        {% endif%}
-                                    </p>
-                                    <hr>
-                                    <!-- Nivel de importancia del proceso actual, representado por la cantidad de estrellas. -->
-                                    <p>
-                                        Nivel importancia:
-                                        {% for nivel in range(datos.Nivel_importancia) %}
-                                        <i class="fa-regular fa-star"></i>
-                                        {% endfor %}
-                                    </p>
-                                    <hr>
-                                    <!-- Apartado donde observaremos el pdf en caso de que este ya se haya generado. -->
-                                    {% if not datos.ReporteGenerado %}
-                                    <p>Reporte pendiente.</p>
-                                    {% else %}
-                                    <div class="containerViewReport">
-                                        <iframe class="view-report" src="../static/pdf/{{datos.ReporteGenerado}}"
-                                            allow="autoplay"></iframe>
-                                    </div>
-                                    {% endif %}
+                            {% elif datos.diferencia_dias > 1 %}
+                                <p>Quedan {{datos.diferencia_dias}} días, para terminar el proceso.</p>
+
+                            {% endif %}
+                            <hr>
+                            <!-- Estado del proceso actual. -->
+                            <p>
+                                {% if datos.estado_proceso == 1 %}
+                                Proceso abierto.
+                                {% elif datos.estado_proceso == 2 %}
+                                Proceso cerrado.
+                                {% elif datos.estado_proceso == 3 %}
+                                Proceso vencido por tiempo.
+                                {% endif%}
+                            </p>
+                            <hr>
+                            <!-- Nivel de importancia del proceso actual, representado por la cantidad de estrellas. -->
+                            <p>
+                                Nivel importancia:
+                                {% for nivel in range(datos.Nivel_importancia) %}
+                                <i class="fa-regular fa-star"></i>
+                                {% endfor %}
+                            </p>
+                            <hr>
+                            <!-- Apartado donde observaremos el pdf en caso de que este ya se haya generado. -->
+                            {% if not datos.ReporteGenerado %}
+                                <p>Reporte pendiente.</p>
+                            {% else %}
+                                <div class="containerViewReport">
+                                    <iframe class="view-report" src="../static/pdf/{{datos.ReporteGenerado}}"
+                                        allow="autoplay"></iframe>
+                                </div>
+                            {% endif %}
                         </div>
                         <!-- Sección de footer del proceso-->
                         <div class="modal-footer">
@@ -450,7 +459,9 @@ poder personalizar y ahorrar lineas de codigo en los modulos
     <br>
 </body>
 
-{% block scripts %}<script src="../static/js/procesos.js"></script>{%endblock%}
+{% block scripts %}
+<script src="../static/js/procesos.js"></script>
+{%endblock%}
 
 <!-- Fin contenido principal del modulo "home"-->
 {%endblock%}

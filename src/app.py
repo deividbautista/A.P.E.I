@@ -1,9 +1,10 @@
 # Importar las librerias principales para la función del aplicativo.
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask_socketio import SocketIO
 from flask_mysqldb import MySQL
 from datetime import datetime
 from flask_wtf.csrf import CSRFProtect
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired
