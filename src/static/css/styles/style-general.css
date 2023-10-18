@@ -71,14 +71,27 @@ estilos generales
 }
 
 .perfil-usuario-avatar-nav {
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     left: -0.3em;
     justify-content: center;
     border: 1px solid #ffffff;
     border-radius: 50%;
     box-shadow: 0 0 12px rgba(0, 0, 0, .2);
     position: relative;
+}
+
+.nav-bell{
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.nav-bell i:hover{
+    color: #ffffff;
+}
+
+.nav-bell i{
+    font-size: 1.6rem;
 }
 
 /*Fin sección Navbar principal*/
@@ -191,5 +204,11 @@ estilos generales
     .view-pdf {
         width: 100%;
         height: 60vh;
+    }
+
+    .nav-bell{
+        text-align: center;
+        margin-right: 0px;
+        margin-bottom: 15px;
     }
 }
