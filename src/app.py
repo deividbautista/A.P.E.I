@@ -29,7 +29,7 @@ from models.ModelUser import ModelUser, datosUsuarios
 
 from models.ModelGeneral import extensiones_validas
 
-from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts
+from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts, toRegisterM
 
 # Entities:
 from models.entities.User import User
@@ -53,6 +53,8 @@ Database = MySQL(app)
 # Para el control de vistas a usuarios no registrados.
 login_manager_app = LoginManager(app)
 
+# Para inicializar el "socketio", que nos permite realizar comunicación a tiempo real.
+socketio = SocketIO(app, cors_allowed_origins="*")
     
 # Función para poder hacer uso de las instancias de LoginManager.
 @login_manager_app.user_loader
@@ -144,6 +146,20 @@ def posts():
             # Redondear el valor de progreso a un número entero
         processed["diferencia_dias"] = diferencia.days
         processed["progreso"] = round(progreso * 100)
+
+        if processed["diferencia_dias"] <= 0:
+            print("hola")
+            
+            for id_usuarios in processed['id_usuario']:
+                mensaje = f"El proceso de {processed['Titulo']} ha expirado. Por favor, actualice el proceso o contacte al administrador para más detalles."
+                data = (id_usuarios, processed["id_proceso"], mensaje, datetime.now(), 0 )
+                print(id_usuarios)
+                print(processed["id_proceso"])
+
+            toRegisterM(Database, data)
+
+            # Enviar notificación a través de SocketIO
+            socketio.emit('notificacion', {'mensaje': 'El proceso ha expirado.'})
 
     return render_template("task posts/task posts.html", data=processed_data, datosU=dataUser)
 # ------------------------------------------------------

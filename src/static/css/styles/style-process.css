@@ -55,7 +55,6 @@ h1 {
 /*------------------------------------------------------------------*/
 .elementoLista {
     list-style: none;
-    background-color: lightgray;
     border-radius: 10px;
     margin-top: 15px;
     display: flex;
@@ -74,10 +73,6 @@ li p {
 
 .deplegableNombres {
     width: 93.3%;
-}
-
-.dropdown-menu li {
-    background-color: rgba(142, 180, 252, 0) !important;
 }
 
 .dropdowns-menu {
@@ -157,22 +152,9 @@ li p {
 }
 
 /* Estilo para ocultar la lista desplegable por defecto */
-.dropdown-menu {
-    display: none;
-    position: absolute;
-    list-style: none;
-    padding: 0;
-}
 
 .checkbox_nombres {
     opacity: 0%;
-}
-
-/* Estilo para mostrar la lista desplegable cuando el botón se haga clic */
-.dropdown.active .dropdown-menu {
-    display: block;
-    width: 100%;
-    margin-top: 5px;
 }
 
 /* Estilo para el label cuando el checkbox está seleccionado */
