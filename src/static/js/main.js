@@ -15,3 +15,10 @@ document.addEventListener('click', (event) => {
         notifications.classList.add("Nfiltro");
     }
 });
+
+const socket = io();
+
+        socket.on('notificacion', function(data) {
+            const notificacionDiv = document.getElementById('notificacion');
+            notificacionDiv.innerHTML = data.mensaje;
+        });

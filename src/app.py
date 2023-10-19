@@ -148,13 +148,11 @@ def posts():
         processed["progreso"] = round(progreso * 100)
 
         if processed["diferencia_dias"] <= 0:
-            print("hola")
-            
-            for id_usuarios in processed['id_usuario']:
-                mensaje = f"El proceso de {processed['Titulo']} ha expirado. Por favor, actualice el proceso o contacte al administrador para más detalles."
-                data = (id_usuarios, processed["id_proceso"], mensaje, datetime.now(), 0 )
-                print(id_usuarios)
-                print(processed["id_proceso"])
+
+            if 'id_usuarios' in processed:
+                for id_usuarios in processed['id_usuario']:
+                    mensaje = f"El proceso de {processed['Titulo']} ha expirado. Por favor, actualice el proceso o contacte al administrador para más detalles."
+                    data = (id_usuarios, processed["id_proceso"], mensaje, datetime.now(), 0 )
 
             toRegisterM(Database, data)
 

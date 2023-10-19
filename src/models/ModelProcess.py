@@ -75,7 +75,7 @@ def addPosts(Database, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, 
 # --------------------------------------------------------------------------------------
 def toRegisterM(Database, data):
     cursor = Database.connection.cursor()
-    sql = "INSERT INTO notificacion (id_usuario, id_proceso mensaje, fecha, leido) VALUES (%s, %s, %s, %s, %s)"
+    sql = "INSERT INTO notificacion (id_usuarios, id_proceso, mensaje, fecha, leido) VALUES (%s, %s, %s, %s, %s)"
     cursor.execute(sql, data)
     Database.connection.commit()
     cursor.close()
