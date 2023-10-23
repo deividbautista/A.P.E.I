@@ -56,6 +56,11 @@
                         <li class="nav-item">
                             <a id="sectionNavbar" class="nav-link" href="/help">AYUDA</a>
                         </li>
+                        {%if current_user.Rol == 1 %}
+                        <li class="nav-item">
+                            <a id="sectionNavbar" class="nav-link" href="/dashboard">ADMINISTRAR</a>
+                        </li>
+                        {%endif%}
                         <!-- Botón de cerrar para finalizar la sesión dentro del aplicativo, utilizando la sintaxis proporcinada por flask, podemos
                         ejecutar la acción "logout" o "Cerrar sesión" gracias a "url_for"-->
                         <li class="nav-item">
@@ -88,7 +93,7 @@
                     <div class="perfil-usuario-avatar-nav">
                         <a href="/profile">
                             <img class="img-avatar-nav" src="static/img/avatars/{{ current_user.Nombre_img }}"
-                                alt="img-avatar-nav">
+                                alt="avatar">
                         </a>
                     </div>
                     <!-- Fin sección donde se reflejara la foto de perfil del usuario -->

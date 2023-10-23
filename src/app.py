@@ -25,11 +25,11 @@ from os import path
 from database import config
 
 # Models:
-from models.ModelUser import ModelUser, datosUsuarios
+from models.ModelUser import ModelUser, datosUsuarios, deleteU
 
 from models.ModelGeneral import extensiones_validas
 
-from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts, toRegisterM
+from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts, toRegisterN, notificacion_no_enviada, marcar_notificacion_enviada
 
 # Entities:
 from models.entities.User import User
@@ -120,6 +120,61 @@ def profile():
 def help():
     return render_template("help/help.html")
 
+# -----------------------------------------------------
+# Ruta de home donde nos llevara a la hora de realizar la verificación de usuario.
+@app.route("/dashboard")
+# Utilizamos el metodo de login_required para proteger esta ruta y exigir que se inicie sesión
+# de manera obligatoria para acceder a esta, y no poder hacerlo encontrando la ruta.
+@login_required
+def dashboard():
+    dataUser = datosUsuarios(Database)
+    return render_template("dashboard/dashboard.html", datosU=dataUser)
+
+@app.route("/addUdashboard", methods=["POST"])
+def updateU():
+    # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
+    # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
+    # regulares del usuario.
+    try:   
+        # Definimos todos los paremtros que recolectamos del formulario, y definimos una variable para utilizar 
+        # los datos en la consulta posterior de MySql.
+        nombre= request.form['fullname']
+        direccion= request.form['Direccion']
+        Telefono = request.form['Telefono']
+        Empresa = request.form['Empresa']
+        Cargo = request.form['Cargo']
+        Area = request.form['Area']
+        Fecha_nacimiento = request.form['FDN']
+        NumDoc = request.form['NDI']
+        Email = request.form['Email']
+
+        # Definimos un array llamado datos para poder utilizar las vriables anteriormente definidas.
+        datos = (nombre, direccion, Telefono, Empresa, Cargo, Area, Fecha_nacimiento, NumDoc, Email)
+
+        # Definimos cursor con la conexión de la base de datos para poder realizar la consulta.
+        cursor = Database.connection.cursor()
+        # Veremos la siguiente consulta de tipo UPDATE, en el que le pasamos los parametros para insertar los datos que deseamos actualizar.
+        sql="""UPDATE usuarios SET Nombre_completo = '{0}', Direccion = '{1}', Telefono= '{2}', Empresa= '{3}', Cargo= '{4}', 
+                Area_locativa= '{5}', Fecha_nacimiento = '{6}', NDI= '{7}', Email= '{8}' WHERE NDI = {7}"""
+        # Usamos el execute para poder realizar la consulta anteriormente mostrada.
+        cursor.execute(sql.format(datos[0],datos[1],datos[2],datos[3],datos[4],datos[5],datos[6],datos[7],datos[8]))
+        # sql = "UPDATE user SET fullname = 'mandragora' WHERE id = 1 "
+        # cursor.execute(sql)
+        Database.connection.commit()
+
+        flash("Se actualizó correctamente🥳","success")
+        return redirect("dashboard")
+    except Exception as ex:
+         raise Exception(ex)
+
+
+# ------------------------------------------------------
+# Ruta para eliminar los procesos registrados en la base de datos.
+@app.route('/deleteUsers/<string:idU>')
+def eliminarU(idU):
+    deleteU(Database, idU)
+    return redirect(url_for('posts'))
+# ------------------------------------------------------
 
 # -----------------------------------------------------------------------------------------
 # Sección principal de control de posts / procesos.
@@ -148,13 +203,25 @@ def posts():
         processed["progreso"] = round(progreso * 100)
 
         if processed["diferencia_dias"] <= 0:
-
-            if 'id_usuarios' in processed:
+            if 'id_usuario' in processed:
+                print("wenas")
                 for id_usuarios in processed['id_usuario']:
                     mensaje = f"El proceso de {processed['Titulo']} ha expirado. Por favor, actualice el proceso o contacte al administrador para más detalles."
                     data = (id_usuarios, processed["id_proceso"], mensaje, datetime.now(), 0 )
+                    toRegisterN(Database, data)
 
-            toRegisterM(Database, data)
+        if processed["diferencia_dias"] <= 0:
+            if 'id_usuario' in processed:
+                for id_usuario in processed['id_usuario']:
+                    id_proceso = processed["id_proceso"]
+                    # Verificar si la notificación ya ha sido enviada para este proceso
+                    if notificacion_no_enviada(Database, id_proceso):
+                        mensaje = f"El proceso de {processed['Titulo']} ha expirado. Por favor, actualice el proceso o contacte al administrador para más detalles."
+                        data = (id_usuario, id_proceso, mensaje, datetime.now(), 0 )
+                        toRegisterN(Database, data)
+                        # Marcar la notificación como enviada en la base de datos
+                        marcar_notificacion_enviada(Database, id_proceso)
+
 
             # Enviar notificación a través de SocketIO
             socketio.emit('notificacion', {'mensaje': 'El proceso ha expirado.'})

@@ -64,7 +64,13 @@ class ModelUser():
 # Definimos la función que retornara los datos de los usuarios.
 def datosUsuarios(Database):
     cursor = Database.connection.cursor()
-    cursor.execute("SELECT id_usuarios, Nombre_completo FROM usuarios")
+    cursor.execute("""
+                SELECT u.id_usuarios, u.Nombre_completo, u.NDI, u.Direccion, u.Telefono, u.Empresa, u.Cargo, u.Area_locativa, u.Email, u.Fecha_nacimiento, u.Rol, GROUP_CONCAT(a.id_proceso) as id_procesos
+                FROM usuarios u
+                INNER JOIN asignaciones a
+                ON u.id_usuarios = a.id_usuarios
+                GROUP BY u.id_usuarios;
+                """)
     myresult = cursor.fetchall()
     # Convertir los datos a diccionario.
     insertObject = []
@@ -76,4 +82,12 @@ def datosUsuarios(Database):
     dataUser=insertObject  
     # Retorna la variable dataUser.
     return dataUser
+# --------------------------------------------------------------------------------------
+
+def deleteU(Database, idU):
+    dato = (idU)
+    cursor = Database.connection.cursor()
+    sql ="DELETE FROM usuarios WHERE id_usuarios= {}"
+    cursor.execute(sql.format(dato))
+    Database.connection.commit()
 # --------------------------------------------------------------------------------------

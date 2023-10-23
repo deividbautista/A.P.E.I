@@ -1,0 +1,207 @@
+<!-- Utilizamos las propiedades de flask "extends", para poder heredar las propiedades del archivo principal base 
+que contiene los links principales del javaScripts y Css, para brindar los estilos a los demas modulos
+-->
+{%extends './base.html' %}
+
+<!-- En esta sección personalizamos asignaremos la ruta de los estilos personalizados para este modulo-->
+{% block links %}
+<link rel="stylesheet" href="../static/css/styles/style-dashboard.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+{%endblock%}
+
+<!-- En esta sección personalizamos el titulo correspondiente a cada modulo en el que nos encontremos-->
+{%block title%}dahsboard.{%endblock%}
+
+<!-- Utilizando las propiedades block, definiendo el la sección body, podemos insertar la estructura principal html, para 
+poder personalizar y ahorrar lineas de codigo en los modulos
+-->
+{%block body%}
+<body>
+    <br>
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-body">
+                <div class="container-tareas">
+                    <h1>LISTA DE USUARIOS.</h1>
+                    <h2></h2>
+                    <div class="search-tareas">
+                        <form class="Formulario-tareas">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal-2"
+                                class="boton-tareas"> Inserta usuario...</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Modal 2 Para crear proceso -->
+                <div class="modal fade" id="exampleModal-2" tabindex="-1" aria-labelledby="exampleModalLabel-2"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="exampleModalLabel">Nuevo proceso</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
+                            <div class="modal-body">
+                                <form action="/proceso" method="POST">
+                                    <div class="row mb-3">
+                                        <label>Nombre</label>
+                                        <input type="text" class="form-control mb-3" name="Titulo">
+
+                                        <label>Descripción</label>
+                                        <input type="text" class="form-control mb-3" name="Descripcion">
+
+                                        <label for="fecha">Fecha Limite:</label>
+                                        <input type="date" class="form-control mb-3" id="fecha" name="fecha">
+                                        <hr>
+                                        <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
+                                            personal...</button>
+                                        <br><br>
+                                        <hr>
+                                        <ul class="dropdown-menu">
+                                            {% for Usuario in datosU %}
+                                            <li>
+                                                <input type="checkbox" class="usuariosSelect"
+                                                    name="usuarios_seleccionados" value="{{ Usuario.id }}"
+                                                    id="{{Usuario.id}}">
+                                                <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
+                                                    {{Usuario.fullname}}
+                                                </label>
+                                            </li>
+                                            {% endfor %}
+                                        </ul>
+                                        <br><br>
+                                        <hr>
+                                        <button class="principal btn btn-primary mb-3 mt-4"
+                                            type="submit">Guardar</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fin modal-2 -->
+
+                <!-- Tabla -->
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-2"> Nombre completo</th>
+                            <th scope="col" > <i class="fa-regular fa-address-card"></i> NDI</th>
+                            <th scope="col" class="col-2"> <i class="fa-solid fa-location-crosshairs"></i> Dirección</th>
+                            <th scope="col"><i class="fa-solid fa-phone"></i> Telefono</th>
+                            <th scope="col" class="col-1"><i class="fa-solid fa-user"></i> Rol</th>
+                            <th scope="col" class="col-1"><i class="fa-regular fa-eye"></i> Editar</th>
+                            <th scope="col"><i class="fa-solid fa-trash"></i> Eliminar</th>
+                            <th scope="col"><i class="fa-solid fa-list-check"></i> Procesos</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <!---->
+                        {% for datos in datosU %}
+                        <tr>
+                            <td>{{datos.Nombre_completo}}</td>
+                            <td>{{datos.NDI}}</td>
+                            <td class="descripcion">{{datos.Direccion}}</td>
+                            <td>{{datos.Telefono}} </td>
+                            <td>{{datos.Rol}} </td>
+                            <td><button type="button" data-bs-toggle="modal"
+                                    data-bs-target="#modal{{datos.id_usuarios}}"
+                                    class="principal boton btn btn-primary btn-sm">Ver
+                                    más...</button>
+                            </td>
+                            <td>
+                                <a href="#" class="eliminarUsuario"
+                                data-url="{{ url_for('eliminarU', idU=datos.id_usuarios) }}">
+                                <i class="iconoD fa-solid fa-trash"></i></a>
+                            </td>
+                            <td>
+                                {% if datos.id_procesos %}
+                                <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </button>
+                                <ul class="dropdown-menu" id="submenu">
+                                    {% for id_proceso in datos.id_procesos.split(',') %}
+                                        <label id="AsignarUsu" class="UsuariosAsignados">
+                                            {{ id_proceso }}
+                                        </label><br>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p>Ningún usuario <br> asignado.</p>
+                                {% endif %}
+
+                            </td>
+                        </tr>
+
+                        <!-- Modal para editar proceso-->
+                        <div class="modal fade" id="modal{{datos.id_usuarios}}" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="exampleModalLabel">{{datos.Nombre_completo}}</h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="/addUdashboard" method="POST" enctype="multipart/form-data">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <label for="">Nombre completo:</label>
+                                            <input type="text" class="form-control mb-3" name="fullname" value="{{datos.Nombre_completo}}">
+                                            <label for="">Direccion:</label>
+                                            <input type="text" class="form-control mb-3" name="Direccion" value="{{ datos.Direccion}}">
+                                            <label for="">Telefono:</label>
+                                            <input type="number" class="form-control mb-3" name="Telefono" value="{{ datos.Telefono}}">
+                                            <label for="">Empresa:</label>
+                                            <input type="text" class="form-control mb-3" name="Empresa" value="{{ datos.Empresa}}">
+                                            <label for="">Cargo:</label>
+                                            <input type="text" class="form-control mb-3" name="Cargo" value="{{ datos.Cargo}}">
+                                            <label for="">Area locativa:</label>
+                                            <input type="text" class="form-control mb-3" name="Area" value="{{ datos.Area_locativa}}">
+                                            <label for="">Fecha de nacimiento:</label>
+                                            <input type="date" class="form-control mb-3" name="FDN" value="{{ datos.Fecha_nacimiento}}">
+                                            <label for="">Número de documento:</label>
+                                            <input type="number" class="form-control mb-3" name="NDI" value="{{ datos.NDI}}">
+                                            <label for="">Correo electronico:</label>
+                                            <input type="text" class="form-control mb-3" name="Email" value="{{ datos.Email}}">
+                
+                                            <!-- Sección de footer del modal que contiene los botones para el envio del formulario -->
+                                            <div class="modal-footer">
+                                                <!-- Botón para cancelar o cerrar el modal-->
+                                                <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Cancelar</button>
+                
+                                                <!-- Botón para guardar cambios y actualizar datos-->
+                                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Fin modal -->
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br>
+</body>
+
+
+{% block scripts %}
+<script src="../static/js/procesos.js"></script>
+<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+
+</html>
+{%endblock%}
+
+<!-- Fin contenido principal del modulo "home"-->
+{%endblock%}

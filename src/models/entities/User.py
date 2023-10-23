@@ -32,6 +32,6 @@ class User(UserMixin):
         return check_password_hash(hashed_password, Contraseña)
 # --------------------------------------------------------------------------------------
 
-# print(generate_password_hash("12345"))
+# print(generate_password_hash("holi123"))
 # pbkdf2:sha256:600000$PKyNFkIhaLNxRkg3$eef35b3a10abd6667d3edac1e3b759ae55052b2344cc3a40e7b7b1bffc1a3618
 # pbkdf2:sha256:600000$RmJkvDljtnXNGrSM$8c36155079b871e820f0d70c83458edaacaa9535fca958fcfb3fbfb0639ffeba

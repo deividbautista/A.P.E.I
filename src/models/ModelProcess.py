@@ -73,10 +73,29 @@ def addPosts(Database, Titulo, Descripcion, FechaIn, Fechali, NivelImportancia, 
 # --------------------------------------------------------------------------------------
 
 # --------------------------------------------------------------------------------------
-def toRegisterM(Database, data):
+def toRegisterN(Database, data):
     cursor = Database.connection.cursor()
     sql = "INSERT INTO notificacion (id_usuarios, id_proceso, mensaje, fecha, leido) VALUES (%s, %s, %s, %s, %s)"
     cursor.execute(sql, data)
+    Database.connection.commit()
+    cursor.close()
+# --------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------
+def notificacion_no_enviada(Database, id_proceso):
+    cursor = Database.connection.cursor()
+    sql = "SELECT COUNT(*) FROM notificacion WHERE id_proceso = %s AND leido = 0"
+    cursor.execute(sql, (id_proceso,))
+    result = cursor.fetchone()[0]
+    cursor.close()
+    return result == 0  # Devuelve True si no hay notificaciones no leídas, de lo contrario, devuelve False
+# --------------------------------------------------------------------------------------
+
+# --------------------------------------------------------------------------------------
+def marcar_notificacion_enviada(Database, id_proceso):
+    cursor = Database.connection.cursor()
+    sql = "UPDATE notificacion SET leido = 1 WHERE id_proceso = %s"
+    cursor.execute(sql, (id_proceso,))
     Database.connection.commit()
     cursor.close()
 # --------------------------------------------------------------------------------------
