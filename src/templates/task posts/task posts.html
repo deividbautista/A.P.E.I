@@ -146,7 +146,6 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                 <div class="description">
                                     <p class="descriptiontext">
                                         {{datos.Descripcion}}
-                                        {{current_user.Rol}}
                                     </p>
                                 </div>
                                 <div class="nameUser">
@@ -315,7 +314,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
             <!------------------------------------------------------------------------------------------------------------------------------------>
 
             <!-- Modal 2 De vista de los datos del proceso. -->
-            <div class="modal fade" id="modal-3{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
+            <div class="modal-2 modal fade" id="modal-3{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -478,25 +477,29 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                 {% endif %}
                                 <hr>
                                 <!-- Campo donde se observar los usuarios No asignados y disponibles -->
-                                <div class="deplegable_1">
+                                <div class="desplegable_1">
                                     <div class="dropdown">
-                                        <button class="btnAsignar desplegable-toggle"><i class="fa-solid fa-user"></i>
-                                            Actualizar asignados</button>
-                                        <ul class="dropdown-menu">
+                                        <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
+                                        personal...</button>
+                                        <ul class="AsignarUsuarios dropdown-menu" onclick="event.stopPropagation();">
                                             <br>
                                             <!---------------------------------------------------------->
+                                            
                                             {% for Usuario in datosU %}
-                                            {% if Usuario.id_usuarios not in datos.id_usuarios %}
-                                            <li class="labelAsignados">
-                                                <label>
-                                                    <input type="checkbox" class="checkbox_nombres"
-                                                        name="usuarios_seleccionados_2"
-                                                        value="{{ Usuario.id_usuarios }}">
-                                                    <span class="PersonalAsignados">{{Usuario.Nombre_completo}}</span>
-                                                    <br><br>
-                                                </label>
-                                            </li>
-                                            {% endif %}
+                                                {% if Usuario.id_usuarios not in datos.id_usuario %}
+                                                    <li class="labelAsignados">
+                                                        <label>
+                                                            {% if Usuario.id_usuarios in datos.id_usuario %}
+                                                                <input type="checkbox" class="checkbox_nombres" name="usuarios_seleccionados_2" value="{{ Usuario.id_usuarios }}" checked>
+                                                            {% else %}
+                                                                <input type="checkbox" class="checkbox_nombres" name="usuarios_seleccionados_2" value="{{ Usuario.id_usuarios }}">
+                                                            {% endif %}
+                                                            <span class="PersonalAsignados">{{Usuario.Nombre_completo}}</span>
+                                                            <br><br>
+                                                        </label>
+                                                    </li>
+                                                {% endif %}
                                             {% endfor %}
                                         </ul>
                                     </div>
@@ -517,7 +520,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 
 
             <!-- Modal 4 Generar reporte -->
-            <div class="modal fade" id="modal-4{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
+            <div class="modal-4 modal fade" id="modal-4{{datos.id_proceso}}" tabindex="-1" aria-labelledby="exampleModalLabel-3"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -561,7 +564,9 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 
 {% block scripts %}
 <script src="../static/js/procesos.js"></script>
-<script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
+<script>
+
+</script>
 {%endblock%}
 
 <!-- Fin contenido principal del modulo "home"-->

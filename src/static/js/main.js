@@ -3,6 +3,8 @@ const bell = document.querySelector(".button-bell")
 const notifications = document.querySelector(".notifications")
 
 bell.addEventListener('click', () => {
+    console.log("wenas")
+
     if (notifications.classList.contains("Nfiltro")) {
         notifications.classList.remove("Nfiltro");
     } else {
@@ -11,6 +13,7 @@ bell.addEventListener('click', () => {
 });
 
 document.addEventListener('click', (event) => {
+    console.log("wenas")
     if (!notifications.contains(event.target) && !bell.contains(event.target)) {
         notifications.classList.add("Nfiltro");
     }

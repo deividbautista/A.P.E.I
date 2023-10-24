@@ -67,7 +67,7 @@ def datosUsuarios(Database):
     cursor.execute("""
                 SELECT u.id_usuarios, u.Nombre_completo, u.NDI, u.Direccion, u.Telefono, u.Empresa, u.Cargo, u.Area_locativa, u.Email, u.Fecha_nacimiento, u.Rol, GROUP_CONCAT(a.id_proceso) as id_procesos
                 FROM usuarios u
-                INNER JOIN asignaciones a
+                LEFT JOIN asignaciones a
                 ON u.id_usuarios = a.id_usuarios
                 GROUP BY u.id_usuarios;
                 """)
@@ -89,5 +89,13 @@ def deleteU(Database, idU):
     cursor = Database.connection.cursor()
     sql ="DELETE FROM usuarios WHERE id_usuarios= {}"
     cursor.execute(sql.format(dato))
+    Database.connection.commit()
+# --------------------------------------------------------------------------------------
+
+def addU(Database, data):
+ 
+    cursor = Database.connection.cursor()
+    sql = "INSERT INTO usuarios (Nombre_completo, NDI, Email, Rol, Contraseña)  VALUES (%s, %s, %s, %s, %s)"
+    cursor.execute(sql, data)
     Database.connection.commit()
 # --------------------------------------------------------------------------------------

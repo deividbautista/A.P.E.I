@@ -736,3 +736,7 @@ progress[value]::-webkit-progress-value {
 .filtro3{
     display: block;
 }
+
+.AsignarUsuarios{
+    width: 100%;
+}

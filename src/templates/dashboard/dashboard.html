@@ -44,35 +44,34 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             </div>
                             <!-- Cuerpo del modal donde encontramos el formualrio con los datos del usario -->
                             <div class="modal-body">
-                                <form action="/proceso" method="POST">
+                                <form action="/addUdashboard" method="POST">
                                     <div class="row mb-3">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
                                         <label>Nombre</label>
-                                        <input type="text" class="form-control mb-3" name="Titulo">
+                                        <input type="text" class="form-control mb-3" name="Fullname">
 
-                                        <label>Descripción</label>
-                                        <input type="text" class="form-control mb-3" name="Descripcion">
+                                        <label>Número de identidad</label>
+                                        <input type="text" class="form-control mb-3" name="NDI">
 
-                                        <label for="fecha">Fecha Limite:</label>
-                                        <input type="date" class="form-control mb-3" id="fecha" name="fecha">
-                                        <hr>
-                                        <button class="btnAsignar" type="button" data-bs-toggle="dropdown"
-                                            aria-expanded="false"><i class="fa-solid fa-user"></i> Asignar
-                                            personal...</button>
-                                        <br><br>
-                                        <hr>
-                                        <ul class="dropdown-menu">
-                                            {% for Usuario in datosU %}
-                                            <li>
-                                                <input type="checkbox" class="usuariosSelect"
-                                                    name="usuarios_seleccionados" value="{{ Usuario.id }}"
-                                                    id="{{Usuario.id}}">
-                                                <label for="{{Usuario.id}}" id="AsignarUsu" class="NombreUsuario">
-                                                    {{Usuario.fullname}}
-                                                </label>
-                                            </li>
-                                            {% endfor %}
-                                        </ul>
-                                        <br><br>
+                                        <label for="fecha">Correo electronico</label>
+                                        <input type="email" class="form-control mb-3" name="Email">
+
+                                        <label>Rol de usuario</label>
+                                        <select class="form-select" aria-label="Default select example" name="Rol">
+                                            <option value="0">Usuario</option>
+                                            <option value="1">administrador</option>
+                                        </select>
+                                        <hr><br>
+
+                                        <label for="password">Contraseña
+                                        <input type="password" class="form-control mb-3" id="password" name="password">
+
+                                        <label for="confirm_password">Confirmar contraseña</label>
+                                        <input type="password" class="form-control mb-3" id="confirm_password" name="confirm_password">
+
+                                        <p id="message" style="color: red; display: none;">Las contraseñas no coinciden. Por favor, verifíquelas nuevamente.</p>
+
                                         <hr>
                                         <button class="principal btn btn-primary mb-3 mt-4"
                                             type="submit">Guardar</button>
@@ -101,14 +100,20 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 
                     <tbody>
 
-                        <!---->
+                        <!------------------------------------------------------------------------------------------------------------------------------------>
                         {% for datos in datosU %}
                         <tr>
                             <td>{{datos.Nombre_completo}}</td>
                             <td>{{datos.NDI}}</td>
                             <td class="descripcion">{{datos.Direccion}}</td>
                             <td>{{datos.Telefono}} </td>
-                            <td>{{datos.Rol}} </td>
+                            <td> 
+                                {% if datos.Rol == 1%}
+                                    Admin
+                                {% elif datos.Rol == 0%}
+                                    Usuario
+                                {%endif%}
+                            </td>
                             <td><button type="button" data-bs-toggle="modal"
                                     data-bs-target="#modal{{datos.id_usuarios}}"
                                     class="principal boton btn btn-primary btn-sm">Ver
@@ -133,11 +138,11 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                     {% endfor %}
                                 </ul>
                                 {% else %}
-                                <p>Ningún usuario <br> asignado.</p>
+                                <p>Ningún proceso <br> asignado.</p>
                                 {% endif %}
-
                             </td>
                         </tr>
+                        <!------------------------------------------------------------------------------------------------------------------------------------>
 
                         <!-- Modal para editar proceso-->
                         <div class="modal fade" id="modal{{datos.id_usuarios}}" tabindex="-1"
@@ -150,7 +155,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="/addUdashboard" method="POST" enctype="multipart/form-data">
+                                        <form action="/Updatedashboard" method="POST" enctype="multipart/form-data">
                                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                                             <label for="">Nombre completo:</label>
                                             <input type="text" class="form-control mb-3" name="fullname" value="{{datos.Nombre_completo}}">
@@ -186,6 +191,7 @@ poder personalizar y ahorrar lineas de codigo en los modulos
                             </div>
                         </div>
                         <!-- Fin modal -->
+                        <!------------------------------------------------------------------------------------------------------------------------------------>
                         {% endfor %}
                     </tbody>
                 </table>
@@ -197,6 +203,25 @@ poder personalizar y ahorrar lineas de codigo en los modulos
 
 
 {% block scripts %}
+<script>
+    function validatePasswords() {
+        var password = document.getElementById("password").value;
+        var confirm_password = document.getElementById("confirm_password").value;
+        var message = document.getElementById("message");
+
+        if (password !== confirm_password) {
+            message.style.display = "block";
+            return false;
+        } else {
+            message.style.display = "none";
+            return true;
+        }
+    }
+
+    document.getElementById("confirm_password").addEventListener("input", function() {
+        validatePasswords();
+    });
+</script>
 <script src="../static/js/procesos.js"></script>
 <script src="https://cdn.socket.io/4.0.1/socket.io.min.js"></script>
 

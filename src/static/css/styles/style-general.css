@@ -82,24 +82,24 @@ estilos generales
     position: relative;
 }
 
-.nav-bell{
+.nav-bell {
     margin-right: 20px;
     cursor: pointer;
 }
 
-.nav-bell i:hover{
+.nav-bell i:hover {
     color: #ffffff;
 }
 
 
-.button-bell{
+.button-bell {
     background: none;
     border: none;
     font-size: 1.5rem;
     color: rgba(0, 0, 0, 0.788);
 }
 
-.notifications{
+.notifications {
     position: fixed;
     z-index: 4;
     background-color: rgb(240, 242, 243);
@@ -111,56 +111,61 @@ estilos generales
     border-radius: 10px;
 }
 
-.head-notifications{
+.head-notifications {
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
-    border:solid 1px;
+    border: solid 1px;
     border-top: none;
     border-left: none;
     border-right: none;
     border-color: #0000009a;
 }
 
-.title-notifications{
+.title-notifications {
     font-size: 1.9rem;
     margin-left: 10px;
     color: rgba(0, 0, 0, 0.726);
 }
 
-.body-notifications{
-    max-height: 89vh; /* Ajusta la altura máxima según tus necesidades */
-    overflow-y: auto; /* Esto agrega la barra de desplazamiento vertical */
-    scrollbar-width: thin; /* Ajusta el ancho de la barra de desplazamiento */
-    scrollbar-color: dark gray; 
+.body-notifications {
+    max-height: 89vh;
+    /* Ajusta la altura máxima según tus necesidades */
+    overflow-y: auto;
+    /* Esto agrega la barra de desplazamiento vertical */
+    scrollbar-width: thin;
+    /* Ajusta el ancho de la barra de desplazamiento */
+    scrollbar-color: dark gray;
 }
 
 
 /* Estilos adicionales para la barra de desplazamiento, si es necesario */
 .body-notifications::-webkit-scrollbar {
-    width: 8px; /* Ajusta el ancho de la barra de desplazamiento para navegadores WebKit */
+    width: 8px;
+    /* Ajusta el ancho de la barra de desplazamiento para navegadores WebKit */
 }
 
 .body-notifications::-webkit-scrollbar-thumb {
-    background-color: darkgray; /* Ajusta el color del "pulgar" de la barra de desplazamiento */
+    background-color: darkgray;
+    /* Ajusta el color del "pulgar" de la barra de desplazamiento */
     border-radius: 1px;
 }
 
-.notificacion{
+.notificacion {
     background-color: none;
     height: 90px;
 }
 
-.notificacion label{
+.notificacion label {
     text-align: justify;
     margin-left: 10px;
     margin-right: 30px;
 }
 
-.notificacion:hover{
+.notificacion:hover {
     background-color: rgb(226, 231, 235);
 }
 
-.Nfiltro{
+.Nfiltro {
     display: none;
 }
 
@@ -215,7 +220,7 @@ estilos generales
 /*Pie de pagina...*/
 .pie_de_pagina {
     width: 100%;
-    background-color: #d6d3fc
+    background-color: #d3e1fc
         /* Optional color: #bdc5e9 */
         /* Optional color: #d6d3fc */
 }
@@ -228,6 +233,63 @@ estilos generales
 
 /*fin pie de pagina*/
 
+.container {
+    padding: 2rem;
+}
+
+.slider__wrapper {
+    position: relative;
+    max-width: 48rem;
+    margin: 0 auto;
+    /*   background-color: blue; */
+}
+
+.slider {
+    display: flex;
+    aspect-ratio: 16 / 9;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    box-shadow: 0 1.5rem 3rem -0.75rem hsla(0, 0%, 0%, 0.25);
+    border-radius: 1rem;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.slider::-webkit-scrollbar {
+    display: none;
+}
+
+.slider img {
+    flex: 1 0 100%;
+    /* This will stretch the image*/
+    scroll-snap-align: start;
+    object-fit: cover;
+    /* This will fix the stretch tho the image will be croppped a bit */
+}
+
+.slider__nav {
+    display: flex;
+    column-gap: 1rem;
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.slider__nav a {
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 50%;
+    background-color: #fff;
+    opacity: 0.5;
+    transition: opacity ease 0.25s;
+}
+
+.slider__nav a:hover {
+    opacity: 1;
+}
 
 /*Inicio sección para la configuración responsive*/
 @media (max-width: 750px) {
@@ -276,7 +338,7 @@ estilos generales
         height: 60vh;
     }
 
-    .nav-bell{
+    .nav-bell {
         text-align: center;
         margin-right: 0px;
         margin-bottom: 15px;

@@ -209,9 +209,10 @@ def generate_pdf(Database, data, imagen_file, titulo, descripcion):
     # Agrega el encabezado para la descarga del PDF
     # response.headers['Content-Disposition'] = 'inline; filename=mi_pdf.pdf'
         
-    # Ruta completa de guardado (puedes cambiarla según tus necesidades)
-    ruta_de_guardado = 'E:\\documentación etapa productiva -_-\\Proyecto_APEI\\Integración_modulos\\primer_intentoTnT\\src\\static\\pdf\\' + data[1]
-        
+    # Ruta completa de guardado (puedes cambiarla según tus necesidades), para con la empresa
+    # ruta_de_guardado = 'E:\\documentación etapa productiva -_-\\Proyecto_APEI\\Integración_modulos\\primer_intentoTnT\\src\\static\\pdf\\' + data[1]
+    # Ruta completa de guardado (puedes cambiarla según tus necesidades), para el hogar
+    ruta_de_guardado = 'C:\\Users\\Infinity Tech\\Desktop\\Projects\\APEI\\A.P.E.I\\src\\static\\pdf\\' + data[1]
 
     # Guarda el archivo PDF con el nombre generado automáticamente.
     with open(ruta_de_guardado, 'wb') as pdf_file:

@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }).then(function (result) {
         // Si el usuario confirma, redirige a la dirección de la api para borrar el proceso.
         if (result.isConfirmed) {
-          location.reload();
+          window.location.href = deleteUrl;
         // En caso de ser negativo el proceso se dara por cancelado y se ilustrara el siguiente SweetAlert.
         } else {
           Swal.fire({

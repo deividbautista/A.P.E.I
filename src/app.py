@@ -25,9 +25,10 @@ from os import path
 from database import config
 
 # Models:
-from models.ModelUser import ModelUser, datosUsuarios, deleteU
 
 from models.ModelGeneral import extensiones_validas
+
+from models.ModelUser import ModelUser, datosUsuarios, deleteU, addU
 
 from models.ModelProcess import datos_proceso, deleteP, deleteR, editP, deleteAsignados, generate_pdf, addPosts, toRegisterN, notificacion_no_enviada, marcar_notificacion_enviada
 
@@ -130,7 +131,25 @@ def dashboard():
     dataUser = datosUsuarios(Database)
     return render_template("dashboard/dashboard.html", datosU=dataUser)
 
-@app.route("/addUdashboard", methods=["POST"])
+# -----------------------------------------------------
+@app.route("/addUdashboard", methods=["POST"] )
+def adddU():
+    nombre= request.form['Fullname']
+    NumDoc = request.form['NDI']
+    Email = request.form['Email']
+    Rol = request.form['Rol']
+    Contraseña = request.form['password']
+    ContraseñaHash = (generate_password_hash(Contraseña))
+
+    # Definimos un array llamado datos para poder utilizar las vriables anteriormente definidas.
+    data = (nombre, NumDoc, Email, Rol, ContraseñaHash)
+    addU(Database, data)
+    flash("Se registro correctamente🥳","success")
+    return redirect("dashboard")
+
+
+
+@app.route("/Updatedashboard", methods=["POST"])
 def updateU():
     # Presentamos el bloque try, el cual pasara a ejecutar dos tipos de funciones, la primera sera en el caso
     # de que el usuario desee actualizar la foto de perfil, y la segunda función es para actualizar los datos 
@@ -173,7 +192,7 @@ def updateU():
 @app.route('/deleteUsers/<string:idU>')
 def eliminarU(idU):
     deleteU(Database, idU)
-    return redirect(url_for('posts'))
+    return redirect(url_for('dashboard'))
 # ------------------------------------------------------
 
 # -----------------------------------------------------------------------------------------
