@@ -1,5 +1,5 @@
 # A.P.E.I
-Proyecto enfocado en solventar las necesidades de la empresa telcore, el cual se basa en un sistema administrador de procesos de entrega o instalación de la empresa telcore.
+Proyecto enfocado en solventar las necesidades de una organización que necesite de un administrador de procesos de actividades.
 
 ## Requisitos previos
 * Python [python download](https://www.python.org/downloads/release/python-31010/)
