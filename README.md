@@ -6,6 +6,10 @@ Proyecto enfocado en solventar las necesidades de una organización que necesite
 ---
 
 ```sh
+# clonar repositorio
+https://github.com/deividbautista/A.P.E.I.git
+```
+```sh
 # Otorgar permisos a windows en caso de ser solicitados
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process    
 ```
